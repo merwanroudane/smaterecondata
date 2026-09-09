@@ -1,0 +1,263 @@
+# SmatEconData multilingual concept aliases (spec 0B.1).
+#
+# These are DISCOVERY AIDS. They map what a researcher types onto an internal
+# concept key; the series that comes back always keeps its official provider
+# title, code, unit and definition. Nothing here overwrites provider metadata.
+#
+# `ambiguous: true` marks a concept whose plain name has several materially
+# different definitions -- the ambiguity engine (spec 6.3) must offer a choice
+# rather than silently picking one.
+
+concepts:
+  - key: gdp
+    label: Gross domestic product
+    topic: Economic Growth
+    ambiguous: true
+    distinctions:
+      - current local currency
+      - current USD
+      - constant prices
+      - purchasing power parity (PPP)
+      - growth rate
+      - per capita
+    aliases:
+      en: [GDP, gross domestic product, national output, domestic product]
+      fr: [PIB, produit interieur brut, production nationale]
+      ar: [الناتج المحلي الإجمالي, الناتج الداخلي الخام, الناتج المحلي, الناتج الاجمالي]
+
+  - key: gdp_per_capita
+    label: GDP per capita
+    topic: Economic Growth
+    aliases:
+      en: [GDP per capita, gdp per head, income per capita, output per person]
+      fr: [PIB par habitant, PIB par tete, revenu par habitant]
+      ar: [الناتج المحلي الإجمالي للفرد, نصيب الفرد من الناتج المحلي, دخل الفرد]
+
+  - key: gdp_growth
+    label: GDP growth rate
+    topic: Economic Growth
+    aliases:
+      en: [GDP growth, economic growth, growth rate, real growth]
+      fr: [croissance du PIB, croissance economique, taux de croissance]
+      ar: [نمو الناتج المحلي, النمو الاقتصادي, معدل النمو]
+
+  - key: inflation
+    label: Inflation
+    topic: Prices & Inflation
+    ambiguous: true
+    distinctions:
+      - CPI inflation, annual percent
+      - GDP deflator inflation
+      - monthly CPI index
+      - core inflation
+      - end-of-period inflation
+      - period-average inflation
+    aliases:
+      en: [inflation, CPI inflation, consumer prices, price inflation, cost of living]
+      fr: [inflation, hausse des prix, prix a la consommation, indice des prix]
+      ar: [التضخم, معدل التضخم, ارتفاع الأسعار, أسعار المستهلك, غلاء المعيشة]
+
+  - key: cpi
+    label: Consumer price index
+    topic: Prices & Inflation
+    aliases:
+      en: [CPI, consumer price index, price index]
+      fr: [IPC, indice des prix a la consommation]
+      ar: [مؤشر أسعار المستهلك, الرقم القياسي للأسعار]
+
+  - key: unemployment
+    label: Unemployment rate
+    topic: Labor Market
+    ambiguous: true
+    distinctions:
+      - total unemployment, percent of labour force
+      - youth unemployment
+      - male / female unemployment
+      - modelled ILO estimate vs national estimate
+    aliases:
+      en: [unemployment, unemployment rate, jobless rate, joblessness]
+      fr: [chomage, taux de chomage, sans emploi]
+      ar: [البطالة, معدل البطالة, نسبة البطالة, العاطلون عن العمل]
+
+  - key: employment
+    label: Employment
+    topic: Labor Market
+    aliases:
+      en: [employment, employment rate, jobs, employed persons]
+      fr: [emploi, taux d'emploi, population active occupee]
+      ar: [التشغيل, العمالة, معدل التشغيل, المشتغلون]
+
+  - key: labor_force
+    label: Labour force participation
+    topic: Labor Market
+    aliases:
+      en: [labor force, labour force, participation rate, active population]
+      fr: [population active, taux d'activite, main d'oeuvre]
+      ar: [القوى العاملة, معدل المشاركة, السكان النشطون]
+
+  - key: public_debt
+    label: Public debt
+    topic: Fiscal
+    ambiguous: true
+    distinctions:
+      - central government debt
+      - general government gross debt
+      - external debt
+      - percent of GDP vs level
+    aliases:
+      en: [public debt, government debt, national debt, sovereign debt, debt to GDP]
+      fr: [dette publique, dette de l'etat, dette souveraine, dette rapportee au PIB]
+      ar: [الدين العام, الدين الحكومي, المديونية, الدين السيادي, الدين إلى الناتج]
+
+  - key: external_debt
+    label: External debt
+    topic: Fiscal
+    aliases:
+      en: [external debt, foreign debt, external stocks]
+      fr: [dette exterieure, dette externe]
+      ar: [الدين الخارجي, المديونية الخارجية]
+
+  - key: fdi
+    label: Foreign direct investment
+    topic: Finance
+    ambiguous: true
+    distinctions:
+      - net inflows
+      - net outflows
+      - percent of GDP vs current USD
+    aliases:
+      en: [FDI, foreign direct investment, direct investment, inward investment]
+      fr: [IDE, investissements directs etrangers, investissement direct]
+      ar: [الاستثمار الأجنبي المباشر, الاستثمارات الأجنبية, تدفقات الاستثمار]
+
+  - key: exchange_rate
+    label: Exchange rate
+    topic: Monetary
+    ambiguous: true
+    distinctions:
+      - official rate, local currency per USD
+      - real effective exchange rate (REER)
+      - nominal effective exchange rate (NEER)
+      - period average vs end of period
+    aliases:
+      en: [exchange rate, currency rate, forex rate, FX rate]
+      fr: [taux de change, cours de change, change]
+      ar: [سعر الصرف, سعر العملة, معدل الصرف]
+
+  - key: interest_rate
+    label: Interest rate
+    topic: Monetary
+    ambiguous: true
+    distinctions:
+      - policy / central bank rate
+      - lending rate
+      - deposit rate
+      - real vs nominal
+    aliases:
+      en: [interest rate, policy rate, lending rate, deposit rate, benchmark rate]
+      fr: [taux d'interet, taux directeur, taux debiteur, taux crediteur]
+      ar: [سعر الفائدة, معدل الفائدة, سعر الفائدة الأساسي]
+
+  - key: money_supply
+    label: Money supply
+    topic: Monetary
+    aliases:
+      en: [money supply, broad money, M1, M2, M3, monetary aggregate]
+      fr: [masse monetaire, agregat monetaire, monnaie au sens large]
+      ar: [عرض النقود, الكتلة النقدية, السيولة المحلية, المعروض النقدي]
+
+  - key: exports
+    label: Exports
+    topic: Trade
+    aliases:
+      en: [exports, exports of goods and services, outbound trade]
+      fr: [exportations, ventes a l'etranger]
+      ar: [الصادرات, التصدير, صادرات السلع والخدمات]
+
+  - key: imports
+    label: Imports
+    topic: Trade
+    aliases:
+      en: [imports, imports of goods and services, inbound trade]
+      fr: [importations, achats a l'etranger]
+      ar: [الواردات, الاستيراد, واردات السلع والخدمات]
+
+  - key: trade_balance
+    label: Trade balance
+    topic: Trade
+    aliases:
+      en: [trade balance, balance of trade, net exports, trade deficit, trade surplus]
+      fr: [balance commerciale, solde commercial, deficit commercial, excedent commercial]
+      ar: [الميزان التجاري, الرصيد التجاري, العجز التجاري, الفائض التجاري]
+
+  - key: current_account
+    label: Current account balance
+    topic: Trade
+    aliases:
+      en: [current account, current account balance, external balance]
+      fr: [balance courante, compte courant, solde courant]
+      ar: [الحساب الجاري, ميزان الحساب الجاري, الميزان الجاري]
+
+  - key: population
+    label: Population
+    topic: Population
+    aliases:
+      en: [population, total population, inhabitants, demographics]
+      fr: [population, population totale, habitants, demographie]
+      ar: [السكان, عدد السكان, التعداد السكاني, الديموغرافيا]
+
+  - key: government_expenditure
+    label: Government expenditure
+    topic: Fiscal
+    aliases:
+      en: [government expenditure, public spending, government spending, fiscal expenditure]
+      fr: [depenses publiques, depenses de l'etat, depense gouvernementale]
+      ar: [الإنفاق الحكومي, النفقات العامة, الإنفاق العام]
+
+  - key: government_revenue
+    label: Government revenue
+    topic: Fiscal
+    aliases:
+      en: [government revenue, public revenue, tax revenue, fiscal revenue]
+      fr: [recettes publiques, revenus de l'etat, recettes fiscales]
+      ar: [الإيرادات الحكومية, الإيرادات العامة, الإيرادات الضريبية]
+
+  - key: budget_balance
+    label: Government budget balance
+    topic: Fiscal
+    aliases:
+      en: [budget balance, fiscal balance, budget deficit, fiscal deficit, surplus]
+      fr: [solde budgetaire, deficit budgetaire, excedent budgetaire]
+      ar: [الرصيد الموازني, عجز الموازنة, الميزانية العامة, الفائض الموازني]
+
+  - key: poverty
+    label: Poverty headcount
+    topic: Development
+    aliases:
+      en: [poverty, poverty rate, poverty headcount, poor population]
+      fr: [pauvrete, taux de pauvrete, seuil de pauvrete]
+      ar: [الفقر, معدل الفقر, نسبة الفقر, خط الفقر]
+
+  - key: energy_use
+    label: Energy use
+    topic: Energy
+    aliases:
+      en: [energy use, energy consumption, primary energy]
+      fr: [consommation energetique, consommation d'energie, energie primaire]
+      ar: [استهلاك الطاقة, الطاقة الأولية, استخدام الطاقة]
+
+  - key: renewable_energy
+    label: Renewable energy share
+    topic: Energy
+    aliases:
+      en: [renewable energy, renewables, clean energy share]
+      fr: [energie renouvelable, energies renouvelables, energie propre]
+      ar: [الطاقة المتجددة, الطاقات المتجددة, الطاقة النظيفة]
+
+  - key: co2_emissions
+    label: CO2 emissions
+    topic: Environment
+    aliases:
+      en: [CO2 emissions, carbon emissions, greenhouse gas, carbon dioxide]
+      fr: [emissions de CO2, emissions de carbone, gaz a effet de serre]
+      ar: [انبعاثات ثاني أكسيد الكربون, الانبعاثات الكربونية, غازات الاحتباس الحراري]

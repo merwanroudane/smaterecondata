@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "SmatEconData",
+  "name_for_model": "smatecondata",
+  "description_for_human": "Query economic data from FRED, World Bank, IMF, UN Comtrade, and 10+ sources using natural language.",
+  "description_for_model": "SmatEconData is an AI-powered economic data aggregation platform. Use this plugin to query economic data from multiple authoritative sources including FRED (Federal Reserve), World Bank, IMF, UN Comtrade, Statistics Canada, Eurostat, OECD, BIS, ExchangeRate-API, and CoinGecko. Users can ask natural language questions like 'What is US GDP growth?' or 'Compare inflation between countries' and get data with visualizations. The platform supports GDP, inflation, unemployment, trade data, interest rates, exchange rates, cryptocurrency prices, and thousands of other economic indicators.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "http://localhost:3001/api/openapi.json"
+  },
+  "logo_url": "http://localhost:3001/logo.png",
+  "contact_email": "merwanroudane920@gmail.com",
+  "legal_info_url": "http://localhost:3001/docs"
+}

@@ -1,0 +1,436 @@
+/**
+ * Search mode styling (spec 0B).
+ *
+ * Uses CSS logical properties throughout (inline-start/end, margin-inline)
+ * so the whole surface mirrors correctly under `dir="rtl"` without a single
+ * RTL-specific rule.
+ */
+
+.mode {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.mode__note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+.mode__label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* --- guided stepper --------------------------------------------------- */
+
+.mode__steps {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+}
+
+.mode__step {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.mode__step[aria-current='step'] {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+  font-weight: 650;
+}
+
+.mode__step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.mode__step[aria-current='step'] .mode__step-num {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.mode__body {
+  min-height: 120px;
+}
+
+/* --- shared controls --------------------------------------------------- */
+
+.mode__filter,
+.mode__textarea,
+.mode__grid input,
+.mode__grid select {
+  width: 100%;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-sm);
+}
+
+.mode__textarea {
+  resize: vertical;
+  font-family: var(--font-mono);
+  line-height: 1.5;
+}
+
+.mode__filter:focus,
+.mode__textarea:focus,
+.mode__grid input:focus,
+.mode__grid select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--ring);
+}
+
+.mode__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-3);
+}
+
+.mode__grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--text-xs);
+  font-weight: 650;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mode__fieldset {
+  margin: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.mode__fieldset legend {
+  padding: 0 var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* --- chips -------------------------------------------------------------- */
+
+.mode__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.mode__chips--scroll {
+  max-height: 190px;
+  overflow-y: auto;
+  padding: var(--space-1);
+}
+
+.mode__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.28rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.mode__chip:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+/* Selection carries weight as well as colour (spec 0O). */
+.mode__chip[aria-pressed='true'] {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+  font-weight: 650;
+}
+
+.mode__chip--region {
+  background: var(--secondary-soft);
+  border-color: transparent;
+  color: var(--secondary);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.mode__chip--region small {
+  opacity: 0.75;
+}
+
+.mode__regions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* --- lists --------------------------------------------------------------- */
+
+.mode__topic h3 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.mode__list {
+  list-style: none;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mode__list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.mode__list li:hover {
+  background: var(--surface-sunken);
+}
+
+.mode__list-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.4rem 0.5rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.mode__list-title {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+
+.mode__list-sub {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+}
+
+.mode__flag {
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--warning);
+  font-size: 10px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+
+.mode__flag--warn {
+  background: var(--error-soft);
+  color: var(--error);
+}
+
+.mode__add {
+  flex-shrink: 0;
+  padding: 0.25rem 0.6rem;
+  margin-inline-end: 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.mode__add:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.mode__add[aria-pressed='true'] {
+  border-color: transparent;
+  background: var(--success-soft);
+  color: var(--success);
+  font-weight: 650;
+}
+
+/* --- review / actions ------------------------------------------------------ */
+
+.mode__review-query {
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface-sunken);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+}
+
+.mode__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.mode__button {
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mode__button:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+.mode__button--primary {
+  border-color: transparent;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.mode__button--primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  color: var(--on-primary);
+}
+
+.mode__button--ghost {
+  border-color: transparent;
+  background: transparent;
+}
+
+.mode__button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- batch table ------------------------------------------------------------ */
+
+.mode__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.mode__table th {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: start;
+}
+
+.mode__table td {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.mode__table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* --- mode tabs --------------------------------------------------------------- */
+
+.mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+}
+
+.mode-tab {
+  padding: 0.35rem 0.85rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.mode-tab:hover {
+  color: var(--text-primary);
+}
+
+.mode-tab[aria-selected='true'] {
+  background: var(--surface);
+  color: var(--primary);
+  font-weight: 650;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 640px) {
+  .mode {
+    padding: var(--space-4);
+  }
+
+  .mode__actions {
+    justify-content: stretch;
+  }
+
+  .mode__button {
+    flex: 1;
+  }
+}

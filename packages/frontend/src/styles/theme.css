@@ -1,0 +1,490 @@
+/**
+ * SmatEconData theme system (spec 0G, 0H).
+ *
+ * A real theme engine, not one light and one dark stylesheet:
+ *
+ *   data-mode   = light | dark        (resolved; absent means follow the OS)
+ *   data-preset = sunrise | mint | lavender | sky
+ *   data-density= comfortable | compact
+ *
+ * Components must only ever read the SEMANTIC tokens below (--bg, --surface,
+ * --primary, ...). Nothing should hard-code a hex value, so a new preset is a
+ * block of variables rather than a component rewrite.
+ *
+ * Light is the default and the polished case. Dark is fully supported but is
+ * deliberately not the brand identity.
+ */
+
+/* ---------------------------------------------------------------- *
+ * Scale tokens — shared by every preset and both modes.
+ * ---------------------------------------------------------------- */
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-mono: "SFMono-Regular", ui-monospace, "Cascadia Mono", Menlo, Consolas,
+    monospace;
+  /* Arabic needs a font stack that actually has the glyphs. */
+  --font-arabic: "Noto Naskh Arabic", "Segoe UI", "Tahoma", "Arial", sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* Restrained elevation: subtle borders over heavy shadows (spec 0G). */
+  --shadow-sm: 0 1px 2px rgb(37 49 60 / 6%);
+  --shadow-md: 0 2px 8px rgb(37 49 60 / 8%);
+  --shadow-lg: 0 12px 32px rgb(37 49 60 / 10%);
+
+  --ring: 0 0 0 3px var(--focus-ring);
+
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+  --duration-slow: 420ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --container: 1180px;
+  --header-height: 60px;
+
+  color-scheme: light;
+}
+
+:root[data-density="compact"] {
+  --space-4: 0.75rem;
+  --space-5: 1rem;
+  --space-6: 1.5rem;
+  --space-7: 2rem;
+}
+
+/* ---------------------------------------------------------------- *
+ * LIGHT PRESETS
+ * Preset 1 — Sunrise Research (default): coral + teal + warm neutrals.
+ * ---------------------------------------------------------------- */
+:root,
+:root[data-preset="sunrise"] {
+  --bg: #fff9f4;
+  --surface: #ffffff;
+  --surface-alt: #fff2e8;
+  --surface-sunken: #fdf4ec;
+
+  --primary: #f26b4f;
+  --primary-hover: #d9583f;
+  --primary-soft: #ffe7e0;
+  --on-primary: #ffffff;
+
+  --secondary: #2aae9b;
+  --secondary-soft: #dff4f0;
+  --accent: #f2b84b;
+  --accent-soft: #fdf1d8;
+  --info: #4c8bf5;
+  --info-soft: #e7f0fb;
+
+  --text-primary: #25313c;
+  --text-secondary: #66727d;
+  --text-muted: #93a0ab;
+  --border: #e9e3dc;
+  --border-strong: #d6cec4;
+
+  --success: #2e9d69;
+  --success-soft: #e6f4ec;
+  --warning: #d99024;
+  --warning-soft: #fdf0d5;
+  --error: #d84c4c;
+  --error-soft: #fbe3e3;
+
+  --focus-ring: rgb(242 107 79 / 35%);
+  --chart-1: #f26b4f;
+  --chart-2: #2aae9b;
+  --chart-3: #f2b84b;
+  --chart-4: #4c8bf5;
+  --chart-5: #9b6bf2;
+  --chart-6: #2e9d69;
+}
+
+/* Preset 2 — Mint Lab: emerald + aqua + white. */
+:root[data-preset="mint"] {
+  --bg: #f5fbf8;
+  --surface: #ffffff;
+  --surface-alt: #e8f6ef;
+  --surface-sunken: #eef8f3;
+
+  --primary: #0f9d76;
+  --primary-hover: #0b7f5f;
+  --primary-soft: #d8f2e8;
+  --on-primary: #ffffff;
+
+  --secondary: #2c8ca8;
+  --secondary-soft: #ddeff5;
+  --accent: #64c9a0;
+  --accent-soft: #ddf3e9;
+  --info: #3b82c4;
+  --info-soft: #e2edf8;
+
+  --text-primary: #17352d;
+  --text-secondary: #5b7269;
+  --text-muted: #8ba098;
+  --border: #d9e9e1;
+  --border-strong: #bcd6cb;
+
+  --success: #1f8f5f;
+  --success-soft: #ddf1e6;
+  --warning: #c98a1e;
+  --warning-soft: #fbf0d6;
+  --error: #cc4b4b;
+  --error-soft: #fae1e1;
+
+  --focus-ring: rgb(15 157 118 / 32%);
+  --chart-1: #0f9d76;
+  --chart-2: #2c8ca8;
+  --chart-3: #64c9a0;
+  --chart-4: #3b82c4;
+  --chart-5: #d08a3e;
+  --chart-6: #7a63c4;
+}
+
+/* Preset 3 — Lavender Paper: violet + rose + soft grey. */
+:root[data-preset="lavender"] {
+  --bg: #faf8fd;
+  --surface: #ffffff;
+  --surface-alt: #f1ecfa;
+  --surface-sunken: #f5f1fb;
+
+  --primary: #7256c9;
+  --primary-hover: #5c43ab;
+  --primary-soft: #e8e1f8;
+  --on-primary: #ffffff;
+
+  --secondary: #c25f97;
+  --secondary-soft: #f8e4ef;
+  --accent: #e0a3c4;
+  --accent-soft: #fbecf4;
+  --info: #4f7fd1;
+  --info-soft: #e5edf9;
+
+  --text-primary: #2b2740;
+  --text-secondary: #6a6480;
+  --text-muted: #9a95ab;
+  --border: #e5e0ef;
+  --border-strong: #cbc3dd;
+
+  --success: #3a9070;
+  --success-soft: #e2f1ea;
+  --warning: #c48a2c;
+  --warning-soft: #faefda;
+  --error: #cf4f63;
+  --error-soft: #fae2e6;
+
+  --focus-ring: rgb(114 86 201 / 32%);
+  --chart-1: #7256c9;
+  --chart-2: #c25f97;
+  --chart-3: #4f7fd1;
+  --chart-4: #3a9070;
+  --chart-5: #d99b3c;
+  --chart-6: #4fa5b8;
+}
+
+/* Preset 4 — Sky Citrus: blue-sky + citrus + white. */
+:root[data-preset="sky"] {
+  --bg: #f6fafd;
+  --surface: #ffffff;
+  --surface-alt: #e7f2fb;
+  --surface-sunken: #eef6fc;
+
+  --primary: #1f7fc4;
+  --primary-hover: #16659e;
+  --primary-soft: #dbecf9;
+  --on-primary: #ffffff;
+
+  --secondary: #ef8f2e;
+  --secondary-soft: #fdeedb;
+  --accent: #f4c145;
+  --accent-soft: #fdf3d9;
+  --info: #4a94d8;
+  --info-soft: #e3f0fa;
+
+  --text-primary: #16303f;
+  --text-secondary: #5a7180;
+  --text-muted: #8ba0ad;
+  --border: #dbe8f1;
+  --border-strong: #bcd2e0;
+
+  --success: #2b9268;
+  --success-soft: #e0f2e9;
+  --warning: #cf8a1c;
+  --warning-soft: #fbeed4;
+  --error: #d44f4f;
+  --error-soft: #fae3e3;
+
+  --focus-ring: rgb(31 127 196 / 32%);
+  --chart-1: #1f7fc4;
+  --chart-2: #ef8f2e;
+  --chart-3: #2b9268;
+  --chart-4: #7a63c4;
+  --chart-5: #d44f4f;
+  --chart-6: #4fa5b8;
+}
+
+/* ---------------------------------------------------------------- *
+ * DARK MODE
+ *
+ * Only the palette is redefined; every scale token above still applies.
+ * Two selectors on purpose: `data-mode="dark"` for an explicit choice, and
+ * the media query for "follow the system" — which is the state when no
+ * data-mode attribute is present at all.
+ * ---------------------------------------------------------------- */
+:root[data-mode="dark"] {
+  color-scheme: dark;
+
+  --bg: #14191e;
+  --surface: #1c2329;
+  --surface-alt: #242d35;
+  --surface-sunken: #191f25;
+
+  --primary-soft: #3a2620;
+  --secondary-soft: #16332f;
+  --accent-soft: #37301c;
+  --info-soft: #1c2a3d;
+
+  --text-primary: #eef2f5;
+  --text-secondary: #a7b2bc;
+  --text-muted: #7b8791;
+  --border: #303b45;
+  --border-strong: #43505c;
+
+  --success-soft: #16301f;
+  --warning-soft: #322612;
+  --error-soft: #351c1c;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-md: 0 2px 10px rgb(0 0 0 / 45%);
+  --shadow-lg: 0 14px 36px rgb(0 0 0 / 55%);
+}
+
+/* Lift accent colours so they keep contrast on a dark ground. */
+:root[data-mode="dark"][data-preset="sunrise"],
+:root[data-mode="dark"]:not([data-preset]) {
+  --primary: #ff8266;
+  --primary-hover: #ff9d86;
+  --secondary: #3fc7b2;
+  --accent: #f6c766;
+  --info: #6ea3ff;
+  --success: #45b884;
+  --warning: #e5a748;
+  --error: #ef6b6b;
+  --focus-ring: rgb(255 130 102 / 40%);
+  --chart-1: #ff8266;
+  --chart-2: #3fc7b2;
+  --chart-3: #f6c766;
+  --chart-4: #6ea3ff;
+  --chart-5: #b48cff;
+  --chart-6: #45b884;
+}
+
+:root[data-mode="dark"][data-preset="mint"] {
+  --primary: #35c39a;
+  --primary-hover: #52d3ae;
+  --secondary: #4fb0cc;
+  --accent: #7fdcb6;
+  --info: #63a8e6;
+  --success: #45b884;
+  --warning: #e5a748;
+  --error: #ef6b6b;
+  --focus-ring: rgb(53 195 154 / 40%);
+  --chart-1: #35c39a;
+  --chart-2: #4fb0cc;
+  --chart-3: #7fdcb6;
+  --chart-4: #63a8e6;
+  --chart-5: #e5a748;
+  --chart-6: #b48cff;
+}
+
+:root[data-mode="dark"][data-preset="lavender"] {
+  --primary: #a389f0;
+  --primary-hover: #b7a2f5;
+  --secondary: #e086b8;
+  --accent: #f0bcd8;
+  --info: #7ba6ea;
+  --success: #45b884;
+  --warning: #e5a748;
+  --error: #ef6b7f;
+  --focus-ring: rgb(163 137 240 / 40%);
+  --chart-1: #a389f0;
+  --chart-2: #e086b8;
+  --chart-3: #7ba6ea;
+  --chart-4: #45b884;
+  --chart-5: #e5a748;
+  --chart-6: #4fc0d4;
+}
+
+:root[data-mode="dark"][data-preset="sky"] {
+  --primary: #57aeee;
+  --primary-hover: #79c1f4;
+  --secondary: #ffab5c;
+  --accent: #f8d271;
+  --info: #6bb0ec;
+  --success: #45b884;
+  --warning: #e5a748;
+  --error: #ef6b6b;
+  --focus-ring: rgb(87 174 238 / 40%);
+  --chart-1: #57aeee;
+  --chart-2: #ffab5c;
+  --chart-3: #45b884;
+  --chart-4: #b48cff;
+  --chart-5: #ef6b6b;
+  --chart-6: #4fc0d4;
+}
+
+/* Follow the OS when the user has not chosen (no data-mode attribute). */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-mode]) {
+    color-scheme: dark;
+
+    --bg: #14191e;
+    --surface: #1c2329;
+    --surface-alt: #242d35;
+    --surface-sunken: #191f25;
+
+    --primary: #ff8266;
+    --primary-hover: #ff9d86;
+    --primary-soft: #3a2620;
+    --secondary: #3fc7b2;
+    --secondary-soft: #16332f;
+    --accent: #f6c766;
+    --accent-soft: #37301c;
+    --info: #6ea3ff;
+    --info-soft: #1c2a3d;
+
+    --text-primary: #eef2f5;
+    --text-secondary: #a7b2bc;
+    --text-muted: #7b8791;
+    --border: #303b45;
+    --border-strong: #43505c;
+
+    --success: #45b884;
+    --success-soft: #16301f;
+    --warning: #e5a748;
+    --warning-soft: #322612;
+    --error: #ef6b6b;
+    --error-soft: #351c1c;
+
+    --focus-ring: rgb(255 130 102 / 40%);
+    --chart-1: #ff8266;
+    --chart-2: #3fc7b2;
+    --chart-3: #f6c766;
+    --chart-4: #6ea3ff;
+    --chart-5: #b48cff;
+    --chart-6: #45b884;
+
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+    --shadow-md: 0 2px 10px rgb(0 0 0 / 45%);
+    --shadow-lg: 0 14px 36px rgb(0 0 0 / 55%);
+  }
+}
+
+/* ---------------------------------------------------------------- *
+ * Base elements
+ * ---------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+}
+
+:root[lang="ar"] body,
+[dir="rtl"] body {
+  font-family: var(--font-arabic);
+}
+
+a {
+  color: var(--primary);
+}
+
+/* Never rely on colour alone, and never remove the focus ring (spec 0O). */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: var(--primary-soft);
+  color: var(--text-primary);
+}
+
+/* ---------------------------------------------------------------- *
+ * Motion (spec 0G.1)
+ *
+ * `--motion` is multiplied into decorative animation durations, so the
+ * settings toggle and the OS preference both collapse motion to zero without
+ * every component re-implementing the check.
+ * ---------------------------------------------------------------- */
+:root {
+  --motion: 1;
+}
+
+:root[data-motion="off"] {
+  --motion: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="on"]) {
+    --motion: 0;
+  }
+
+  :root:not([data-motion="on"]) *,
+  :root:not([data-motion="on"]) *::before,
+  :root:not([data-motion="on"]) *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root[data-motion="off"] *,
+:root[data-motion="off"] *::before,
+:root[data-motion="off"] *::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+}
+
+/* Pause decorative animation while the tab is hidden (spec 0G.1). */
+:root[data-hidden="true"] .sed-decorative {
+  animation-play-state: paused !important;
+}

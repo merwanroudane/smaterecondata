@@ -1,0 +1,46 @@
+SmatEconData
+Copyright (C) 2026 Dr Merwan Roudane <merwanroudane920@gmail.com>
+https://github.com/merwanroudane/smaterecondata
+
+This product is licensed under the GNU Affero General Public License,
+version 3 or later. See the LICENSE file for the full licence text.
+
+--------------------------------------------------------------------------
+Upstream attribution
+--------------------------------------------------------------------------
+
+SmatEconData is derived from the open-source project OpenEcon Data:
+
+    OpenEcon Data
+    Copyright (C) 2025-2026 OpenEcon (Han Lu Long)
+    Licensed under the GNU Affero General Public License v3.0
+    https://github.com/hanlulong/openecon-data
+
+That copyright notice is reproduced here and in LICENSE as the AGPL-3.0
+requires. Because SmatEconData is a derivative work, it is distributed under
+the same licence, and anyone who interacts with a network-deployed instance is
+entitled to receive the corresponding source.
+
+The visible product identity, branding and assets of OpenEcon Data have been
+removed and replaced with the SmatEconData identity. No claim of authorship
+over the upstream work is made or implied.
+
+Work original to SmatEconData includes the trilingual (Arabic / English /
+French) discovery engine, the concept and geography alias catalogues, the
+dataset assembly, validation and missing-data layers, the descriptive
+statistics module, the provenance and dataset-recipe system, and the Excel,
+HTML report and research-bundle exporters.
+
+--------------------------------------------------------------------------
+Data sources
+--------------------------------------------------------------------------
+
+SmatEconData retrieves observations from third-party providers including FRED
+(Federal Reserve Bank of St. Louis), the World Bank, the International Monetary
+Fund, Eurostat, the OECD, the Bank for International Settlements, UN Comtrade,
+Statistics Canada, ExchangeRate-API and CoinGecko.
+
+Those observations remain subject to each provider's own terms of use and
+copyright. Provider metadata bundled with this repository retains the copyright
+notices supplied by the provider. SmatEconData claims no ownership of any
+third-party data and generates a citation for every exported column.

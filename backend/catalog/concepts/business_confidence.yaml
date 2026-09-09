@@ -1,0 +1,51 @@
+# Business Confidence Indicator Catalog
+concept: business_confidence
+category: sentiment
+domain: macroeconomics
+
+description: |
+  Survey-based measure of business executives' assessment of current and
+  expected economic conditions, reflecting the outlook of the corporate sector
+  rather than households.
+
+synonyms:
+  primary:
+    - business confidence
+    - business sentiment
+    - business confidence index
+  secondary:
+    - business survey
+    - business outlook
+    - CEO confidence
+    - enterprise confidence
+    - business climate
+    - business conditions
+
+explicit_exclusions:
+  - consumer confidence
+  - consumer sentiment
+  - corporate debt
+  - pmi
+  - inflation expectations
+
+providers:
+  FRED:
+    primary:
+      code: BSCICP02USM460S
+      name: "Business Tendency Surveys (Manufacturing): Confidence Indicators: Composite Indicators: National Indicator for United States"
+      confidence: 0.90
+      coverage: [US]
+      frequency: monthly
+      note: "OECD-sourced business tendency survey mirrored in FRED; per-country siblings exist (BSCICP02<cc>M460S)"
+
+  Eurostat:
+    primary:
+      code: EI_BSCI_M_R2
+      name: "Euro area business climate indicator - monthly data"
+      confidence: 0.85
+      coverage: euro_area
+      frequency: monthly
+
+not_available:
+  - CoinGecko
+  - ExchangeRate

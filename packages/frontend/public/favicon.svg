@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="SmatEconData">
+  <title>SmatEconData</title>
+  <defs>
+    <linearGradient id="seed-ground" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF2E8"/>
+      <stop offset="100%" stop-color="#FFD9C4"/>
+    </linearGradient>
+    <linearGradient id="seed-coral" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#F26B4F"/>
+      <stop offset="100%" stop-color="#F2B84B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Warm ground: light-first identity, deliberately not a navy tile. -->
+  <rect x="2" y="2" width="96" height="96" rx="26" fill="url(#seed-ground)"/>
+
+  <!-- Assembled dataset: four columns resolving left to right. -->
+  <rect x="23" y="58" width="11" height="20" rx="3" fill="#F26B4F" opacity="0.55"/>
+  <rect x="38" y="49" width="11" height="29" rx="3" fill="#F26B4F" opacity="0.75"/>
+  <rect x="53" y="38" width="11" height="40" rx="3" fill="url(#seed-coral)"/>
+  <rect x="68" y="45" width="11" height="33" rx="3" fill="#2AAE9B"/>
+
+  <!-- The query arc: discovery sweeping into the assembled data. -->
+  <path d="M20 40 C 32 20, 62 16, 78 27"
+        stroke="#2AAE9B" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="78" cy="27" r="7" fill="#FFFFFF" stroke="#2AAE9B" stroke-width="5"/>
+</svg>

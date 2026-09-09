@@ -1,0 +1,68 @@
+# Employment Indicator Catalog
+concept: employment
+category: labor_market
+domain: macroeconomics
+
+description: |
+  Employment level / number employed. This broad concept should be used for
+  count-style employment questions, not percentage rates or population ratios.
+
+synonyms:
+  primary:
+    - employment
+  secondary:
+    - jobs
+    - employed
+    - workforce employment
+    - total employment
+    - number employed
+    - labor market
+    - employment level
+
+explicit_exclusions:
+  - unemployment
+  - jobless
+  - underemployment
+  - employment rate
+  - employment to population ratio
+  - employment ratio
+
+providers:
+  WorldBank:
+    primary:
+      code: SL.EMP.TOTL.SP.ZS
+      name: "Employment to population ratio, 15+, total (%)"
+      confidence: 0.95
+      coverage: global
+      frequency: annual
+
+  FRED:
+    primary:
+      code: PAYEMS
+      name: "All Employees, Total Nonfarm"
+      confidence: 0.90
+      coverage: [US]
+      frequency: monthly
+
+  Eurostat:
+    primary:
+      code: LFSI_EMP_A
+      name: "Employment rates by sex, age and citizenship"
+      confidence: 0.90
+      coverage: eu_members
+      frequency: annual
+
+  StatsCan:
+    primary:
+      code: "14100287"
+      name: "Labour force characteristics, monthly, seasonally adjusted and trend-cycle"
+      confidence: 0.90
+      coverage: [CA]
+      frequency: monthly
+
+not_available:
+  - IMF
+  - Comtrade
+  - CoinGecko
+  - ExchangeRate
+  - BIS

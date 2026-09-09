@@ -1,0 +1,99 @@
+# Inflation Indicator Catalog
+concept: inflation
+category: prices
+domain: macroeconomics
+
+description: |
+  The rate at which the general level of prices for goods and services
+  is rising, measured as an annual percentage change.
+
+synonyms:
+  primary:
+    - consumer prices
+    - cpi
+    - price inflation
+    - consumer price inflation
+  secondary:
+    - price level
+    - price increase
+    - cost of living
+    - consumer price index
+    - price growth
+    - rising prices
+
+explicit_exclusions:
+  - deflation
+  - disinflation
+  - gdp deflator
+  - hicp
+  - harmonized index of consumer prices
+  - producer price inflation
+  - producer prices
+  - ppi inflation
+  - price index level
+  - price index value
+  - base year prices
+
+providers:
+  WorldBank:
+    primary:
+      code: FP.CPI.TOTL.ZG
+      name: "Inflation, consumer prices (annual %)"
+      confidence: 0.95
+      coverage: global
+      frequency: annual
+
+  IMF:
+    primary:
+      code: PCPIPCH
+      name: "Inflation rate, average consumer prices"
+      confidence: 0.95
+      coverage: global
+      frequency: annual
+
+  FRED:
+    primary:
+      code: CPIAUCSL
+      name: "Consumer Price Index for All Urban Consumers"
+      confidence: 0.95
+      coverage: [US]
+      frequency: monthly
+    core:
+      code: CPILFESL
+      name: "Core CPI: All Items Less Food and Energy"
+      confidence: 0.95
+      coverage: [US]
+      frequency: monthly
+    pce:
+      code: PCEPI
+      name: "Personal Consumption Expenditures: Chain-type Price Index"
+      confidence: 0.92
+      coverage: [US]
+      frequency: monthly
+    core_pce:
+      code: PCEPILFE
+      name: "Core PCE: Personal Consumption Expenditures Excluding Food and Energy"
+      confidence: 0.92
+      coverage: [US]
+      frequency: monthly
+
+  Eurostat:
+    primary:
+      code: PRC_HICP_AIND
+      name: "HICP - annual data (average index and rate of change)"
+      confidence: 0.90
+      coverage: eu_members
+      frequency: annual
+
+  StatsCan:
+    primary:
+      code: "18100004"
+      name: "Consumer Price Index, monthly, not seasonally adjusted"
+      confidence: 0.95
+      coverage: [CA]
+      frequency: monthly
+
+not_available:
+  - Comtrade
+  - CoinGecko
+  - ExchangeRate

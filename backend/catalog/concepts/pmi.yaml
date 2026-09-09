@@ -1,0 +1,41 @@
+# Purchasing Managers' Index Catalog
+concept: pmi
+category: business_activity
+domain: macroeconomics
+
+description: |
+  Purchasing Managers' Index, a diffusion index from monthly business surveys
+  used as a leading indicator of economic activity.
+
+synonyms:
+  primary:
+    - pmi
+    - purchasing managers index
+    - manufacturing pmi
+  secondary:
+    - ism pmi
+    - ism manufacturing pmi
+    - purchasing managers' index
+    - managers index
+
+explicit_exclusions:
+  - consumer confidence
+  - industrial production
+  - producer price index
+  - gdp
+
+providers:
+  FRED:
+    # NAPM (ISM Manufacturing: PMI Composite Index) was discontinued from FRED.
+    # ISM PMI is proprietary; no direct FRED replacement exists.
+    # AMTMNO (Manufacturers' New Orders: Total Manufacturing) is a related proxy.
+    primary:
+      code: AMTMNO
+      name: "Manufacturers' New Orders: Total Manufacturing"
+      confidence: 0.60
+      coverage: [US]
+      frequency: monthly
+
+not_available:
+  - CoinGecko
+  - ExchangeRate

@@ -1,0 +1,41 @@
+concept: gold_price
+category: commodities
+domain: financial_markets
+
+description: |
+  Gold commodity prices. World Bank publishes the London gold fixing
+  price (US$ per troy ounce), sourced from the ICE Benchmark
+  Administration. FRED carries gold-related producer price indices
+  but not a direct spot price series.
+
+synonyms:
+  primary:
+    - gold price
+    - gold spot price
+    - gold commodity price
+    - gold per ounce
+    - price of gold
+  secondary:
+    - gold fixing
+    - bullion price
+    - gold market price
+    - xau
+    - london gold
+
+not_available:
+  - StatsCan
+  - Comtrade
+  - BIS
+  - IMF
+  - Eurostat
+  - OECD
+  - ExchangeRate
+
+providers:
+  WorldBank:
+    primary:
+      code: PE.USG.LNDN
+      name: "London gold price (US$ per ounce)"
+      confidence: 0.95
+      coverage: global
+      frequency: annual

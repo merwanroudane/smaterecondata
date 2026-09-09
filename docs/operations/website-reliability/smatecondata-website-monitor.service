@@ -1,0 +1,22 @@
+[Unit]
+Description=Public website and MCP availability checks
+After=network-online.target nginx.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=merwanroudane
+Group=merwanroudane
+ExecStart=/opt/smatecondata/backend/.venv/bin/python /usr/local/lib/smatecondata-website-monitor/monitor.py --output /var/lib/smatecondata-website-monitor/latest.json
+StateDirectory=smatecondata-website-monitor
+StateDirectoryMode=0750
+TimeoutStartSec=300
+TimeoutStopSec=5
+KillMode=control-group
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/lib/smatecondata-website-monitor
+Nice=10

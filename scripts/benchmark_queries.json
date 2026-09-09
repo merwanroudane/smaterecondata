@@ -1,0 +1,922 @@
+{
+  "_description": "Benchmark queries for automated improvement cycles. Each query has expected outcomes for scoring.",
+  "_scoring": "Each query scored: 0=error/timeout, 1=returned data but wrong/incomplete, 2=correct data",
+  "_dimensions": ["accuracy", "coverage", "reliability", "multi_country", "session", "edge_cases"],
+  "queries": [
+    {
+      "id": "acc-01",
+      "dimension": "accuracy",
+      "query": "US GDP last 5 years",
+      "expected_provider": "FRED",
+      "expected_min_points": 5,
+      "expected_country": "US",
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-02",
+      "dimension": "accuracy",
+      "query": "unemployment rate in Japan 2020-2024",
+      "expected_provider": "WORLDBANK",
+      "expected_min_points": 3,
+      "expected_country": "Japan",
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-03",
+      "dimension": "accuracy",
+      "query": "inflation rate in Germany 2019-2023",
+      "expected_provider": "EUROSTAT",
+      "expected_min_points": 3,
+      "expected_country": "Germany",
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-04",
+      "dimension": "accuracy",
+      "query": "Canada CPI last 3 years",
+      "expected_provider": "STATSCAN",
+      "expected_min_points": 3,
+      "expected_country": "Canada",
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-05",
+      "dimension": "accuracy",
+      "query": "China GDP growth rate 2018-2023",
+      "expected_provider": "WORLDBANK",
+      "expected_min_points": 3,
+      "expected_country": "China",
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-06",
+      "dimension": "accuracy",
+      "query": "US federal funds rate last 2 years from FRED",
+      "expected_provider": "FRED",
+      "expected_min_points": 10,
+      "expected_country": "US",
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-07",
+      "dimension": "accuracy",
+      "query": "Brazil government debt to GDP ratio",
+      "expected_provider": "WORLDBANK",
+      "expected_min_points": 3,
+      "expected_country": "Brazil",
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-08",
+      "dimension": "accuracy",
+      "query": "India population growth 2010-2023",
+      "expected_provider": "WORLDBANK",
+      "expected_min_points": 5,
+      "expected_country": "India",
+      "timeout_s": 15
+    },
+    {
+      "id": "cov-01",
+      "dimension": "coverage",
+      "query": "credit to GDP ratio US, UK, Japan from BIS 2019-2023",
+      "expected_provider": "BIS",
+      "expected_min_points": 3,
+      "expected_min_series": 3,
+      "timeout_s": 20
+    },
+    {
+      "id": "cov-02",
+      "dimension": "coverage",
+      "query": "exchange rate EUR to USD last year",
+      "expected_provider": "EXCHANGERATE",
+      "expected_min_points": 1,
+      "timeout_s": 15
+    },
+    {
+      "id": "cov-03",
+      "dimension": "coverage",
+      "query": "bitcoin price last 30 days",
+      "expected_provider": "COINGECKO",
+      "expected_min_points": 10,
+      "timeout_s": 15
+    },
+    {
+      "id": "cov-04",
+      "dimension": "coverage",
+      "query": "total exports from US to China 2018-2023 from Comtrade",
+      "expected_provider": "COMTRADE",
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "cov-05",
+      "dimension": "coverage",
+      "query": "EU unemployment rate from Eurostat 2020-2024",
+      "expected_provider": "EUROSTAT",
+      "expected_min_points": 3,
+      "timeout_s": 20
+    },
+    {
+      "id": "cov-06",
+      "dimension": "coverage",
+      "query": "IMF world economic outlook GDP forecast",
+      "expected_provider": "IMF",
+      "expected_min_points": 1,
+      "timeout_s": 20
+    },
+    {
+      "id": "mc-01",
+      "dimension": "multi_country",
+      "query": "GDP growth in G7 countries 2020-2023",
+      "expected_min_series": 7,
+      "expected_min_points": 2,
+      "timeout_s": 30
+    },
+    {
+      "id": "mc-02",
+      "dimension": "multi_country",
+      "query": "employment in G20 countries",
+      "expected_min_series": 15,
+      "expected_min_points": 1,
+      "timeout_s": 60
+    },
+    {
+      "id": "mc-03",
+      "dimension": "multi_country",
+      "query": "inflation rate BRICS nations 2019-2023",
+      "expected_min_series": 5,
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "mc-04",
+      "dimension": "multi_country",
+      "query": "GDP per capita US, Germany, Japan, China 2018-2023",
+      "expected_min_series": 4,
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "mc-05",
+      "dimension": "multi_country",
+      "query": "unemployment rate Nordic countries 2020-2024",
+      "expected_min_series": 5,
+      "expected_min_points": 2,
+      "timeout_s": 30
+    },
+    {
+      "id": "rel-01",
+      "dimension": "reliability",
+      "query": "show me US economic data",
+      "notes": "vague query - should clarify or return GDP",
+      "expected_min_points": 1,
+      "timeout_s": 15
+    },
+    {
+      "id": "rel-02",
+      "dimension": "reliability",
+      "query": "how is the economy doing",
+      "notes": "extremely vague - should clarify or default to US GDP",
+      "timeout_s": 15
+    },
+    {
+      "id": "rel-03",
+      "dimension": "reliability",
+      "query": "GDP",
+      "notes": "minimal query - should return US GDP or ask for country",
+      "timeout_s": 15
+    },
+    {
+      "id": "edge-01",
+      "dimension": "edge_cases",
+      "query": "Korea GDP 2020-2023",
+      "notes": "ambiguous - South Korea or North Korea? Should default to South Korea",
+      "expected_country": "South Korea",
+      "expected_min_points": 2,
+      "timeout_s": 15
+    },
+    {
+      "id": "edge-02",
+      "dimension": "edge_cases",
+      "query": "UK inflation after Brexit",
+      "notes": "temporal reference, should map to 2016+",
+      "expected_country": "UK",
+      "expected_min_points": 3,
+      "timeout_s": 15
+    },
+    {
+      "id": "edge-03",
+      "dimension": "edge_cases",
+      "query": "GDP growth rate USA vs China vs India 2015-2023",
+      "expected_min_series": 3,
+      "expected_min_points": 5,
+      "timeout_s": 30
+    },
+    {
+      "id": "info-01",
+      "dimension": "informational",
+      "query": "What employment series does World Bank have?",
+      "notes": "Should return text listing available indicators, not data",
+      "expected_queryType": "informational",
+      "timeout_s": 20
+    },
+    {
+      "id": "info-02",
+      "dimension": "informational",
+      "query": "Does FRED have unemployment indicators?",
+      "notes": "Should return text listing FRED unemployment series",
+      "expected_queryType": "informational",
+      "timeout_s": 20
+    },
+    {
+      "id": "info-03",
+      "dimension": "informational",
+      "query": "Which providers have trade data?",
+      "notes": "Should list providers with trade indicators",
+      "expected_queryType": "informational",
+      "timeout_s": 20
+    },
+    {
+      "id": "info-04",
+      "dimension": "informational",
+      "query": "List available GDP indicators",
+      "notes": "Should return indicator list across all providers",
+      "expected_queryType": "informational",
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-13",
+      "dimension": "accuracy",
+      "query": "consumer price index Japan 2019-2024",
+      "notes": "CPI from WorldBank",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-14",
+      "dimension": "accuracy",
+      "query": "labor force participation rate US 2018-2024 from FRED",
+      "notes": "FRED CIVPART series",
+      "expected_min_points": 5,
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-15",
+      "dimension": "accuracy",
+      "query": "current account balance Germany 2015-2023",
+      "notes": "IMF balance of payments",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-16",
+      "dimension": "accuracy",
+      "query": "foreign direct investment in Brazil 2010-2023",
+      "notes": "WorldBank FDI indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-17",
+      "dimension": "accuracy",
+      "query": "US housing starts from FRED last 3 years",
+      "notes": "FRED housing construction series",
+      "expected_min_points": 10,
+      "timeout_s": 15
+    },
+    {
+      "id": "mc-06",
+      "dimension": "multi_country",
+      "query": "GDP per capita PPP for India and China 2015-2023",
+      "notes": "PPP-adjusted comparison, WorldBank",
+      "expected_min_series": 2,
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-09",
+      "dimension": "accuracy",
+      "query": "unemployment rate Australia 2020-2024",
+      "notes": "OECD member - should fallback to WorldBank if OECD resolution fails",
+      "expected_min_points": 3,
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-10",
+      "dimension": "accuracy",
+      "query": "labor force participation rate South Korea",
+      "notes": "OECD member - should fallback to WorldBank if OECD resolution fails",
+      "expected_min_points": 1,
+      "timeout_s": 20
+    },
+    {
+      "id": "cov-07",
+      "dimension": "coverage",
+      "query": "10 year US treasury yield from FRED 2020-2024",
+      "notes": "FRED financial series",
+      "expected_provider": "FRED",
+      "expected_min_points": 10,
+      "timeout_s": 15
+    },
+    {
+      "id": "session-01",
+      "dimension": "session",
+      "query": "US GDP last 5 years",
+      "follow_up": "Add Germany",
+      "notes": "Multi-turn: first query then follow-up with same conversationId",
+      "expected_min_series_turn2": 2,
+      "timeout_s": 15
+    },
+    {
+      "id": "cov-08",
+      "dimension": "coverage",
+      "query": "ethereum price last 7 days",
+      "notes": "CoinGecko crypto query - should not trigger indicator clarification",
+      "expected_provider": "COINGECKO",
+      "expected_min_points": 5,
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-18",
+      "dimension": "accuracy",
+      "query": "US real GDP growth quarterly from FRED",
+      "notes": "FRED quarterly GDP growth rate",
+      "expected_min_points": 10,
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-19",
+      "dimension": "accuracy",
+      "query": "manufacturing PMI United States",
+      "notes": "FRED PMI/ISM manufacturing index",
+      "expected_min_points": 1,
+      "timeout_s": 20
+    },
+    {
+      "id": "session-05",
+      "dimension": "session",
+      "query": "US GDP last 5 years",
+      "follow_up": "Also include Japan",
+      "notes": "Multi-turn: add country with 'also include' pattern",
+      "expected_min_series_turn2": 1,
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-20",
+      "dimension": "accuracy",
+      "query": "US trade balance 2018-2023 from FRED",
+      "notes": "FRED trade balance series BOPGSTB",
+      "expected_min_points": 5,
+      "timeout_s": 15
+    },
+    {
+      "id": "mc-07",
+      "dimension": "multi_country",
+      "query": "inflation rate EU countries from Eurostat 2020-2024",
+      "notes": "Eurostat HICP for EU members - Eurostat can be slow",
+      "expected_min_series": 5,
+      "expected_min_points": 2,
+      "timeout_s": 90
+    },
+    {
+      "id": "acc-21",
+      "dimension": "accuracy",
+      "query": "US real interest rate 2015-2024",
+      "notes": "FRED real interest rate series",
+      "expected_min_points": 3,
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-22",
+      "dimension": "accuracy",
+      "query": "life expectancy Japan vs US 2010-2023",
+      "notes": "WorldBank life expectancy comparison",
+      "expected_min_series": 2,
+      "expected_min_points": 5,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-23",
+      "dimension": "accuracy",
+      "query": "energy imports as percent of GDP Germany",
+      "notes": "WorldBank energy indicator",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-24",
+      "dimension": "accuracy",
+      "query": "compare GDP growth between US and China over the last decade",
+      "notes": "Natural phrasing, multi-country comparison with relative time",
+      "expected_min_series": 2,
+      "expected_min_points": 5,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-25",
+      "dimension": "accuracy",
+      "query": "how much does Japan export",
+      "notes": "Casual phrasing for trade/exports data",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-26",
+      "dimension": "accuracy",
+      "query": "show me inflation data, preferably from IMF",
+      "notes": "Explicit provider preference in natural language",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "session-08",
+      "dimension": "session",
+      "query": "GDP of France 2018-2023",
+      "follow_ups": ["compare with Germany", "what about inflation", "show only France"],
+      "notes": "4-turn: country add → indicator switch → country filter. Tests full conversation capability.",
+      "timeout_s": 30
+    },
+    {
+      "id": "edge-04",
+      "dimension": "edge_cases",
+      "query": "What is the GDP of Atlantis?",
+      "notes": "Should gracefully fail for fictional country",
+      "timeout_s": 15
+    },
+    {
+      "id": "cov-09",
+      "dimension": "coverage",
+      "query": "gold price in USD",
+      "notes": "Commodity/precious metal query",
+      "expected_min_points": 1,
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-11",
+      "dimension": "accuracy",
+      "query": "government debt to GDP ratio in US 2015-2023",
+      "notes": "Financial ratio indicator from IMF or WorldBank - IMF can be slow",
+      "expected_min_points": 5,
+      "timeout_s": 40
+    },
+    {
+      "id": "acc-12",
+      "dimension": "accuracy",
+      "query": "population of India 2010-2023",
+      "notes": "Basic demographic indicator from WorldBank",
+      "expected_min_points": 5,
+      "timeout_s": 15
+    },
+    {
+      "id": "rel-04",
+      "dimension": "reliability",
+      "query": "show me economic data for France",
+      "notes": "Vague query - should either clarify or default to GDP",
+      "timeout_s": 15
+    },
+    {
+      "id": "rel-05",
+      "dimension": "reliability",
+      "query": "how is the US economy doing",
+      "notes": "Extremely vague - should clarify or default to key indicators",
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-27",
+      "dimension": "accuracy",
+      "query": "renewable energy consumption China 2010-2023",
+      "notes": "WorldBank energy indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "session-09",
+      "dimension": "session",
+      "query": "US 10 year treasury yield from FRED",
+      "follow_up": "what about unemployment",
+      "notes": "FRED indicator switch — tests provider-to-country inference (FRED→US)",
+      "expected_min_series_turn2": 1,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-28",
+      "dimension": "accuracy",
+      "query": "broadband subscriptions per 100 people Japan",
+      "notes": "WorldBank ICT indicator — unusual but available",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "mc-08",
+      "dimension": "multi_country",
+      "query": "women in parliament percentage Nordic countries",
+      "notes": "WorldBank gender indicator across Nordic group",
+      "expected_min_series": 5,
+      "expected_min_points": 1,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-29",
+      "dimension": "accuracy",
+      "query": "GDP and inflation in France 2019-2023",
+      "notes": "Multi-indicator compound query — should return 2 series",
+      "expected_min_series": 2,
+      "expected_min_points": 1,
+      "timeout_s": 30
+    },
+    {
+      "id": "edge-05",
+      "dimension": "edge_cases",
+      "query": "china vs india gdp 2020",
+      "notes": "Casual 'vs' phrasing with single year",
+      "expected_min_series": 2,
+      "expected_min_points": 1,
+      "timeout_s": 30
+    },
+    {
+      "id": "session-10",
+      "dimension": "session",
+      "query": "unemployment in Mexico 2018-2023",
+      "follow_up": "compare with Brazil and Argentina",
+      "notes": "Additive with 2 new countries at once",
+      "expected_min_series_turn2": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-30",
+      "dimension": "accuracy",
+      "query": "China GDP from World Bank 2018-2023",
+      "notes": "Explicit provider request — WorldBank",
+      "expected_min_points": 3,
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-31",
+      "dimension": "accuracy",
+      "query": "Germany HICP from Eurostat 2020-2024",
+      "notes": "Explicit provider — Eurostat harmonised inflation",
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-32",
+      "dimension": "accuracy",
+      "query": "Japan GDP forecast from IMF",
+      "notes": "Explicit provider — IMF WEO forecast",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-33",
+      "dimension": "accuracy",
+      "query": "credit to GDP ratio US from BIS",
+      "notes": "Explicit provider — BIS credit statistics",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-34",
+      "dimension": "accuracy",
+      "query": "Canada unemployment rate from Statistics Canada",
+      "notes": "Explicit provider — StatsCan",
+      "expected_min_points": 1,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-35",
+      "dimension": "accuracy",
+      "query": "CO2 emissions per capita US 2010-2023",
+      "notes": "WorldBank environmental indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-36",
+      "dimension": "accuracy",
+      "query": "urban population growth rate Brazil 2015-2023",
+      "notes": "WorldBank demographic indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "info-05",
+      "dimension": "informational",
+      "query": "List inflation indicators from Eurostat",
+      "notes": "Provider-specific informational query",
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-37",
+      "dimension": "accuracy",
+      "query": "total exports from US to China 2018-2023 from Comtrade",
+      "notes": "Comtrade bilateral trade — explicit provider",
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-38",
+      "dimension": "accuracy",
+      "query": "trade balance between Japan and US",
+      "notes": "WorldBank bilateral trade balance — 2 series",
+      "expected_min_series": 2,
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "mc-09",
+      "dimension": "multi_country",
+      "query": "inflation rate ASEAN countries 2019-2023",
+      "notes": "ASEAN = 10 countries, WorldBank",
+      "expected_min_series": 5,
+      "expected_min_points": 2,
+      "timeout_s": 40
+    },
+    {
+      "id": "acc-39",
+      "dimension": "accuracy",
+      "query": "gross enrollment ratio tertiary education South Korea",
+      "notes": "WorldBank education indicator",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-40",
+      "dimension": "accuracy",
+      "query": "research and development expenditure percent of GDP Israel",
+      "notes": "WorldBank science/tech indicator — Israel is a leader in R&D",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "cov-10",
+      "dimension": "coverage",
+      "query": "exchange rate GBP to USD last year",
+      "notes": "ExchangeRate provider — GBP/USD pair",
+      "expected_min_points": 1,
+      "timeout_s": 15
+    },
+    {
+      "id": "info-06",
+      "dimension": "informational",
+      "query": "What BIS indicators are available?",
+      "notes": "Informational about BIS provider",
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-41",
+      "dimension": "accuracy",
+      "query": "maternal mortality ratio India 2010-2023",
+      "notes": "WorldBank health indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-42",
+      "dimension": "accuracy",
+      "query": "air transport passengers carried US 2010-2023",
+      "notes": "WorldBank infrastructure/transport indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-43",
+      "dimension": "accuracy",
+      "query": "high technology exports percent of manufactured exports South Korea",
+      "notes": "WorldBank technology/trade indicator",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-44",
+      "dimension": "accuracy",
+      "query": "broad money supply percent of GDP US 2015-2023",
+      "notes": "WorldBank monetary indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-45",
+      "dimension": "accuracy",
+      "query": "stock market capitalization percent of GDP Japan",
+      "notes": "WorldBank financial markets indicator",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "mc-10",
+      "dimension": "multi_country",
+      "query": "domestic credit to private sector US and China 2015-2023",
+      "notes": "WorldBank financial comparison — 2 countries",
+      "expected_min_series": 2,
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "info-07",
+      "dimension": "informational",
+      "query": "What unemployment data does Eurostat have for Spain?",
+      "notes": "Provider + country specific informational query",
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-46",
+      "dimension": "accuracy",
+      "query": "GDP deflator US 2015-2023",
+      "notes": "WorldBank price level indicator",
+      "expected_min_points": 3,
+      "timeout_s": 20
+    },
+    {
+      "id": "acc-47",
+      "dimension": "accuracy",
+      "query": "industrial production index Germany from FRED",
+      "notes": "FRED international series",
+      "expected_min_points": 5,
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-48",
+      "dimension": "accuracy",
+      "query": "government expenditure as percent of GDP UK 2015-2023",
+      "notes": "WorldBank fiscal indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-49",
+      "dimension": "accuracy",
+      "query": "gross savings percent of GDP China 2010-2023",
+      "notes": "WorldBank savings indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-50",
+      "dimension": "accuracy",
+      "query": "foreign exchange reserves China 2015-2023",
+      "notes": "WorldBank financial reserves",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-51",
+      "dimension": "accuracy",
+      "query": "poverty headcount ratio at 1.90 dollar a day Brazil",
+      "notes": "WorldBank poverty indicator with specific threshold",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "mc-11",
+      "dimension": "multi_country",
+      "query": "tax revenue percent of GDP OECD countries",
+      "notes": "OECD group with fiscal indicator — should skip group scope clarification",
+      "expected_min_series": 10,
+      "expected_min_points": 1,
+      "timeout_s": 40
+    },
+    {
+      "id": "acc-52",
+      "dimension": "accuracy",
+      "query": "total natural resources rents percent of GDP Russia",
+      "notes": "WorldBank natural resources indicator",
+      "expected_min_points": 3,
+      "timeout_s": 25
+    },
+    {
+      "id": "mc-12",
+      "dimension": "multi_country",
+      "query": "GDP per capita US vs Japan vs Germany 2015-2023",
+      "notes": "3-country comparison with 'vs' phrasing",
+      "expected_min_series": 3,
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-53",
+      "dimension": "accuracy",
+      "query": "average lending rate from BIS",
+      "notes": "BIS banking statistics — explicit provider",
+      "expected_min_points": 1,
+      "timeout_s": 25
+    },
+    {
+      "id": "acc-54",
+      "dimension": "accuracy",
+      "query": "GDP growth rate US 2020-2024",
+      "notes": "Should return GDP growth % (WorldBank), NOT GDP level (FRED). Framework fix in cycle 43.",
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "acc-55",
+      "dimension": "accuracy",
+      "query": "GDP growth rate China 2018-2023",
+      "notes": "GDP growth rate for non-US country — validates cross-country framework fix",
+      "expected_min_points": 3,
+      "timeout_s": 30
+    },
+    {
+      "id": "mc-13",
+      "dimension": "multi_country",
+      "query": "central bank interest rates comparison US EU Japan",
+      "notes": "3-region comparison with interest rates — multi-provider",
+      "expected_min_series": 3,
+      "expected_min_points": 1,
+      "timeout_s": 30
+    },
+    {
+      "id": "mc-14",
+      "dimension": "multi_country",
+      "query": "how does Brazil GDP compare to the rest of Latin America",
+      "notes": "Natural phrasing with 'rest of' region reference",
+      "expected_min_series": 2,
+      "expected_min_points": 1,
+      "timeout_s": 30
+    },
+    {
+      "id": "session-06",
+      "dimension": "session",
+      "query": "GDP of China 2018-2023",
+      "follow_up": "compare with India",
+      "notes": "Additive follow-up: should return BOTH China AND India, not just India",
+      "expected_min_series_turn2": 2,
+      "timeout_s": 30
+    },
+    {
+      "id": "session-07",
+      "dimension": "session",
+      "query": "GDP of China 2018-2023",
+      "follow_up": "add Japan too",
+      "notes": "Additive follow-up: should return China AND Japan",
+      "expected_min_series_turn2": 2,
+      "timeout_s": 30
+    },
+    {
+      "id": "session-02",
+      "dimension": "session",
+      "query": "inflation rate in France 2019-2023",
+      "follow_up": "What about Japan?",
+      "notes": "Multi-turn: country switch follow-up",
+      "expected_min_series_turn2": 1,
+      "timeout_s": 15
+    },
+    {
+      "id": "session-03",
+      "dimension": "session",
+      "query": "unemployment rate G7 countries 2020-2024",
+      "follow_up": "show only US",
+      "notes": "Multi-turn: filter down from group query",
+      "expected_min_series_turn2": 1,
+      "timeout_s": 15
+    },
+    {
+      "id": "acc-56",
+      "dimension": "accuracy",
+      "query": "US jobless claims",
+      "expected_provider": "FRED",
+      "expected_indicator_contains": "Initial Claims",
+      "expected_min_points": 100,
+      "timeout_s": 30,
+      "notes": "Catalog concept: jobless_claims → FRED/ICSA"
+    },
+    {
+      "id": "acc-57",
+      "dimension": "accuracy",
+      "query": "Nigeria access to electricity",
+      "expected_provider": "WORLDBANK",
+      "expected_indicator_contains": "electricity",
+      "expected_min_points": 3,
+      "timeout_s": 30,
+      "notes": "Catalog concept: electricity_access → WorldBank/EG.ELC.ACCS.ZS"
+    },
+    {
+      "id": "acc-58",
+      "dimension": "accuracy",
+      "query": "India sanitation access",
+      "expected_provider": "WORLDBANK",
+      "expected_indicator_contains": "sanitation",
+      "expected_min_points": 3,
+      "timeout_s": 30,
+      "notes": "Catalog concept: sanitation_access → WorldBank/SH.STA.BASS.ZS"
+    },
+    {
+      "id": "acc-59",
+      "dimension": "accuracy",
+      "query": "US bank lending rate",
+      "expected_provider": "FRED",
+      "expected_indicator_contains": "Prime",
+      "expected_min_points": 100,
+      "timeout_s": 30,
+      "notes": "Catalog concept: bank_lending_rate → FRED/DPRIME"
+    },
+    {
+      "id": "rel-06",
+      "dimension": "reliability",
+      "query": "gold price",
+      "expected_message_contains": "not currently available",
+      "timeout_s": 30,
+      "notes": "Catalog not_available handling: gold spot prices discontinued"
+    }
+  ]
+}

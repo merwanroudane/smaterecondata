@@ -1,0 +1,614 @@
+"""
+CoinGecko API Provider for cryptocurrency and blockchain data.
+
+Supports:
+- Real-time cryptocurrency prices
+- Historical market data
+- On-chain token data
+- NFT collections
+- Market analysis across 200+ blockchains
+"""
+
+import logging
+from typing import Optional, List, Dict, Any
+from datetime import datetime, timezone
+import httpx
+
+from ..models import NormalizedData, DataPoint, Metadata
+from ..services.http_pool import get_http_client
+from ..utils.retry import DataNotAvailableError
+from .base import BaseProvider
+
+logger = logging.getLogger(__name__)
+
+
+# CoinGecko epoch timestamps are UTC. The host runs in a non-UTC zone
+# (America/New_York), so naive datetime.fromtimestamp()/fromisoformat()
+# silently shifted every historical point by the UTC offset (a UTC-midnight
+# daily candle rendered as the previous day). Convert explicitly in UTC.
+def _epoch_ms_to_iso_utc(timestamp_ms: float) -> str:
+    return datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc).isoformat()
+
+
+def _date_to_epoch_utc(date_str: str) -> int:
+    dt = datetime.fromisoformat(date_str)
+    if dt.tzinfo is None:  # a bare "YYYY-MM-DD" is UTC midnight, not local
+        dt = dt.replace(tzinfo=timezone.utc)
+    return int(dt.timestamp())
+
+
+class CoinGeckoProvider(BaseProvider):
+    """Provider for CoinGecko cryptocurrency and blockchain data."""
+
+    BASE_URL_FREE = "https://api.coingecko.com/api/v3"
+    BASE_URL_PRO = "https://pro-api.coingecko.com/api/v3"
+
+    @property
+    def provider_name(self) -> str:
+        return "CoinGecko"
+
+    @staticmethod
+    def _frequency_from_point_spacing(raw_points: Any, requested_days: float) -> str:
+        """Label frequency from the ACTUAL spacing of the returned points.
+
+        CoinGecko's market_chart auto-granularity (intraday / hourly / daily)
+        depends on the window in ways that have shifted over time; deriving
+        the label from the served data can never mislabel (a request-days
+        ladder called 8-90 day hourly windows "daily").
+        """
+        timestamps = [pt[0] for pt in (raw_points or []) if isinstance(pt, (list, tuple)) and pt]
+        if len(timestamps) >= 3:
+            deltas = sorted(
+                t2 - t1 for t1, t2 in zip(timestamps, timestamps[1:]) if t2 > t1
+            )
+            if deltas:
+                median_ms = deltas[len(deltas) // 2]
+                if median_ms <= 30 * 60 * 1000:
+                    return "5-minute"
+                if median_ms <= 6 * 60 * 60 * 1000:
+                    return "hourly"
+                return "daily"
+        # Too few points to measure — fall back to the request-window ladder.
+        if requested_days <= 1:
+            return "5-minute"
+        if requested_days <= 90:
+            return "hourly"
+        return "daily"
+
+    def __init__(self, api_key: Optional[str] = None, timeout: float = 30.0):
+        """
+        Initialize CoinGecko provider.
+
+        Args:
+            api_key: CoinGecko API key (optional for free tier, Demo or Pro for authenticated access)
+            timeout: Request timeout in seconds
+        """
+        super().__init__(timeout=timeout)
+        self.api_key = api_key
+        # CoinGecko API key types:
+        # - Demo keys: start with "CG-" and use x_cg_demo_api_key parameter
+        # - Pro keys: longer format and use x_cg_pro_api_key parameter with Pro URL
+        # - Free tier: no key needed, but lower rate limits
+        self.is_demo = bool(api_key and api_key.startswith("CG-"))
+        self.is_pro = bool(api_key and not api_key.startswith("CG-") and len(api_key) > 30)
+
+        # Demo keys use free URL, Pro keys use Pro URL
+        self.base_url = self.BASE_URL_PRO if self.is_pro else self.BASE_URL_FREE
+
+    async def _fetch_data(self, **params) -> List[NormalizedData]:
+        """Implement BaseProvider interface by routing to appropriate method."""
+        coin_ids = params.get("coin_ids", ["bitcoin"])
+        vs_currency = params.get("vs_currency", "usd")
+        days = params.get("days")
+
+        if days:
+            # Historical data
+            return await self.get_historical_data(
+                coin_id=coin_ids[0] if isinstance(coin_ids, list) else coin_ids,
+                vs_currency=vs_currency,
+                days=days,
+            )
+        else:
+            # Current price
+            return await self.get_simple_price(
+                coin_ids=coin_ids if isinstance(coin_ids, list) else [coin_ids],
+                vs_currency=vs_currency,
+            )
+
+    def _build_url(self, endpoint: str, params: Dict[str, Any], use_api_key: bool = True) -> str:
+        """Build URL with API key if available.
+
+        use_api_key lets a single request opt out of the key (used to retry
+        once keyless after a 401) WITHOUT mutating self.api_key — the provider
+        is a process-wide singleton, so a transient 401 must not permanently
+        downgrade every later request to the keyless free tier.
+        """
+        # Add appropriate API key parameter based on key type
+        if self.api_key and use_api_key:
+            if self.is_demo:
+                params["x_cg_demo_api_key"] = self.api_key
+            elif self.is_pro:
+                params["x_cg_pro_api_key"] = self.api_key
+        return f"{self.base_url}/{endpoint}"
+
+    async def _make_request_with_retry(
+        self,
+        endpoint: str,
+        params: Dict[str, Any],
+        max_retries: int = 3,
+    ) -> Dict[str, Any]:
+        """
+        Make a request to CoinGecko API via the shared BaseProvider retry helper.
+
+        Transient failures (429 rate limits, 5xx, connection errors, timeouts)
+        are retried by _get_with_retry, which also enforces the COINGECKO
+        rate-limiter config and circuit breaker. The one CoinGecko-specific
+        recovery kept here: a 401 retries THIS request once without the API
+        key (demo vs pro key handling) — without mutating self.api_key.
+
+        max_retries is retained for signature compatibility; retry count is
+        governed by BaseProvider.MAX_RETRIES.
+        """
+        # Use shared HTTP client pool for better performance
+        client = get_http_client()
+        request_state = dict(params or {})
+
+        async def _request(use_key: bool) -> httpx.Response:
+            # _build_url mutates its params dict (adds the API key), so copy
+            request_params = request_state.copy()
+            url = self._build_url(endpoint, request_params, use_api_key=use_key)
+            return await self._get_with_retry(
+                client, url, raise_on_status=False, params=request_params
+            )
+
+        response = await _request(use_key=True)
+
+        if response.status_code == 401 and self.api_key:
+            # API key might be invalid/expired — retry THIS request keyless,
+            # but never null self.api_key (singleton: a transient 401 would
+            # downgrade every later request to the free tier until restart).
+            logger.warning("⚠️ CoinGecko API key rejected; retrying this request without it")
+            response = await _request(use_key=False)
+
+        if response.status_code == 401:
+            logger.error(f"❌ CoinGecko API error: Invalid API key")
+            raise DataNotAvailableError("CoinGecko API authentication failed")
+
+        if response.status_code == 400:
+            current_vs_currency = str(request_state.get("vs_currency") or "").lower()
+            response_text = (response.text or "").lower()
+            if (
+                current_vs_currency
+                and current_vs_currency != "usd"
+                and ("vs_currency" in response_text or "invalid" in response_text)
+            ):
+                # Fail closed, do NOT silently substitute USD: the callers
+                # label the series unit from the ORIGINAL requested currency
+                # (vs_currency.upper()), so swapping to USD here returns USD
+                # values mislabeled as EUR/GBP/etc. — wrong data presented as
+                # success. A clear error is correct; wrong numbers are not.
+                raise DataNotAvailableError(
+                    f"CoinGecko does not support the requested currency "
+                    f"'{current_vs_currency.upper()}'. Try USD."
+                )
+
+        if response.status_code >= 400:
+            logger.error(f"❌ CoinGecko API error: {response.status_code} - {response.text}")
+            raise DataNotAvailableError(f"CoinGecko API error: HTTP {response.status_code}")
+
+        return self._parse_json_safe(response)
+
+    async def get_simple_price(
+        self,
+        coin_ids: List[str],
+        vs_currency: str = "usd",
+        include_24h_change: bool = True,
+        include_market_cap: bool = True,
+        include_volume: bool = True,
+        metric: str = "price",  # "price", "volume", "market_cap", "24h_change"
+    ) -> List[NormalizedData]:
+        """
+        Get current prices/volume/market cap for cryptocurrencies.
+
+        Args:
+            coin_ids: List of coin IDs (e.g., ['bitcoin', 'ethereum'])
+            vs_currency: Target currency (default: 'usd')
+            include_24h_change: Include 24h price change percentage
+            include_market_cap: Include market cap
+            include_volume: Include 24h volume
+            metric: Which metric to extract ("price", "volume", "market_cap", "24h_change")
+
+        Returns:
+            List of normalized data for the requested metric
+        """
+        if not coin_ids:
+            coin_ids = ["bitcoin"]
+
+        params = {
+            "ids": ",".join(coin_ids),
+            "vs_currencies": vs_currency,
+            "include_24hr_change": str(include_24h_change).lower(),
+            "include_market_cap": str(include_market_cap).lower(),
+            "include_24hr_vol": str(include_volume).lower(),
+        }
+
+        data = await self._make_request_with_retry("simple/price", params)
+        if not isinstance(data, dict):
+            raise DataNotAvailableError("CoinGecko returned an invalid payload for simple price request")
+
+        logger.info(f"✅ CoinGecko: Retrieved data for {len(data)} coins (metric: {metric})")
+
+        result = []
+        current_time = datetime.now().isoformat()
+
+        # Map metric names to API response keys
+        metric_mapping = {
+            "price": (vs_currency, "Price", vs_currency.upper()),
+            "volume": (f"{vs_currency}_24h_vol", "24h Trading Volume", vs_currency.upper()),
+            "market_cap": (f"{vs_currency}_market_cap", "Market Cap", vs_currency.upper()),
+            "24h_change": (f"{vs_currency}_24h_change", "24h Price Change", "percent"),
+        }
+
+        metric_lower = metric.lower()
+        if metric_lower not in metric_mapping:
+            logger.warning(f"⚠️ Unknown metric '{metric}', defaulting to 'price'")
+            metric_lower = "price"
+
+        api_key, indicator_suffix, unit = metric_mapping[metric_lower]
+
+        missing_metric_ids: list[str] = []
+        invalid_metric_ids: list[str] = []
+
+        for coin_id, coin_data in data.items():
+            if api_key not in coin_data:
+                logger.warning(f"⚠️ Metric '{api_key}' not found for {coin_id}")
+                missing_metric_ids.append(str(coin_id))
+                continue
+
+            try:
+                price_value = float(coin_data[api_key])
+            except (ValueError, TypeError):
+                logger.warning(f"Invalid price for {coin_id}: {coin_data.get(api_key)}")
+                invalid_metric_ids.append(str(coin_id))
+                continue
+            data_points = [
+                DataPoint(date=current_time, value=price_value)
+            ]
+
+            # Build coin-specific API URL
+            api_url = f"{self.base_url}/simple/price?ids={coin_id}&vs_currencies={vs_currency}"
+
+            metadata = Metadata(
+                source="CoinGecko",
+                indicator=f"{coin_id.title()} {indicator_suffix}",
+                country=None,
+                frequency="real-time",
+                unit=unit,
+                lastUpdated=current_time,
+                seriesId=coin_id,
+                apiUrl=api_url,
+            )
+
+            result.append(
+                NormalizedData(metadata=metadata, data=data_points)
+            )
+
+        if not result:
+            requested_ids = ",".join(str(coin_id) for coin_id in coin_ids)
+            unavailable_ids = ",".join(missing_metric_ids + invalid_metric_ids) or requested_ids
+            raise DataNotAvailableError(
+                "CoinGecko current metric unavailable from provider response; "
+                "reason=coingecko_price_unavailable; "
+                f"metric={metric_lower}; vs_currency={vs_currency}; "
+                f"requested_ids={requested_ids}; unavailable_ids={unavailable_ids}"
+            )
+
+        return result
+
+    async def get_historical_data(
+        self,
+        coin_id: str,
+        vs_currency: str = "usd",
+        days: int = 30,
+        interval: Optional[str] = None,
+        metric: str = "price",  # "price", "market_cap", "volume"
+    ) -> List[NormalizedData]:
+        """
+        Get historical market data for a cryptocurrency.
+
+        Args:
+            coin_id: Coin ID (e.g., 'bitcoin')
+            vs_currency: Target currency (default: 'usd')
+            days: Number of days of data (1, 7, 14, 30, 90, 180, 365, or 'max')
+                  Note: Free tier is limited to 365 days. Pro API key required for more.
+            interval: Data interval ('daily' or 'hourly', auto-determined if None)
+            metric: Which metric to extract ("price", "market_cap", "volume")
+
+        Returns:
+            List of normalized historical data
+        """
+        logger.info(f"🔍 CoinGecko: Fetching historical data for {coin_id}")
+        logger.info(f"   - vs_currency: {vs_currency}")
+        logger.info(f"   - days: {days}")
+        logger.info(f"   - interval: {interval}")
+        logger.info(f"   - metric: {metric}")
+        logger.info(f"   - key_type: {'demo' if self.is_demo else 'pro' if self.is_pro else 'free'}")
+
+        # CoinGecko free/demo tier has a 365-day limit for historical data
+        # Pro tier doesn't have this limit
+        was_clamped_to_free_tier = False
+        if not self.is_pro and days > 365:
+            logger.warning(f"⚠️ CoinGecko: Free tier limited to 365 days, requested {days} days. Capping at 365.")
+            days = 365
+            was_clamped_to_free_tier = True
+        params = {
+            "vs_currency": vs_currency,
+            "days": str(days),
+        }
+
+        if interval:
+            params["interval"] = interval
+
+        endpoint = f"coins/{coin_id}/market_chart"
+        logger.info(f"📡 Requesting: {self.base_url}/{endpoint} with params: {params}")
+
+        data = await self._make_request_with_retry(endpoint, params)
+
+        # Select the appropriate data based on metric
+        metric_key_mapping = {
+            "price": "prices",
+            "market_cap": "market_caps",
+            "volume": "total_volumes",
+        }
+        metric_key = metric_key_mapping.get(metric.lower(), "prices")
+
+        logger.info(f"✅ CoinGecko: Retrieved {len(data.get(metric_key, []))} historical {metric} points for {coin_id}")
+
+        # Build API URL with query parameters for reproducibility
+        param_str = "&".join(f"{k}={v}" for k, v in params.items())
+        api_url = f"{self.base_url}/{endpoint}?{param_str}"
+
+        # Convert timestamps to ISO format and create data points
+        data_points = []
+        for timestamp, value in data.get(metric_key, []):
+            try:
+                date_str = _epoch_ms_to_iso_utc(timestamp)
+                data_points.append(DataPoint(date=date_str, value=float(value)))
+            except (ValueError, TypeError):
+                continue
+
+        logger.info(f"📊 Created {len(data_points)} data points for {metric}")
+
+        # Determine frequency from the ACTUAL point spacing the API returned
+        # (its auto-granularity: intraday for 1 day, hourly for 2-90 days,
+        # daily beyond). The old request-days ladder mislabeled 8-90 day
+        # windows as "daily" while the points were hourly.
+        frequency = self._frequency_from_point_spacing(data.get(metric_key, []), days)
+
+        # Determine indicator name and unit based on metric
+        metric_display_mapping = {
+            "price": (f"{coin_id.title()} Price", vs_currency.upper()),
+            "market_cap": (f"{coin_id.title()} Market Cap", vs_currency.upper()),
+            "volume": (f"{coin_id.title()} 24h Volume", vs_currency.upper()),
+        }
+        indicator_name, unit = metric_display_mapping.get(metric.lower(), (f"{coin_id.title()} Price", vs_currency.upper()))
+
+        metadata = Metadata(
+            source="CoinGecko",
+            indicator=indicator_name,
+            country=None,
+            frequency=frequency,
+            unit=unit,
+            lastUpdated=datetime.now().isoformat(),
+            seriesId=coin_id,
+            apiUrl=api_url,
+            notes=(
+                [
+                    "CoinGecko's free tier limits history to the last 365 days; "
+                    "the requested range was truncated accordingly."
+                ]
+                if was_clamped_to_free_tier
+                else None
+            ),
+        )
+
+        return [NormalizedData(metadata=metadata, data=data_points)]
+
+    async def get_historical_data_range(
+        self,
+        coin_id: str,
+        vs_currency: str,
+        from_date: str,
+        to_date: str,
+        metric: str = "price",  # "price", "market_cap", "volume"
+    ) -> List[NormalizedData]:
+        """
+        Get historical market data for a specific date range.
+
+        Args:
+            coin_id: Coin ID (e.g., 'bitcoin')
+            vs_currency: Target currency
+            from_date: Start date (YYYY-MM-DD or Unix timestamp)
+            to_date: End date (YYYY-MM-DD or Unix timestamp)
+            metric: Which metric to extract ("price", "market_cap", "volume")
+
+        Returns:
+            List of normalized historical data
+        """
+        logger.info(f"🔍 CoinGecko: Fetching historical data range for {coin_id} ({from_date} to {to_date})")
+        logger.info(f"   - metric: {metric}")
+
+        # Convert dates to Unix timestamps if needed
+        if "-" in from_date:
+            from_timestamp = _date_to_epoch_utc(from_date)
+        else:
+            from_timestamp = int(from_date)
+
+        if "-" in to_date:
+            to_timestamp = _date_to_epoch_utc(to_date)
+        else:
+            to_timestamp = int(to_date)
+
+        # CoinGecko free/demo tier has a 365-day limit for historical data
+        # Pro tier doesn't have this limit
+        now_timestamp = int(datetime.now(tz=timezone.utc).timestamp())
+        max_days_ago = 365 * 24 * 60 * 60  # 365 days in seconds
+        min_allowed_timestamp = now_timestamp - max_days_ago
+
+        was_clamped_to_free_tier = False
+        if not self.is_pro and from_timestamp < min_allowed_timestamp:
+            logger.warning(f"⚠️ CoinGecko: Free tier limited to 365 days. Adjusting from_date.")
+            from_timestamp = min_allowed_timestamp
+            was_clamped_to_free_tier = True
+            logger.info(f"   - Adjusted from_timestamp: {datetime.fromtimestamp(from_timestamp, tz=timezone.utc).isoformat()}")
+
+        params = {
+            "vs_currency": vs_currency,
+            "from": str(from_timestamp),
+            "to": str(to_timestamp),
+        }
+
+        endpoint = f"coins/{coin_id}/market_chart/range"
+        data = await self._make_request_with_retry(endpoint, params)
+
+        # Select the appropriate data based on metric
+        metric_key_mapping = {
+            "price": "prices",
+            "market_cap": "market_caps",
+            "volume": "total_volumes",
+        }
+        metric_key = metric_key_mapping.get(metric.lower(), "prices")
+
+        logger.info(f"✅ CoinGecko: Retrieved {len(data.get(metric_key, []))} {metric} data points for {coin_id} ({from_date} to {to_date})")
+
+        # Build API URL with query parameters for reproducibility
+        param_str = "&".join(f"{k}={v}" for k, v in params.items())
+        api_url = f"{self.base_url}/{endpoint}?{param_str}"
+
+        # Convert timestamps to ISO format and create data points
+        data_points = []
+        for timestamp, value in data.get(metric_key, []):
+            try:
+                date_str = _epoch_ms_to_iso_utc(timestamp)
+                data_points.append(DataPoint(date=date_str, value=float(value)))
+            except (ValueError, TypeError):
+                continue
+
+        # Frequency from actual point spacing (see _frequency_from_point_spacing)
+        days_diff = (to_timestamp - from_timestamp) / 86400
+        frequency = self._frequency_from_point_spacing(data.get(metric_key, []), days_diff)
+
+        # Determine indicator name and unit based on metric
+        metric_display_mapping = {
+            "price": (f"{coin_id.title()} Price", vs_currency.upper()),
+            "market_cap": (f"{coin_id.title()} Market Cap", vs_currency.upper()),
+            "volume": (f"{coin_id.title()} 24h Volume", vs_currency.upper()),
+        }
+        indicator_name, unit = metric_display_mapping.get(metric.lower(), (f"{coin_id.title()} Price", vs_currency.upper()))
+
+        metadata = Metadata(
+            source="CoinGecko",
+            indicator=indicator_name,
+            country=None,
+            frequency=frequency,
+            unit=unit,
+            lastUpdated=datetime.now().isoformat(),
+            seriesId=coin_id,
+            apiUrl=api_url,
+            notes=(
+                [
+                    "CoinGecko's free tier limits history to the last 365 days; "
+                    "the requested range was truncated accordingly."
+                ]
+                if was_clamped_to_free_tier
+                else None
+            ),
+        )
+
+        return [NormalizedData(metadata=metadata, data=data_points)]
+
+    async def get_market_data(
+        self,
+        vs_currency: str = "usd",
+        coin_ids: Optional[List[str]] = None,
+        order: str = "market_cap_desc",
+        per_page: int = 100,
+        page: int = 1,
+        category: Optional[str] = None,
+    ) -> List[NormalizedData]:
+        """
+        Get market data for multiple cryptocurrencies.
+
+        Args:
+            vs_currency: Target currency
+            coin_ids: Specific coin IDs to include (None for top coins)
+            order: Sort order (market_cap_desc, volume_desc, etc.)
+            per_page: Results per page (max 250)
+            page: Page number
+            category: Filter by category (e.g., 'decentralized-finance-defi')
+
+        Returns:
+            List of normalized market data
+        """
+        params = {
+            "vs_currency": vs_currency,
+            "order": order,
+            "per_page": str(max(1, min(250, int(per_page)))),
+            "page": str(page),
+            "sparkline": "false",
+        }
+
+        if coin_ids:
+            params["ids"] = ",".join(coin_ids)
+
+        if category:
+            params["category"] = category
+
+        data = await self._make_request_with_retry("coins/markets", params)
+        if not isinstance(data, list):
+            error_message = data.get("error") if isinstance(data, dict) else None
+            raise DataNotAvailableError(
+                f"CoinGecko market data returned invalid payload{f': {error_message}' if error_message else ''}"
+            )
+
+        logger.info(f"✅ CoinGecko: Retrieved market data for {len(data)} coins")
+
+        result = []
+        current_time = datetime.now().isoformat()
+        display_url = f"{self.base_url}/coins/markets"
+
+        for coin in data:
+            # Skip coins with missing essential fields
+            coin_name = coin.get("name")
+            coin_symbol = coin.get("symbol")
+            coin_id = coin.get("id")
+            if not coin_name or not coin_symbol or not coin_id:
+                continue
+
+            # Create data point for current price
+            try:
+                price = float(coin.get("current_price", 0))
+            except (ValueError, TypeError):
+                price = 0.0
+            if price == 0.0:
+                continue  # Skip coins with no valid price data
+            data_points = [
+                DataPoint(date=current_time, value=price)
+            ]
+
+            metadata = Metadata(
+                source="CoinGecko",
+                indicator=f"{coin_name} ({coin_symbol.upper()}) Market Price",
+                country=None,
+                frequency="real-time",
+                unit=vs_currency.upper(),
+                lastUpdated=current_time,
+                seriesId=coin_id,
+                apiUrl=display_url,
+            )
+
+            result.append(
+                NormalizedData(metadata=metadata, data=data_points)
+            )
+
+        return result

@@ -1,0 +1,48 @@
+# Household Savings Rate Indicator Catalog
+concept: savings_rate
+category: household
+domain: macroeconomics
+
+description: |
+  The personal savings rate as a percentage of disposable personal income.
+  Measures how much of their income US households save rather than spend.
+
+synonyms:
+  primary:
+    - savings rate
+    - personal savings rate
+    - household savings rate
+    - saving rate
+  secondary:
+    - personal saving
+    - household saving
+    - disposable income savings
+
+explicit_exclusions:
+  - national savings
+  - gross savings
+  - government savings
+
+providers:
+  FRED:
+    primary:
+      code: PSAVERT
+      name: "Personal Saving Rate"
+      confidence: 0.95
+      coverage: [US]
+      frequency: monthly
+
+  WorldBank:
+    primary:
+      code: NY.GNS.ICTR.ZS
+      name: "Gross savings (% of GDP)"
+      confidence: 0.80
+      coverage: global
+      frequency: annual
+
+not_available:
+  - Comtrade
+  - CoinGecko
+  - ExchangeRate
+  - BIS
+  - StatsCan

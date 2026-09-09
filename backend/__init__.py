@@ -1,0 +1,4 @@
+"""
+SmatEconData backend Python package.
+"""
+

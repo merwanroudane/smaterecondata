@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/merwanroudane/smaterecondata/schemas/validation/cert_report.schema.json",
+  "title": "Certification summary report",
+  "type": "object",
+  "required": [
+    "snapshot",
+    "metrics"
+  ],
+  "properties": {
+    "snapshot": {
+      "type": "object"
+    },
+    "metrics": {
+      "type": "object"
+    },
+    "strata": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "failures": {
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "claim_decision": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "claim_grade_ready": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "claim_grade_blockers": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "run_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "snapshot_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dataset_tier": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "floor_policy_path": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "floor_policy_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": true
+}

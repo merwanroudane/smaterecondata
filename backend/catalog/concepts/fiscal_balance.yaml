@@ -1,0 +1,63 @@
+# Fiscal Balance Indicator Catalog
+concept: fiscal_balance
+category: fiscal
+domain: public_finance
+
+description: |
+  Government fiscal balance (deficit or surplus) as a percentage of GDP,
+  measuring the difference between government revenues and expenditures.
+
+synonyms:
+  primary:
+    - fiscal deficit
+    - budget deficit
+    - government deficit
+  secondary:
+    - fiscal surplus
+    - budget surplus
+    - government surplus
+    - budget balance
+    - public balance
+    - net lending
+    - primary balance
+
+explicit_exclusions:
+  - trade deficit
+  - current account deficit
+  - balance of payments
+
+providers:
+  IMF:
+    primary:
+      code: GGXCNL_NGDP
+      name: "General government net lending/borrowing (% of GDP)"
+      confidence: 0.95
+      coverage: global
+      frequency: annual
+
+  OECD:
+    # OECD uses dynamic SDMX DSD codes; GNFLQ is a legacy code no longer in the DB.
+    # DSD_NASEC10@DF_TABLE12_BAL covers government non-financial accounts (balancing items).
+    primary:
+      code: DSD_NASEC10@DF_TABLE12_BAL
+      name: "Annual government non-financial accounts and key indicators (Balancing items)"
+      confidence: 0.90
+      coverage: oecd_members
+      frequency: annual
+
+  WorldBank:
+    primary:
+      code: GC.NLD.TOTL.GD.ZS
+      name: "Net lending (+) / net borrowing (-) (% of GDP)"
+      confidence: 0.85
+      coverage: global
+      frequency: annual
+
+not_available:
+  - FRED
+  - Comtrade
+  - CoinGecko
+  - ExchangeRate
+  - BIS
+  - Eurostat
+  - StatsCan

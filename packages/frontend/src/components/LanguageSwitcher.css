@@ -1,0 +1,34 @@
+.lang-switcher {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+}
+
+.lang-switcher__option {
+  padding: 0.25rem 0.55rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.lang-switcher__option:hover {
+  color: var(--text-primary);
+}
+
+/* Selection shown by fill and weight, not colour alone (spec 0O). */
+.lang-switcher__option[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--primary);
+  font-weight: 800;
+  box-shadow: var(--shadow-sm);
+}

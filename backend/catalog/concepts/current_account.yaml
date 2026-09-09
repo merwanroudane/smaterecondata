@@ -1,0 +1,64 @@
+# Current Account Balance Indicator Catalog
+concept: current_account
+category: external_sector
+domain: international_economics
+
+description: |
+  Current account balance as a percentage of GDP, measuring
+  the difference between a country's savings and investment.
+
+synonyms:
+  primary:
+    - current account balance
+    - current account
+    - balance of payments
+  secondary:
+    - current account deficit
+    - current account surplus
+    - current account balance (% of gdp)
+    - current account as share of gdp
+    - external balance
+    - balance of payments current account
+    - bop
+
+explicit_exclusions:
+  - fiscal balance
+  - budget balance
+  - trade balance
+  - capital account
+
+providers:
+  IMF:
+    primary:
+      code: BCA_NGDPD
+      name: "Current account balance (% of GDP)"
+      confidence: 0.95
+      coverage: global
+      frequency: annual
+
+  WorldBank:
+    primary:
+      code: BN.CAB.XOKA.GD.ZS
+      name: "Current account balance (% of GDP)"
+      confidence: 0.90
+      coverage: global
+      frequency: annual
+
+  OECD:
+    # OECD uses dynamic SDMX DSD codes; B6BLTT is a legacy code no longer in the DB.
+    # DSD_BOP@DF_BOP covers balance of payments including current account.
+    primary:
+      code: DSD_BOP@DF_BOP
+      name: "Balance of payments"
+      confidence: 0.85
+      coverage: oecd_members
+      frequency: quarterly
+
+not_available:
+  - FRED
+  - Comtrade
+  - CoinGecko
+  - ExchangeRate
+  - BIS
+  - Eurostat
+  - StatsCan

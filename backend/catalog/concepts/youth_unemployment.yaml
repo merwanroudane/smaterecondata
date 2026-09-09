@@ -1,0 +1,56 @@
+# Youth Unemployment Indicator Catalog
+concept: youth_unemployment
+category: labor_market
+domain: macroeconomics
+
+description: |
+  The unemployment rate for young people, typically ages 15 to 24.
+
+synonyms:
+  primary:
+    - youth unemployment
+    - youth unemployment rate
+  secondary:
+    - youth jobless rate
+    - unemployment rate ages 15 to 24
+    - unemployment rate aged 15 to 24
+    - unemployment rate ages 15-24
+
+explicit_exclusions:
+  - adult unemployment
+  - total unemployment
+  - labor force participation
+
+providers:
+  WorldBank:
+    primary:
+      code: SL.UEM.1524.ZS
+      name: "Unemployment, youth total (% of total labor force ages 15-24) (modeled ILO estimate)"
+      confidence: 0.95
+      coverage: global
+      frequency: annual
+
+  FRED:
+    primary:
+      code: LNS14024887
+      name: "Unemployment Rate - 16-24 Yrs."
+      confidence: 0.90
+      coverage: [US]
+      frequency: monthly
+
+  Eurostat:
+    primary:
+      code: TESEM140
+      name: "Youth unemployment rate by sex"
+      confidence: 0.90
+      coverage: eu_members
+      frequency: annual
+
+not_available:
+  - IMF
+  - OECD
+  - StatsCan
+  - BIS
+  - Comtrade
+  - ExchangeRate
+  - CoinGecko
