@@ -1272,6 +1272,11 @@ class WorldBankProvider(BaseProvider):
         batch_response = None  # Track response for metadata (e.g. Date header)
         api_error_detail = None
         transport_failure_seen = False
+        # Why the transport failed, kept for the final error. Without it a
+        # connection the deployment could not open is reported to the user as
+        # "this indicator has no data", which sends them to fix their query
+        # instead of the network.
+        transport_error_detail: Optional[str] = None
         if prefer_parallel_small_group:
             logger.info(
                 "WorldBank: skipping batched multi-country request for small group (%d countries); "
@@ -1300,6 +1305,9 @@ class WorldBankProvider(BaseProvider):
                     # provider fallbacks run (matching the old raise_for_status
                     # branch that funnelled into the httpx.HTTPError handler).
                     transport_failure_seen = True
+                    transport_error_detail = (
+                        f"HTTP {batch_response.status_code} from the World Bank API"
+                    )
                     logger.warning(
                         "WorldBank API returned status %s for %s; falling back",
                         batch_response.status_code, batch_codes,
@@ -1380,10 +1388,12 @@ class WorldBankProvider(BaseProvider):
                 # so per-country / cross-provider fallbacks run.
                 logger.warning(f"WorldBank batch request unavailable for {batch_codes}: {e}")
                 transport_failure_seen = True
+                transport_error_detail = f"{type(e).__name__}: {e}"
                 payload = None
             except httpx.HTTPError as e:
                 logger.warning(f"HTTP error fetching batched data for {batch_codes}: {e}")
                 transport_failure_seen = True
+                transport_error_detail = f"{type(e).__name__}: {e}"
                 payload = None
             except Exception as e:
                 logger.warning(f"Error fetching batched data: {e}")
@@ -1741,6 +1751,15 @@ class WorldBankProvider(BaseProvider):
             "WorldBank fetch failed for indicator %s after %.1fs (budget=%.0fs)",
             indic, _total_elapsed, _FETCH_BUDGET_S,
         )
+        if transport_failure_seen or api_error_detail:
+            # Not the same failure at all: we never got an answer, so we cannot
+            # say the data does not exist.
+            reason = api_error_detail or transport_error_detail or "no response"
+            raise DataNotAvailableError(
+                f"Could not reach the World Bank API for indicator {indic} "
+                f"({reason})."
+            )
+
         raise DataNotAvailableError(
             f"No data found for any of the requested countries for indicator {indic}. "
             f"The data may not be available for the specified countries or indicator."
