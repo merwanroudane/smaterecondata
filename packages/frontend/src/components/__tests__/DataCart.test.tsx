@@ -13,20 +13,34 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { CartProvider } from '../../contexts/CartContext'
 import { I18nProvider } from '../../i18n'
 import { DataCart } from '../DataCart'
+import type { Country, Region } from '../SearchModes'
 
-/** 60 countries, so the 40-chip cap is genuinely exceeded. */
-const COUNTRIES = Array.from({ length: 60 }, (_, i) => ({
-  iso3: `C${String(i).padStart(2, '0')}`,
-  name: `Country ${i}`,
-})).concat([
+/**
+ * Country fixture, bound to the shared `Country` contract.
+ *
+ * Built as an annotated array literal rather than `Array.from(...).concat(...)`:
+ * `concat` resolves against the element type inferred from `Array.from`
+ * (`{ iso3, name }`), which rejects the alias-bearing entries. In a literal the
+ * annotation applies to every element, and the fixture fails to compile if the
+ * API shape ever changes rather than drifting silently.
+ */
+const COUNTRIES: Country[] = [
+  // Filler, so the 40-chip cap is genuinely exceeded.
+  ...Array.from({ length: 60 }, (_, i) => ({
+    iso3: `C${String(i).padStart(2, '0')}`,
+    name: `Country ${i}`,
+  })),
+  // The Maghreb five, carrying their real trilingual aliases.
   { iso3: 'DZA', name: 'Algeria', aliases: ['Algeria', 'Algerie', 'الجزائر'] },
   { iso3: 'MAR', name: 'Morocco', aliases: ['Morocco', 'Maroc', 'المغرب'] },
   { iso3: 'TUN', name: 'Tunisia', aliases: ['Tunisia', 'Tunisie', 'تونس'] },
   { iso3: 'LBY', name: 'Libya', aliases: ['Libya', 'Libye', 'ليبيا'] },
   { iso3: 'MRT', name: 'Mauritania', aliases: ['Mauritania', 'Mauritanie', 'موريتانيا'] },
-])
+]
 
-const REGIONS = [{ key: 'maghreb', members: ['DZA', 'MAR', 'TUN', 'LBY', 'MRT'] }]
+const REGIONS: Region[] = [
+  { key: 'maghreb', members: ['DZA', 'MAR', 'TUN', 'LBY', 'MRT'] },
+]
 
 function mockCatalog() {
   const fetchMock = vi.fn().mockImplementation((url: string) => {
