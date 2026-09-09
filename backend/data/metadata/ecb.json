@@ -1,0 +1,3005 @@
+{
+ "provider": "ECB",
+ "last_updated": "2026-09-09T09:21:18.101673+00:00",
+ "total_indicators": 214,
+ "fetched_by": "scripts/fetch_open_catalog.py",
+ "requires_api_key": false,
+ "indicators": [
+  {
+   "id": "ECB_AGR",
+   "code": "AGR",
+   "name": "AGR",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "AGR",
+    "AGR"
+   ]
+  },
+  {
+   "id": "ECB_AME",
+   "code": "AME",
+   "name": "AMECO",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "AME",
+    "AMECO"
+   ]
+  },
+  {
+   "id": "ECB_BKN",
+   "code": "BKN",
+   "name": "Banknotes statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BKN",
+    "BANKNOTES STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_BLS",
+   "code": "BLS",
+   "name": "Bank Lending Survey Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BLS",
+    "BANK LENDING SURVEY STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_BNT",
+   "code": "BNT",
+   "name": "Shipments of Euro Banknotes Statistics (ESCB)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BNT",
+    "SHIPMENTS OF EURO BANKNOTES STATISTICS (ESCB)"
+   ]
+  },
+  {
+   "id": "ECB_BOP",
+   "code": "BOP",
+   "name": "Euro Area Balance of Payments and International Investment Position Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BOP",
+    "EURO AREA BALANCE OF PAYMENTS AND INTERNATIONAL INVESTMENT POSITION STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_BSI",
+   "code": "BSI",
+   "name": "Balance Sheet Items",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BSI",
+    "BALANCE SHEET ITEMS"
+   ]
+  },
+  {
+   "id": "ECB_BSP",
+   "code": "BSP",
+   "name": "Balance Sheet Items Statistics (tables 2 to 5 of the Blue Book)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BSP",
+    "BALANCE SHEET ITEMS STATISTICS (TABLES 2 TO 5 OF THE BLUE BOOK)"
+   ]
+  },
+  {
+   "id": "ECB_CAR",
+   "code": "CAR",
+   "name": "CAR",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CAR",
+    "CAR"
+   ]
+  },
+  {
+   "id": "ECB_CBD",
+   "code": "CBD",
+   "name": "Statistics on Consolidated Banking Data",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CBD",
+    "STATISTICS ON CONSOLIDATED BANKING DATA"
+   ]
+  },
+  {
+   "id": "ECB_CBD2",
+   "code": "CBD2",
+   "name": "Consolidated Banking data",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CBD2",
+    "CONSOLIDATED BANKING DATA"
+   ]
+  },
+  {
+   "id": "ECB_CCP",
+   "code": "CCP",
+   "name": "Central Counterparty Clearing Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CCP",
+    "CENTRAL COUNTERPARTY CLEARING STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_CES",
+   "code": "CES",
+   "name": "Consumer Expectations Survey",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CES",
+    "CONSUMER EXPECTATIONS SURVEY"
+   ]
+  },
+  {
+   "id": "ECB_CISS",
+   "code": "CISS",
+   "name": "Composite Indicator of Systemic Stress",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CISS",
+    "COMPOSITE INDICATOR OF SYSTEMIC STRESS"
+   ]
+  },
+  {
+   "id": "ECB_CLIFS",
+   "code": "CLIFS",
+   "name": "Country-Level Index of Financial Stress (CLIFS)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CLIFS",
+    "COUNTRY-LEVEL INDEX OF FINANCIAL STRESS (CLIFS)"
+   ]
+  },
+  {
+   "id": "ECB_CPP",
+   "code": "CPP",
+   "name": "Commercial Property Price Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CPP",
+    "COMMERCIAL PROPERTY PRICE STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_CSEC",
+   "code": "CSEC",
+   "name": "CSEC",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CSEC",
+    "CSEC"
+   ]
+  },
+  {
+   "id": "ECB_DCM",
+   "code": "DCM",
+   "name": "Dealogic DCM analytics data",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "DCM",
+    "DEALOGIC DCM ANALYTICS DATA"
+   ]
+  },
+  {
+   "id": "ECB_DD",
+   "code": "DD",
+   "name": "Derived Data",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "DD",
+    "DERIVED DATA"
+   ]
+  },
+  {
+   "id": "ECB_DWA",
+   "code": "DWA",
+   "name": "DWA",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "DWA",
+    "DWA"
+   ]
+  },
+  {
+   "id": "ECB_ECS",
+   "code": "ECS",
+   "name": "ECS",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ECS",
+    "ECS"
+   ]
+  },
+  {
+   "id": "ECB_EFS",
+   "code": "EFS",
+   "name": "ECB Financial Statements",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "EFS",
+    "ECB FINANCIAL STATEMENTS"
+   ]
+  },
+  {
+   "id": "ECB_EMMS",
+   "code": "EMMS",
+   "name": "Extended Money Market Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "EMMS",
+    "EXTENDED MONEY MARKET STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_EON",
+   "code": "EON",
+   "name": "EONIA: Euro Interbank Offered Rate",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "EON",
+    "EONIA: EURO INTERBANK OFFERED RATE"
+   ]
+  },
+  {
+   "id": "ECB_ESA",
+   "code": "ESA",
+   "name": "ESA95 National Accounts",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ESA",
+    "ESA95 NATIONAL ACCOUNTS"
+   ]
+  },
+  {
+   "id": "ECB_ESB",
+   "code": "ESB",
+   "name": "European Union Balance of Payments (Source Eurostat)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ESB",
+    "EUROPEAN UNION BALANCE OF PAYMENTS (SOURCE EUROSTAT)"
+   ]
+  },
+  {
+   "id": "ECB_EST",
+   "code": "EST",
+   "name": "Euro Short-Term Rate",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "EST",
+    "EURO SHORT-TERM RATE"
+   ]
+  },
+  {
+   "id": "ECB_EWT",
+   "code": "EWT",
+   "name": "ECB wage tracker",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "EWT",
+    "ECB WAGE TRACKER"
+   ]
+  },
+  {
+   "id": "ECB_EXR",
+   "code": "EXR",
+   "name": "Exchange Rates",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "EXR",
+    "EXCHANGE RATES"
+   ]
+  },
+  {
+   "id": "ECB_FM",
+   "code": "FM",
+   "name": "Financial market data",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "FM",
+    "FINANCIAL MARKET DATA"
+   ]
+  },
+  {
+   "id": "ECB_FVC",
+   "code": "FVC",
+   "name": "Financial Vehicle Corporation",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "FVC",
+    "FINANCIAL VEHICLE CORPORATION"
+   ]
+  },
+  {
+   "id": "ECB_FXI",
+   "code": "FXI",
+   "name": "Foreign Exchange Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "FXI",
+    "FOREIGN EXCHANGE STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_GST",
+   "code": "GST",
+   "name": "Government Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "GST",
+    "GOVERNMENT STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_HICP",
+   "code": "HICP",
+   "name": "Indices of Consumer Prices",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "HICP",
+    "INDICES OF CONSUMER PRICES"
+   ]
+  },
+  {
+   "id": "ECB_ICB",
+   "code": "ICB",
+   "name": "Insurance Corporations Assets and Liabilities",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ICB",
+    "INSURANCE CORPORATIONS ASSETS AND LIABILITIES"
+   ]
+  },
+  {
+   "id": "ECB_ICO",
+   "code": "ICO",
+   "name": "Insurance Corporations Operations",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ICO",
+    "INSURANCE CORPORATIONS OPERATIONS"
+   ]
+  },
+  {
+   "id": "ECB_ICP",
+   "code": "ICP",
+   "name": "Indices of Consumer prices",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ICP",
+    "INDICES OF CONSUMER PRICES"
+   ]
+  },
+  {
+   "id": "ECB_IFI",
+   "code": "IFI",
+   "name": "Indicators of Financial Integration",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IFI",
+    "INDICATORS OF FINANCIAL INTEGRATION"
+   ]
+  },
+  {
+   "id": "ECB_ILM",
+   "code": "ILM",
+   "name": "Internal Liquidity Management",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ILM",
+    "INTERNAL LIQUIDITY MANAGEMENT"
+   ]
+  },
+  {
+   "id": "ECB_INW",
+   "code": "INW",
+   "name": "Indicator of negotiated wage rates",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "INW",
+    "INDICATOR OF NEGOTIATED WAGE RATES"
+   ]
+  },
+  {
+   "id": "ECB_IRS",
+   "code": "IRS",
+   "name": "Interest rate statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IRS",
+    "INTEREST RATE STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_IVF",
+   "code": "IVF",
+   "name": "Investment Funds Balance Sheet Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IVF",
+    "INVESTMENT FUNDS BALANCE SHEET STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_KRI",
+   "code": "KRI",
+   "name": "EBA Key Risk Indicators",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "KRI",
+    "EBA KEY RISK INDICATORS"
+   ]
+  },
+  {
+   "id": "ECB_LIG",
+   "code": "LIG",
+   "name": "Large Insurance Groups Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "LIG",
+    "LARGE INSURANCE GROUPS STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_MFI",
+   "code": "MFI",
+   "name": "List of MFIs",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MFI",
+    "LIST OF MFIS"
+   ]
+  },
+  {
+   "id": "ECB_MIR",
+   "code": "MIR",
+   "name": "MFI Interest Rate Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MIR",
+    "MFI INTEREST RATE STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_MMS",
+   "code": "MMS",
+   "name": "Money Market Survey",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MMS",
+    "MONEY MARKET SURVEY"
+   ]
+  },
+  {
+   "id": "ECB_MMSR",
+   "code": "MMSR",
+   "name": "Money Market Statistical Reporting",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MMSR",
+    "MONEY MARKET STATISTICAL REPORTING"
+   ]
+  },
+  {
+   "id": "ECB_MPD",
+   "code": "MPD",
+   "name": "Macroeconomic Projection Database",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MPD",
+    "MACROECONOMIC PROJECTION DATABASE"
+   ]
+  },
+  {
+   "id": "ECB_NEC",
+   "code": "NEC",
+   "name": "NEC",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "NEC",
+    "NEC"
+   ]
+  },
+  {
+   "id": "ECB_OFI",
+   "code": "OFI",
+   "name": "Other Financial Intermediaries",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "OFI",
+    "OTHER FINANCIAL INTERMEDIARIES"
+   ]
+  },
+  {
+   "id": "ECB_OMO",
+   "code": "OMO",
+   "name": "Open market operations",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "OMO",
+    "OPEN MARKET OPERATIONS"
+   ]
+  },
+  {
+   "id": "ECB_PAY",
+   "code": "PAY",
+   "name": "PAY",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PAY",
+    "PAY"
+   ]
+  },
+  {
+   "id": "ECB_PCN",
+   "code": "PCN",
+   "name": "PCN",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PCN",
+    "PCN"
+   ]
+  },
+  {
+   "id": "ECB_PCP",
+   "code": "PCP",
+   "name": "PCP",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PCP",
+    "PCP"
+   ]
+  },
+  {
+   "id": "ECB_PCT",
+   "code": "PCT",
+   "name": "PCT",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PCT",
+    "PCT"
+   ]
+  },
+  {
+   "id": "ECB_PDD",
+   "code": "PDD",
+   "name": "PDD",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PDD",
+    "PDD"
+   ]
+  },
+  {
+   "id": "ECB_PEM",
+   "code": "PEM",
+   "name": "PEM",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PEM",
+    "PEM"
+   ]
+  },
+  {
+   "id": "ECB_PFB",
+   "code": "PFB",
+   "name": "Pension Fund Assets and Liabilities",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PFB",
+    "PENSION FUND ASSETS AND LIABILITIES"
+   ]
+  },
+  {
+   "id": "ECB_PFBM",
+   "code": "PFBM",
+   "name": "Pension funds number of members",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PFBM",
+    "PENSION FUNDS NUMBER OF MEMBERS"
+   ]
+  },
+  {
+   "id": "ECB_PFBR",
+   "code": "PFBR",
+   "name": "Pension funds Regulation",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PFBR",
+    "PENSION FUNDS REGULATION"
+   ]
+  },
+  {
+   "id": "ECB_PIS",
+   "code": "PIS",
+   "name": "PIS",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PIS",
+    "PIS"
+   ]
+  },
+  {
+   "id": "ECB_PLB",
+   "code": "PLB",
+   "name": "Losses due to fraud by liability bearer",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PLB",
+    "LOSSES DUE TO FRAUD BY LIABILITY BEARER"
+   ]
+  },
+  {
+   "id": "ECB_PMC",
+   "code": "PMC",
+   "name": "PMC",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PMC",
+    "PMC"
+   ]
+  },
+  {
+   "id": "ECB_PPC",
+   "code": "PPC",
+   "name": "PPC",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PPC",
+    "PPC"
+   ]
+  },
+  {
+   "id": "ECB_PSN",
+   "code": "PSN",
+   "name": "PSN",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PSN",
+    "PSN"
+   ]
+  },
+  {
+   "id": "ECB_PSS",
+   "code": "PSS",
+   "name": "Payments and Settlement Systems Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PSS",
+    "PAYMENTS AND SETTLEMENT SYSTEMS STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_PST",
+   "code": "PST",
+   "name": "PST",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PST",
+    "PST"
+   ]
+  },
+  {
+   "id": "ECB_PTN",
+   "code": "PTN",
+   "name": "PTN",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PTN",
+    "PTN"
+   ]
+  },
+  {
+   "id": "ECB_PTT",
+   "code": "PTT",
+   "name": "PTT",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PTT",
+    "PTT"
+   ]
+  },
+  {
+   "id": "ECB_RA",
+   "code": "RA",
+   "name": "International Reserves of the Eurosystem",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RA",
+    "INTERNATIONAL RESERVES OF THE EUROSYSTEM"
+   ]
+  },
+  {
+   "id": "ECB_RAI",
+   "code": "RAI",
+   "name": "Risk Assessment Indicators",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RAI",
+    "RISK ASSESSMENT INDICATORS"
+   ]
+  },
+  {
+   "id": "ECB_RDE",
+   "code": "RDE",
+   "name": "Risk Dashboard data",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RDE",
+    "RISK DASHBOARD DATA"
+   ]
+  },
+  {
+   "id": "ECB_RDF",
+   "code": "RDF",
+   "name": "Risk Dashboard data",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RDF",
+    "RISK DASHBOARD DATA"
+   ]
+  },
+  {
+   "id": "ECB_RESC",
+   "code": "RESC",
+   "name": "Commercial Property Prices",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RESC",
+    "COMMERCIAL PROPERTY PRICES"
+   ]
+  },
+  {
+   "id": "ECB_RESH",
+   "code": "RESH",
+   "name": "Structural Housing Indicators",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RESH",
+    "STRUCTURAL HOUSING INDICATORS"
+   ]
+  },
+  {
+   "id": "ECB_RESR",
+   "code": "RESR",
+   "name": "Real Estate Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RESR",
+    "REAL ESTATE STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_RESV",
+   "code": "RESV",
+   "name": "Residential Property Valuation",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RESV",
+    "RESIDENTIAL PROPERTY VALUATION"
+   ]
+  },
+  {
+   "id": "ECB_RIR",
+   "code": "RIR",
+   "name": "Retail Interest Rates",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RIR",
+    "RETAIL INTEREST RATES"
+   ]
+  },
+  {
+   "id": "ECB_RPP",
+   "code": "RPP",
+   "name": "Residential Property Price Index Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RPP",
+    "RESIDENTIAL PROPERTY PRICE INDEX STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_RPV",
+   "code": "RPV",
+   "name": "Residential Property Valuation",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RPV",
+    "RESIDENTIAL PROPERTY VALUATION"
+   ]
+  },
+  {
+   "id": "ECB_RTD",
+   "code": "RTD",
+   "name": "Real Time Database (research database)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RTD",
+    "REAL TIME DATABASE (RESEARCH DATABASE)"
+   ]
+  },
+  {
+   "id": "ECB_SAFE",
+   "code": "SAFE",
+   "name": "Survey on the Access to Finance of SMEs",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SAFE",
+    "SURVEY ON THE ACCESS TO FINANCE OF SMES"
+   ]
+  },
+  {
+   "id": "ECB_SEC",
+   "code": "SEC",
+   "name": "Securities",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SEC",
+    "SECURITIES"
+   ]
+  },
+  {
+   "id": "ECB_SEE",
+   "code": "SEE",
+   "name": "Securities exchange - Trading Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SEE",
+    "SECURITIES EXCHANGE - TRADING STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_SESFOD",
+   "code": "SESFOD",
+   "name": "Survey on credit terms and conditions in euro-denominated securities financing and over-the-counter derivatives markets",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SESFOD",
+    "SURVEY ON CREDIT TERMS AND CONDITIONS IN EURO-DENOMINATED SECURITIES FINANCING AND OVER-THE-COUNTER DERIVATIVES MARKETS"
+   ]
+  },
+  {
+   "id": "ECB_SHI",
+   "code": "SHI",
+   "name": "Structural Housing Indicators Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SHI",
+    "STRUCTURAL HOUSING INDICATORS STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_SHS",
+   "code": "SHS",
+   "name": "Securities Holding Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SHS",
+    "SECURITIES HOLDING STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_SHSS",
+   "code": "SHSS",
+   "name": "SHSS",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SHSS",
+    "SHSS"
+   ]
+  },
+  {
+   "id": "ECB_SPF",
+   "code": "SPF",
+   "name": "Survey of Professional Forecasters",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SPF",
+    "SURVEY OF PROFESSIONAL FORECASTERS"
+   ]
+  },
+  {
+   "id": "ECB_SSI",
+   "code": "SSI",
+   "name": "Banking structural statistical indicators",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SSI",
+    "BANKING STRUCTURAL STATISTICAL INDICATORS"
+   ]
+  },
+  {
+   "id": "ECB_SSP",
+   "code": "SSP",
+   "name": "Structural Financial Indicators for Payments",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SSP",
+    "STRUCTURAL FINANCIAL INDICATORS FOR PAYMENTS"
+   ]
+  },
+  {
+   "id": "ECB_SST",
+   "code": "SST",
+   "name": "Securities Settlement Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SST",
+    "SECURITIES SETTLEMENT STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_ST1",
+   "code": "ST1",
+   "name": "Balance of Payments statistics, national data",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ST1",
+    "BALANCE OF PAYMENTS STATISTICS, NATIONAL DATA"
+   ]
+  },
+  {
+   "id": "ECB_ST3",
+   "code": "ST3",
+   "name": "Euro Area Balance of Payments and International Investment Position Statistics, Geographical Breakdown",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ST3",
+    "EURO AREA BALANCE OF PAYMENTS AND INTERNATIONAL INVESTMENT POSITION STATISTICS, GEOGRAPHICAL BREAKDOWN"
+   ]
+  },
+  {
+   "id": "ECB_STBS",
+   "code": "STBS",
+   "name": "Short-Term Business Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "STBS",
+    "SHORT-TERM BUSINESS STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_STP",
+   "code": "STP",
+   "name": "STEP data",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "STP",
+    "STEP DATA"
+   ]
+  },
+  {
+   "id": "ECB_STS",
+   "code": "STS",
+   "name": "Short-Term Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "STS",
+    "SHORT-TERM STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_SUP",
+   "code": "SUP",
+   "name": "Supervisory Banking Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SUP",
+    "SUPERVISORY BANKING STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_SUR",
+   "code": "SUR",
+   "name": "Opinion Surveys",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SUR",
+    "OPINION SURVEYS"
+   ]
+  },
+  {
+   "id": "ECB_TGB",
+   "code": "TGB",
+   "name": "Target Balances",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "TGB",
+    "TARGET BALANCES"
+   ]
+  },
+  {
+   "id": "ECB_TRD",
+   "code": "TRD",
+   "name": "External Trade",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "TRD",
+    "EXTERNAL TRADE"
+   ]
+  },
+  {
+   "id": "ECB_WTS",
+   "code": "WTS",
+   "name": "Trade weights",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "WTS",
+    "TRADE WEIGHTS"
+   ]
+  },
+  {
+   "id": "ECB_YC",
+   "code": "YC",
+   "name": "Financial market data - yield curve",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "YC",
+    "FINANCIAL MARKET DATA - YIELD CURVE"
+   ]
+  },
+  {
+   "id": "ECB_BKN_PUB",
+   "code": "BKN_PUB",
+   "name": "Banknotes statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BKN_PUB",
+    "BANKNOTES STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_BP6_PUB",
+   "code": "BP6_PUB",
+   "name": "Balance of Payments and International Investment Position (BPM6) - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BP6_PUB",
+    "BALANCE OF PAYMENTS AND INTERNATIONAL INVESTMENT POSITION (BPM6) - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_BPS_PUB",
+   "code": "BPS_PUB",
+   "name": "Balance of Payments and International Investment Position - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BPS_PUB",
+    "BALANCE OF PAYMENTS AND INTERNATIONAL INVESTMENT POSITION - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_BSI_PUB",
+   "code": "BSI_PUB",
+   "name": "Balance Sheet Items - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BSI_PUB",
+    "BALANCE SHEET ITEMS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_CPP_PUB",
+   "code": "CPP_PUB",
+   "name": "Commercial Property Price Statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CPP_PUB",
+    "COMMERCIAL PROPERTY PRICE STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_CSEC_PUB",
+   "code": "CSEC_PUB",
+   "name": "CSEC - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "CSEC_PUB",
+    "CSEC - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_EDP_PUB",
+   "code": "EDP_PUB",
+   "name": "EDP tables - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "EDP_PUB",
+    "EDP TABLES - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_ENA_PUB",
+   "code": "ENA_PUB",
+   "name": "National accounts, Employment (Eurostat ESA2010 TP, table 0110, 0111) - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ENA_PUB",
+    "NATIONAL ACCOUNTS, EMPLOYMENT (EUROSTAT ESA2010 TP, TABLE 0110, 0111) - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_EXR_PUB",
+   "code": "EXR_PUB",
+   "name": "Exchange Rates - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "EXR_PUB",
+    "EXCHANGE RATES - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_FM_PUB",
+   "code": "FM_PUB",
+   "name": "Financial market data - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "FM_PUB",
+    "FINANCIAL MARKET DATA - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_FVC_PUB",
+   "code": "FVC_PUB",
+   "name": "Financial Vehicle Corporation - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "FVC_PUB",
+    "FINANCIAL VEHICLE CORPORATION - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_GFS_PUB",
+   "code": "GFS_PUB",
+   "name": "Government Finance Statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "GFS_PUB",
+    "GOVERNMENT FINANCE STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_ICB_PUB",
+   "code": "ICB_PUB",
+   "name": "Insurance Corporations Assets and Liabilities - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ICB_PUB",
+    "INSURANCE CORPORATIONS ASSETS AND LIABILITIES - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_ICO_PUB",
+   "code": "ICO_PUB",
+   "name": "Insurance Corporations Operations - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ICO_PUB",
+    "INSURANCE CORPORATIONS OPERATIONS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_ICPF_PUB",
+   "code": "ICPF_PUB",
+   "name": "Insurance Corporations & Pension Funds Statistics - Published series",
+   "description": "Series of the 'Insurance Corporations & Pension Funds Statistics' dataflow that are used in ECB publications",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ICPF_PUB",
+    "INSURANCE CORPORATIONS & PENSION FUNDS STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_ICP_PUB",
+   "code": "ICP_PUB",
+   "name": "Indices of Consumer prices - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ICP_PUB",
+    "INDICES OF CONSUMER PRICES - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_IDCM_PUB",
+   "code": "IDCM_PUB",
+   "name": "National accounts, Main aggregates in the International Data Cooperation TF context - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IDCM_PUB",
+    "NATIONAL ACCOUNTS, MAIN AGGREGATES IN THE INTERNATIONAL DATA COOPERATION TF CONTEXT - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_IEAQ_PUB",
+   "code": "IEAQ_PUB",
+   "name": "Quarterly Euro Area Accounts - Published series",
+   "description": "Series of the 'Quarterly Euro Area Accounts' dataflow that are used in ECB publications",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IEAQ_PUB",
+    "QUARTERLY EURO AREA ACCOUNTS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_IESS_PUB",
+   "code": "IESS_PUB",
+   "name": "Labour Force Survey Indicators - IESS definition - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IESS_PUB",
+    "LABOUR FORCE SURVEY INDICATORS - IESS DEFINITION - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_ILM_PUB",
+   "code": "ILM_PUB",
+   "name": "Internal Liquidity Management - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ILM_PUB",
+    "INTERNAL LIQUIDITY MANAGEMENT - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_IRS_PUB",
+   "code": "IRS_PUB",
+   "name": "Interest rate statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IRS_PUB",
+    "INTEREST RATE STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_IVF_PUB",
+   "code": "IVF_PUB",
+   "name": "Investment Funds Balance Sheet Statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IVF_PUB",
+    "INVESTMENT FUNDS BALANCE SHEET STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_JDF_BSI_MFI_BALANCE_SHEET",
+   "code": "JDF_BSI_MFI_BALANCE_SHEET",
+   "name": "Aggregated balance sheet of euro area monetary financial institutions, excluding the Eurosystem (millions of euro)",
+   "description": "This table shows the national contributions to the aggregated balance sheet of euro area monetary financial institutions (excluding the Eurosystem). Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of January 2001, Slovenian data as of January 2007, Cypriot and Maltese data as of January 2008, Slovakian data as of January 2009, Estonian data as of January 2011, Latvian data as of January 2014 and Lithuanian data are included as January 2015. In Germany a change was made in December 2010 to the recording practice, leading to an increase in total assets and liabilities as well as remaining assets and liabilities (especially due to the on-balance sheet recording of derivatives held in the trading book). Before January 2003 data for loans to other euro area residents were collected in March, June, September and December each year. Monthly data on outstanding amounts prior to January 2003 and monthly growth rates prior to January 2004 are derived from quarterly data. Household data include non-profit institutions serving households. Money market fund shares/units data relate to euro area residents. Amounts issued by non-euro area residents are included in external assets. Amounts held by non-euro area residents are included in external liabilities.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_BSI_MFI_BALANCE_SHEET",
+    "AGGREGATED BALANCE SHEET OF EURO AREA MONETARY FINANCIAL INSTITUTIONS, EXCLUDING THE EUROSYSTEM (MILLIONS OF EURO)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_BSI_MFI_DOMESTIC_CROSS_BORDER",
+   "code": "JDF_BSI_MFI_DOMESTIC_CROSS_BORDER",
+   "name": "Domestic and cross-border positions of euro area monetary financial institutions, excluding the Eurosystem (EUR billions, outstanding amounts at end of period)",
+   "description": "The table shows the national contributions to selected items of the aggregated balance sheet of euro area monetary financial institutions (excluding the Eurosystem), broken down into within-country business; positions against other euro area Member States; positions against EU Member States not belonging to the euro area; and positions against non-EU countries. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of January 2001, Slovenian data as of January 2007, Cypriot and Maltese data as of January 2008, Slovakian data as of January 2009, Estonian data as of January 2011, Latvian data as of January 2014 and Lithuanian data are included as of January 2015. The term \"banks\" is used in this table to indicate institutions of a similar type to monetary financial institutions resident outside the EU.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_BSI_MFI_DOMESTIC_CROSS_BORDER",
+    "DOMESTIC AND CROSS-BORDER POSITIONS OF EURO AREA MONETARY FINANCIAL INSTITUTIONS, EXCLUDING THE EUROSYSTEM (EUR BILLIONS, OUTSTANDING AMOUNTS AT END OF PERIOD)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_BSI_MFI_GROWTH_RATES",
+   "code": "JDF_BSI_MFI_GROWTH_RATES",
+   "name": "Growth rates for the national contributions to the aggregated balance sheet of euro area monetary financial institutions(annual growth rates at end of period)",
+   "description": "The ECB computes annual growth rates as the differences in outstanding amounts adjusted for all non-transaction related issues, i.e. revaluations, reclassifications, and exchange rate adjustments. The ECB's computation might lead to results that differ from the growth rates published by NCBs. In the case of loans, the annual growth rates shown for country A refer to loans granted by MFIs resident in country A to all euro area residents; the growth rates do not provide information about the loans granted to the citizens of country A. Moreover, the published growth rates exclude securitised loans that have been removed from the balance sheet and thus they might differ substantially from the growth rate of lending received by the counterparty sector. Further information as well as growth rates corrected for securitised loans can be found on the websites of the NCBs. Analogously, in the case of deposits, the annual growth rates given for country B refer to deposits held by all euro area residents with MFIs resident in country B; the growth rates do not provide information about the deposits held by the citizens of country B. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of January 2001, Slovenian data as of January 2007, Cypriot and Maltese data as of January 2008, Slovakian data as of January 2009, Estonian data as of January 2011, Latvian data as of January 2014 and Lithuanian data are included as of January 2015. Before January 2003 data for loans to other euro area residents were collected in March, June, September and December each year. Monthly data on outstanding amounts prior to January 2003 and monthly growth rates prior to January 2004 are derived from quarterly data. Household data include non-profit institutions serving households. Money market fund shares/units data relate to euro area residents. Amounts issued by non-euro area residents are included in external assets. Amounts held by non-euro area residents are included in external liabilities.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_BSI_MFI_GROWTH_RATES",
+    "GROWTH RATES FOR THE NATIONAL CONTRIBUTIONS TO THE AGGREGATED BALANCE SHEET OF EURO AREA MONETARY FINANCIAL INSTITUTIONS(ANNUAL GROWTH RATES AT END OF PERIOD)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_EXR_HCI_CPI",
+   "code": "JDF_EXR_HCI_CPI",
+   "name": "Harmonised competitiveness indicators based on consumer price indices (period averages - index 1999 Q1=100)",
+   "description": "The purpose of harmonised competitiveness indicators (HCIs) is to provide consistent and comparable measures of euro area countries' price and cost competitiveness that are also consistent with the real effective exchange rates (EERs) of the euro. The HCIs are constructed using the same methodology and data sources that are used for the euro EERs. While the HCI of a specific country takes into account both intra and extra-euro area trade, however, the euro EERs are based on extra-euro area trade only. Therefore, the HCIs and euro EERs reflect different phenomena and are not directly comparable. The HCIs complement other competitiveness indicators published by some NCBs which may follow different methodologies and, in some cases, use different price and cost measures in order to account for the specific circumstances in the respective country. For the euro area, the real effective exchange rate of the euro vis-à-vis 41 trading partners is displayed. For euro area countries, the table shows the harmonised competitiveness indicators calculated vis-à-vis these same 41 trading partners plus the other euro area countries. A positive/negative change indicates a decrease/increase in price competitiveness. For further information please refer to the explanatory note.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_EXR_HCI_CPI",
+    "HARMONISED COMPETITIVENESS INDICATORS BASED ON CONSUMER PRICE INDICES (PERIOD AVERAGES - INDEX 1999 Q1=100)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_EXR_HCI_GDP",
+   "code": "JDF_EXR_HCI_GDP",
+   "name": "Harmonised competitiveness indicators based on GDP deflators (period averages - index 1999 Q1=100)",
+   "description": "The purpose of harmonised competitiveness indicators (HCIs) is to provide consistent and comparable measures of euro area countries' price and cost competitiveness that are also consistent with the real effective exchange rates (EERs) of the euro. The HCIs are constructed using the same methodology and data sources that are used for the euro EERs. While the HCI of a specific country takes into account both intra and extra-euro area trade, however, the euro EERs are based on extra-euro area trade only. Therefore, the HCIs and euro EERs reflect different phenomena and are not directly comparable. The HCIs complement other competitiveness indicators published by some NCBs which may follow different methodologies and, in some cases, use different price and cost measures in order to account for the specific circumstances in the respective country. For the euro area, the real effective exchange rate of the euro vis-à-vis 41 trading partners is displayed. For euro area countries, the table shows the harmonised competitiveness indicators calculated vis-à-vis the same 41 trading partners plus the other euro area countries. A positive/negative change indicates a decrease/increase in price competitiveness. For further information please refer to the explanatory note.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_EXR_HCI_GDP",
+    "HARMONISED COMPETITIVENESS INDICATORS BASED ON GDP DEFLATORS (PERIOD AVERAGES - INDEX 1999 Q1=100)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_EXR_HCI_ULCT",
+   "code": "JDF_EXR_HCI_ULCT",
+   "name": "Harmonised competitiveness indicators based on unit labour costs indices for the total economy (period averages - index 1999 Q1=100)",
+   "description": "The purpose of harmonised competitiveness indicators (HCIs) is to provide consistent and comparable measures of euro area countries' price and cost competitiveness that are also consistent with the real effective exchange rates (EERs) of the euro. The HCIs are constructed using the same methodology and data sources that are used for the euro EERs. While the HCI of a specific country takes into account both intra and extra-euro area trade, however, the euro EERs are based on extra-euro area trade only. Therefore, the HCIs and euro EERs reflect different phenomena and are not directly comparable. The HCIs complement other competitiveness indicators published by some NCBs which may follow different methodologies and, in some cases, use different price and cost measures in order to account for the specific circumstances in the respective country. For the euro area, the real effective exchange rate of the euro vis-à-vis 18 trading partners is displayed. For euro area countries, the table shows the harmonised competitiveness indicators calculated vis-à-vis the same 18 trading partners plus the other euro area countries. A positive/negative change indicates a decrease/increase in cost competitiveness. For further information please refer to the explanatory note.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_EXR_HCI_ULCT",
+    "HARMONISED COMPETITIVENESS INDICATORS BASED ON UNIT LABOUR COSTS INDICES FOR THE TOTAL ECONOMY (PERIOD AVERAGES - INDEX 1999 Q1=100)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_ICPF_PENSION_FUNDS",
+   "code": "JDF_ICPF_PENSION_FUNDS",
+   "name": "Aggregated balance sheet of euro area insurance corporations and pension funds(EUR millions, outstanding amounts at the end of the period)",
+   "description": "This table shows the national contributions to the aggregated balance sheet of euro area insurance corporations and pension funds. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate. Calculations by the Deutsche Bundesbank based on source data of the Bundesanstalt für Finanzdienstleistungsaufsicht (BaFin) and of pension funds. Luxembourg data are based mainly on accounting data published by insurance supervisory authorities. They differ from those accounting data primarily for the following reasons: i) they exclude data on branches established abroad; ii) they include data on branches in Luxembourg of insurance corporations established in accordance with the law of another Member State of the EU; and iii) they include data on entities that are not under the supervision of insurance supervisory authorities. The not applicable is calculated as the difference between total assets (financial and non-financial) and liabilities.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_ICPF_PENSION_FUNDS",
+    "AGGREGATED BALANCE SHEET OF EURO AREA INSURANCE CORPORATIONS AND PENSION FUNDS(EUR MILLIONS, OUTSTANDING AMOUNTS AT THE END OF THE PERIOD)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_ICP_COICOP_ANR",
+   "code": "JDF_ICP_COICOP_ANR",
+   "name": "HICP - Annual percentage changes, breakdown by purpose of consumption(percentage change)",
+   "description": "This table shows the annual consumer price inflation rate, i.e. the percentage change in consumer prices from the same period of the previous year, as measured by the Harmonised Index of Consumer Prices (HICP) for the euro area and the euro area countries. The breakdown is in accordance with the classification of individual consumption by purpose adapted to the needs of the HICP (ECOICOP). In addition to this breakdown, the table entitled \"Harmonised indices of consumer prices, breakdown by type of product (mainly used by the ECB)\" gives an alternative presentation based on the same detailed HICP sub-indices. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of January 2001, Slovenian data as of January 2007, Cypriot and Maltese data as of January 2008, Slovakian data as of January 2009, Estonian data as of January 2011, Latvian data as of January 2014 and Lithuanian data are included as of January 2015. ECB calculations are based on Eurostat data. National contributions may not add up exactly to the euro area HICP growth rate due to rounding differences; for user support, please contact ECB's Statistics hotline(https://ecb-registration.escb.eu/statistical-information).",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_ICP_COICOP_ANR",
+    "HICP - ANNUAL PERCENTAGE CHANGES, BREAKDOWN BY PURPOSE OF CONSUMPTION(PERCENTAGE CHANGE)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_ICP_COICOP_INW",
+   "code": "JDF_ICP_COICOP_INW",
+   "name": "HICP - Expenditure weights, breakdown by purpose of consumption(Parts per 1000. HICP total = 1000)",
+   "description": "This table shows household expenditure weights used by the Harmonised Index of Consumer Prices (HICP) for the euro area and the euro area countries. The figures are shown as a percentage of the expenditures covered by the overall HICP. The HICP expenditure weights are updated on an annual basis. The breakdown is in accordance with the classification of individual consumption by purpose adapted to the needs of the HICP (ECOICOP). In addition to this breakdown, the table entitled \"Harmonised indices of consumer prices, breakdown by type of product (mainly used by the ECB)\" gives an alternative presentation based on the same detailed HICP sub-indices. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of January 2001, Slovenian data as of January 2007, Cypriot and Maltese data as of January 2008, Slovakian data as of January 2009, Estonian data as of January 2011, Latvian data as of January 2014 and Lithuanian data are included as of January 2015.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_ICP_COICOP_INW",
+    "HICP - EXPENDITURE WEIGHTS, BREAKDOWN BY PURPOSE OF CONSUMPTION(PARTS PER 1000. HICP TOTAL = 1000)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_ICP_COICOP_INX",
+   "code": "JDF_ICP_COICOP_INX",
+   "name": "HICP - Indices, breakdown by purpose of consumption(2015=100)",
+   "description": "This table shows consumer price developments as measured by the Harmonised Index of Consumer Prices (HICP) for the euro area and the euro area countries. The figures shown are index values. The index reference year is 2015=100. A value of 110, for example, indicates that prices have increased by 10% since 2015. The breakdown is in accordance with the classification of individual consumption by purpose adapted to the needs of the HICP (ECOICOP).",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_ICP_COICOP_INX",
+    "HICP - INDICES, BREAKDOWN BY PURPOSE OF CONSUMPTION(2015=100)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_ICP_ECONOMIC_ACTIVITIES_ANR",
+   "code": "JDF_ICP_ECONOMIC_ACTIVITIES_ANR",
+   "name": "HICP - Annual percentage changes, breakdown by type of product (mainly used by the ECB)(percentage change)",
+   "description": "This table shows the annual consumer price inflation rate, i.e. the percentage change in consumer prices from the same period of the previous year, as measured by the Harmonised Index of Consumer Prices (HICP) for the euro area and the euro area countries. The breakdown is in accordance with the classification of individual consumption by purpose adapted to the needs of the HICP (ECOICOP). The breakdown shown is the one mainly used by the ECB.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_ICP_ECONOMIC_ACTIVITIES_ANR",
+    "HICP - ANNUAL PERCENTAGE CHANGES, BREAKDOWN BY TYPE OF PRODUCT (MAINLY USED BY THE ECB)(PERCENTAGE CHANGE)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_ICP_ECONOMIC_ACTIVITIES_INW",
+   "code": "JDF_ICP_ECONOMIC_ACTIVITIES_INW",
+   "name": "HICP - Expenditure weights, breakdown by type of product (mainly used by the ECB)(Parts per 1000. HICP total = 1000)",
+   "description": "This table shows household expenditure weights used by the Harmonised Index of Consumer Prices (HICP) for the euro area and the euro area countries. The figures are shown as a percentage of the expenditures covered by the overall HICP. The HICP expenditure weights are updated on an annual basis. The breakdown is in accordance with the classification of individual consumption by purpose adapted to the needs of the HICP (ECOICOP). The breakdown shown is the one mainly used by the ECB. These aggregates are compiled by Eurostat based on the most detailed level of the classification of individual consumption by purpose (ECOICOP). For more information on this classification please refer to the Eurostat HICP website (http://ec.europa.eu/eurostat/web/hicp/overview). These categories provide an alternative presentation of HICP data which are useful for economic analysis. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of January 2001, Slovenian data as of January 2007, Cypriot and Maltese data as of January 2008, Slovakian data as of January 2009, Estonian data as of January 2011, Latvian data as of January 2014 and Lithuanian data are included as of January 2015.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_ICP_ECONOMIC_ACTIVITIES_INW",
+    "HICP - EXPENDITURE WEIGHTS, BREAKDOWN BY TYPE OF PRODUCT (MAINLY USED BY THE ECB)(PARTS PER 1000. HICP TOTAL = 1000)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_ICP_ECONOMIC_ACTIVITIES_INX",
+   "code": "JDF_ICP_ECONOMIC_ACTIVITIES_INX",
+   "name": "HICP - Indices, breakdown by type of product (mainly used by the ECB)(2015=100)",
+   "description": "This table shows consumer price developments as measured by the Harmonised Index of Consumer Prices (HICP) for the euro area and the euro area countries. The figures shown are index values. The index reference year is 2015=100. A value of 110, for example, indicates that prices have increased by 10% since 2015. The breakdown is in accordance with the classification of individual consumption by purpose adapted to the needs of the HICP (ECOICOP). The breakdown shown is the one mainly used by the ECB. These aggregates are compiled by Eurostat based on the most detailed level of the classification of individual consumption by purpose (ECOICOP). For more information on this classification please refer to the Eurostat HICP website (http://ec.europa.eu/eurostat/web/hicp/overview). These categories provide an alternative presentation of HICP data which are useful for economic analysis. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of January 2001, Slovenian data as of January 2007, Cypriot and Maltese data as of January 2008, Slovakian data as of January 2009, Estonian data as of January 2011, Latvian data as of January 2014 and Lithuanian data are included as of January 2015.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_ICP_ECONOMIC_ACTIVITIES_INX",
+    "HICP - INDICES, BREAKDOWN BY TYPE OF PRODUCT (MAINLY USED BY THE ECB)(2015=100)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_IVF_ASSETS_LIABILITIES",
+   "code": "JDF_IVF_ASSETS_LIABILITIES",
+   "name": "Euro area and national investment fund statistics - assets and liabilities(EUR billions; amounts outstanding at the end of the period, transactions during the period)",
+   "description": "This table shows the national contributions to the assets and liabilities of euro area investment funds other than money market funds. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_IVF_ASSETS_LIABILITIES",
+    "EURO AREA AND NATIONAL INVESTMENT FUND STATISTICS - ASSETS AND LIABILITIES(EUR BILLIONS; AMOUNTS OUTSTANDING AT THE END OF THE PERIOD, TRANSACTIONS DURING THE PERIOD)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_IVF_SHARES",
+   "code": "JDF_IVF_SHARES",
+   "name": "Euro area and national investment fund statistics - by investment policy and type of fund(EUR billions; amounts outstanding at the end of the period, transactions during the period)",
+   "description": "This table shows the national contributions to the shares/units issued by euro area investment funds other than money market funds. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_IVF_SHARES",
+    "EURO AREA AND NATIONAL INVESTMENT FUND STATISTICS - BY INVESTMENT POLICY AND TYPE OF FUND(EUR BILLIONS; AMOUNTS OUTSTANDING AT THE END OF THE PERIOD, TRANSACTIONS DURING THE PERIOD)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_MFI_MFI_LIST",
+   "code": "JDF_MFI_MFI_LIST",
+   "name": "Number of monetary financial institutions (MFIs) in the euro area (pure number)",
+   "description": "This table shows the number of MFIs, by country and category. Refers to position on the last working day of the month. The euro area total covers the EU Member States that had adopted the euro at the time to which the statistics relate, the ECB and the EIB. The European Central Bank is part of the Eurosystem.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_MFI_MFI_LIST",
+    "NUMBER OF MONETARY FINANCIAL INSTITUTIONS (MFIS) IN THE EURO AREA (PURE NUMBER)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_MFI_MFI_LIST_NEA",
+   "code": "JDF_MFI_MFI_LIST_NEA",
+   "name": "Number of monetary financial institutions (MFIs) in the non-participating Member States(pure number)",
+   "description": "This table shows the number of MFIs, by country and category. Refers to position on the last working day of the month. The EU total covers the countries which were members of the EU at the time to which the statistics relate. The euro area total covers the EU Member States that had adopted the euro at the time to which the statistics relate, and the ECB.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_MFI_MFI_LIST_NEA",
+    "NUMBER OF MONETARY FINANCIAL INSTITUTIONS (MFIS) IN THE NON-PARTICIPATING MEMBER STATES(PURE NUMBER)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_MIR_MFI_INTEREST_RATES",
+   "code": "JDF_MIR_MFI_INTEREST_RATES",
+   "name": "Euro area and national MFI interest rates (MIR)(percentages per annum ; rates on new business as average of the period ; rates on outstanding amounts as end-of-period, unless otherwise indicated)",
+   "description": "This table contains a selection of euro area and national MFI interest rates, chosen according to their importance at the euro area level. Some of the rates may reflect only small new business volumes or outstanding amounts in one or more of the participating countries. Besides, data subject to statistical confidentiality at the national level are also not given. Data as of June 2010 may not be fully comparable with those prior to that date owing to methodological changes arising from the implementation of Regulations ECB/2008/32 and ECB/2009/7 (amending Regulation ECB/2001/18) together with other changes to the statistical reporting framework and practices in several euro area countries. Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate.Slovenian data are included in euro area aggregates as of January 2007, Cypriot and Maltese data as of January 2008, Slovakian data as of January 2009, Estonian data as of January 2011, Latvian data as of January 2014 and Lithuanian data are included as of January 2015. For overnight deposits, deposits redeemable at notice, credit card debt and revolving loans and overdrafts, new business and outstanding amounts coincide. End-period. MFI interest rates on new deposits with agreed maturity are broken down by the original maturity of the deposit, while interest rates on deposits redeemable at notice are divided into separate categories according to the period of notice. MFI interest rates on new loans are, in turn, broken down by initial period of interest rate fixation. Interest rates on outstanding amounts are provided with a breakdown according to the original maturity of the deposit or loan.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_MIR_MFI_INTEREST_RATES",
+    "EURO AREA AND NATIONAL MFI INTEREST RATES (MIR)(PERCENTAGES PER ANNUM ; RATES ON NEW BUSINESS AS AVERAGE OF THE PERIOD ; RATES ON OUTSTANDING AMOUNTS AS END-OF-PERIOD, UNLESS OTHERWISE INDICATED)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_MNA_A_GDP_GROWTH_QOQ",
+   "code": "JDF_MNA_A_GDP_GROWTH_QOQ",
+   "name": "Quarter-on-quarter volume growth of GDP and expenditure components(quarter-on-quarter percentage changes)",
+   "description": "This table shows the quarter-on-quarter volume growth of the GDP and its main expenditure components for the euro area and the euro area countries. Additionally, it shows the individual contributions of euro area countries to the euro area quarter-on-quarter GDP volume growth. Seasonally and working-day adjusted data. The euro area aggregate for the whole time series refers to the Euro 20. Contributions to the euro area aggregate are ECB calculations based on Eurostat data. National contributions may not add up exactly to the euro area GDP growth rate due to rounding. For user support on the contributions data, please contact ECB's Statistics hotline via the following form: https://ecb-registration.escb.eu/statistical-information. Euro area exports and imports cover goods and services and include cross-border intra-euro area trade.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_MNA_A_GDP_GROWTH_QOQ",
+    "QUARTER-ON-QUARTER VOLUME GROWTH OF GDP AND EXPENDITURE COMPONENTS(QUARTER-ON-QUARTER PERCENTAGE CHANGES)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_MNA_B_GDP_GROWTH_YOY",
+   "code": "JDF_MNA_B_GDP_GROWTH_YOY",
+   "name": "Year-on-year volume growth of GDP and expenditure components(annual percentage changes)",
+   "description": "This table shows the annual volume growth of the GDP and its main expenditure components for the euro area and the euro area countries. Additionally, it shows the individual contributions of euro area countries to the euro area annual GDP volume growth. Seasonally and working-day adjusted data. The euro area aggregate for the whole time series refers to the Euro 20. Contributions to the euro area aggregate are ECB calculations based on Eurostat data. National contributions may not add up exactly to the euro area GDP growth rate due to rounding. For user support on the contributions data, please contact ECB's Statistics hotline via the following form: https://ecb-registration.escb.eu/statistical-information. Euro area exports and imports cover goods and services and include cross-border intra-euro area trade.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_MNA_B_GDP_GROWTH_YOY",
+    "YEAR-ON-YEAR VOLUME GROWTH OF GDP AND EXPENDITURE COMPONENTS(ANNUAL PERCENTAGE CHANGES)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_MNA_C_GDP_CONTRIBUTIONS_QOQ",
+   "code": "JDF_MNA_C_GDP_CONTRIBUTIONS_QOQ",
+   "name": "Contributions to quarter-on-quarter volume growth of GDP and expenditure components(contributions to quarter-on-quarter percentage changes of GDP in percentage points)",
+   "description": "This table shows the quarter-on-quarter volume growth of the GDP and the contributions to GDP growth of its main expenditure components for the euro area and the euro area countries. Additionally, it shows the individual GDP contributions of euro area countries to the euro area quarter-on-quarter GDP volume growth. Seasonally and working-day adjusted data. The euro area aggregate for the whole time series refers to the Euro 20. Contributions to the euro area aggregate are ECB calculations based on Eurostat data. National contributions may not add up exactly to the euro area GDP growth rate due to rounding. When computing the contribution of net trade to GDP, it may be noted that it is not yet possible to allocate the imports to the final demand categories in which they were directly or indirectly used. For user support on the contributions data, please contact ECB's Statistics hotline via the following form: https://ecb-registration.escb.eu/statistical-information. Euro area exports and imports cover goods and services and include cross-border intra-euro area trade.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_MNA_C_GDP_CONTRIBUTIONS_QOQ",
+    "CONTRIBUTIONS TO QUARTER-ON-QUARTER VOLUME GROWTH OF GDP AND EXPENDITURE COMPONENTS(CONTRIBUTIONS TO QUARTER-ON-QUARTER PERCENTAGE CHANGES OF GDP IN PERCENTAGE POINTS)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_MNA_D_GDP_CONTRIBUTIONS_YOY",
+   "code": "JDF_MNA_D_GDP_CONTRIBUTIONS_YOY",
+   "name": "Contributions to year-on-year volume growth of GDP and expenditure components(contributions to annual percentage changes of GDP in percentage points)",
+   "description": "This table shows the annual volume growth of the GDP and the contributions to GDP growth of its main expenditure components for the euro area and the euro area countries. Additionally, it shows the individual GDP contributions of euro area countries to the euro area annual GDP volume growth. Seasonally and working-day adjusted data. The euro area aggregate for the whole time series refers to the Euro 20. Contributions to the euro area aggregate are ECB calculations based on Eurostat data. National contributions may not add up exactly to the euro area GDP growth rate due to rounding. When computing the contribution of net trade to GDP, it may be noted that it is not yet possible to allocate the imports to the final demand categories in which they were directly or indirectly used. For user support on the contributions data, please contact ECB's Statistics hotline via the following form: https://ecb-registration.escb.eu/statistical-information. Euro area exports and imports cover goods and services and include cross-border intra-euro area trade.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_MNA_D_GDP_CONTRIBUTIONS_YOY",
+    "CONTRIBUTIONS TO YEAR-ON-YEAR VOLUME GROWTH OF GDP AND EXPENDITURE COMPONENTS(CONTRIBUTIONS TO ANNUAL PERCENTAGE CHANGES OF GDP IN PERCENTAGE POINTS)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PSS_PAYMENTS_N",
+   "code": "JDF_PSS_PAYMENTS_N",
+   "name": "Total number of transactions in the euro area(millions; total for the period)",
+   "description": "This table contains a restricted set of payment statistics covering payments by instruments of non-MFIs in the euro area. The data refer to the total number of transactions per country for the specified reference year. The euro area total covers the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of 2001, Slovenian data as of 2007, Cypriot and Maltese data as of 2008, Slovakian data as of 2009, Estonian data as of 2011, Latvian data as of 2014 and Lithuanian data are included as of 2015.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PSS_PAYMENTS_N",
+    "TOTAL NUMBER OF TRANSACTIONS IN THE EURO AREA(MILLIONS; TOTAL FOR THE PERIOD)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PSS_PAYMENTS_N_NEA",
+   "code": "JDF_PSS_PAYMENTS_N_NEA",
+   "name": "Total number of transactions in the non-participating Member States(millions; total for the period)",
+   "description": "This table contains a restricted set of payment statistics covering payments by instruments of non-MFIs in the EU. The data refer to the total number of transactions per non-euro area country for the specified reference year. The EU total covers the countries which were members of the EU at the time to which the statistics relate. The euro area total covers the EU Member States that had adopted the euro at the time to which the statistics relate.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PSS_PAYMENTS_N_NEA",
+    "TOTAL NUMBER OF TRANSACTIONS IN THE NON-PARTICIPATING MEMBER STATES(MILLIONS; TOTAL FOR THE PERIOD)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PSS_PAYMENTS_P",
+   "code": "JDF_PSS_PAYMENTS_P",
+   "name": "Relative importance of payment services in the euro area(percentage of total number of national transactions)",
+   "description": "This table contains a restricted set of payment statistics covering payments by instruments of non-MFIs in the euro area. The data refer to the percentage of transactions with each instrument in comparison with the total number of transactions in each country for the specified reference year. The euro area total covers the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of 2001, Slovenian data as of 2007, Cypriot and Maltese data as of 2008, Slovakian data as of 2009, Estonian data as of 2011, Latvian data as of 2014 and Lithuanian data are included as of 2015.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PSS_PAYMENTS_P",
+    "RELATIVE IMPORTANCE OF PAYMENT SERVICES IN THE EURO AREA(PERCENTAGE OF TOTAL NUMBER OF NATIONAL TRANSACTIONS)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PSS_PAYMENTS_P_NEA",
+   "code": "JDF_PSS_PAYMENTS_P_NEA",
+   "name": "Relative importance of payment services in the non-participating Member States(percentage of total number of national transactions)",
+   "description": "This table contains a restricted set of payment statistics covering payments by instruments of non-MFIs in the euro area. The data refer to the percentage of transactions with each instrument in comparison with the total number of transactions per non-euro area country for the specified reference year. The EU total covers the countries which were members of the EU at the time to which the statistics relate. The euro area total covers the EU Member States that had adopted the euro at the time to which the statistics relate.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PSS_PAYMENTS_P_NEA",
+    "RELATIVE IMPORTANCE OF PAYMENT SERVICES IN THE NON-PARTICIPATING MEMBER STATES(PERCENTAGE OF TOTAL NUMBER OF NATIONAL TRANSACTIONS)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PSS_PAYMENTS_V",
+   "code": "JDF_PSS_PAYMENTS_V",
+   "name": "Total value of transactions in the euro area(EUR millions; total for the period)",
+   "description": "This table contains a restricted set of payment statistics covering payments by instruments of non-MFIs in the euro area. The data refer to the total value of transactions per country for the specified reference year. The euro area total covers the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of 2001, Slovenian data as of 2007, Cypriot and Maltese data as of 2008, Slovakian data as of 2009, Estonian data as of 2011, Latvian data as of 2014 and Lithuanian data are included as of 2015.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PSS_PAYMENTS_V",
+    "TOTAL VALUE OF TRANSACTIONS IN THE EURO AREA(EUR MILLIONS; TOTAL FOR THE PERIOD)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PSS_PAYMENTS_V_NEA",
+   "code": "JDF_PSS_PAYMENTS_V_NEA",
+   "name": "Total value of transactions in the non-participating Member States(EUR millions; total for the period)",
+   "description": "This table contains a restricted set of payment statistics covering payments by instruments of non-MFIs in the EU. The data refer to the total value of transactions per non-euro area country for the specified reference year. The EU total covers the countries which were members of the EU at the time to which the statistics relate. The euro area total covers the EU Member States that had adopted the euro at the time to which the statistics relate.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PSS_PAYMENTS_V_NEA",
+    "TOTAL VALUE OF TRANSACTIONS IN THE NON-PARTICIPATING MEMBER STATES(EUR MILLIONS; TOTAL FOR THE PERIOD)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PUB_BSI_CROSS_BORDER_POSITIONS",
+   "code": "JDF_PUB_BSI_CROSS_BORDER_POSITIONS",
+   "name": "JDF_PUB_BSI_CROSS_BORDER_POSITIONS - Published series",
+   "description": "Series of the 'Balance Sheet Items' dataflow that are used in ECB publications",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PUB_BSI_CROSS_BORDER_POSITIONS",
+    "JDF_PUB_BSI_CROSS_BORDER_POSITIONS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PUB_BSI_MFI_BALANCE_SHEET",
+   "code": "JDF_PUB_BSI_MFI_BALANCE_SHEET",
+   "name": "JDF_PUB_BSI_MFI_BALANCE_SHEET - Published series",
+   "description": "Series of the 'Balance Sheet Items' dataflow that are used in ECB publications",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PUB_BSI_MFI_BALANCE_SHEET",
+    "JDF_PUB_BSI_MFI_BALANCE_SHEET - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PUB_IVF_INVESTMENT_FUNDS",
+   "code": "JDF_PUB_IVF_INVESTMENT_FUNDS",
+   "name": "JDF_PUB_IVF_INVESTMENT_FUNDS - Published series",
+   "description": "Series of the 'Investment Funds Balance Sheet Statistics' dataflow that are used in ECB publications",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PUB_IVF_INVESTMENT_FUNDS",
+    "JDF_PUB_IVF_INVESTMENT_FUNDS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_JDF_PUB_MIR_BANK_INTEREST_RATES",
+   "code": "JDF_PUB_MIR_BANK_INTEREST_RATES",
+   "name": "JDF_PUB_MIR_BANK_INTEREST_RATES - Published series",
+   "description": "Series of the 'MFI Interest Rate Statistics' dataflow that are used in ECB publications",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_PUB_MIR_BANK_INTEREST_RATES",
+    "JDF_PUB_MIR_BANK_INTEREST_RATES - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_JDF_RA6_RESERVE_ASSETS",
+   "code": "JDF_RA6_RESERVE_ASSETS",
+   "name": "Official reserve assets, other foreign currency assets and related short-term liabilities(EUR millions)",
+   "description": "The reserve assets of the euro area consist of the Eurosystem’s reserve assets, i.e. the ECB’s reserve assets and the reserve assets held by the NCBs of the participating Member States. Reserve assets are (i) under the effective control of the ECB or the NCBs of the participating Member States; and (ii) highly liquid, marketable and creditworthy foreign currency-denominated claims on non-residents of the euro area, in addition to monetary gold, SDRs and IMF reserve positions. This definition expressly excludes foreign-currency claims on residents of the euro area, and euro-denominated claims on non-residents of the euro area from being considered reserve assets either at the national or at the euro area level. The official reserve assets (gross) are therefore supplemented with information on other foreign currency assets, and on predetermined short-term net drains on the gross reserve assets. Further information under Statistical treatment of the Eurosystem's international reserves (http://www.ecb.europa.eu/pub/pdf/other/statintreservesen.pdf). Euro area data cover the EU Member States that had adopted the euro at the time to which the statistics relate. Greek data are included in euro area aggregates as of January 2001, Slovenian data as of January 2007, Cypriot and Maltese data as of January 2008, Slovakian data as of January 2009, Estonian data as of January 2011, Latvian data as of January 2014, Lithuanian data are included as of January 2015 and Croatian data are included as of January 2023. These figures do not fully add up to the total euro area international reserves owing to differences in gold valuation by euro area countries.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_RA6_RESERVE_ASSETS",
+    "OFFICIAL RESERVE ASSETS, OTHER FOREIGN CURRENCY ASSETS AND RELATED SHORT-TERM LIABILITIES(EUR MILLIONS)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_SEC_OAT_DEBT_SECURITIES",
+   "code": "JDF_SEC_OAT_DEBT_SECURITIES",
+   "name": "Outstanding amounts and transactions of euro-denominated debt securities by country of residence, sector of the issuer and original maturity(EUR millions; nominal values)",
+   "description": "These tables show the national contributions to the outstanding amounts, gross issues and net issues of debt securities other than shares issued by euro area residents, broken down by sector of the issuer and by maturity. The data up to the end of November 2012 are computed in accordance with the ESA 95 methodology. Thereafter, the data are based on the ESA 2010 methodology. The data up to the end of November 2012 are computed in accordance with the ESA 95 methodology. Thereafter, the data are based on the ESA 2010 methodology. The euro area aggregate for the whole time series refers to the euro area composition as per the latest reference period. The data concerning the general government sector are not directly comparable with the data on government debt collected for the purposes of the \"excessive deficit procedure\" of the Stability and Growth Pact described in Council Regulation (EC) No 1467/97 of 7 July 1997.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_SEC_OAT_DEBT_SECURITIES",
+    "OUTSTANDING AMOUNTS AND TRANSACTIONS OF EURO-DENOMINATED DEBT SECURITIES BY COUNTRY OF RESIDENCE, SECTOR OF THE ISSUER AND ORIGINAL MATURITY(EUR MILLIONS; NOMINAL VALUES)"
+   ]
+  },
+  {
+   "id": "ECB_JDF_SEC_OAT_LISTED_SHARES",
+   "code": "JDF_SEC_OAT_LISTED_SHARES",
+   "name": "Outstanding amounts and transactions of listed shares by country of residence and sector of the issuer(EUR millions; nominal values)",
+   "description": "This table shows the national contributions to the outstanding amounts, gross issues and net issues of listed shares issued by euro area residents, broken down by sector of the issuer. The data up to the end of November 2012 are computed in accordance with the ESA 95 methodology. Thereafter, the data are based on the ESA 2010 methodology. The euro area aggregate for the whole time series refers to the euro area composition as per the latest reference period.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JDF_SEC_OAT_LISTED_SHARES",
+    "OUTSTANDING AMOUNTS AND TRANSACTIONS OF LISTED SHARES BY COUNTRY OF RESIDENCE AND SECTOR OF THE ISSUER(EUR MILLIONS; NOMINAL VALUES)"
+   ]
+  },
+  {
+   "id": "ECB_JVC_PUB",
+   "code": "JVC_PUB",
+   "name": "Eurostat Job Vacancy Statistics - Published series",
+   "description": "Series of the 'Eurostat Job Vacancy Statistics' dataflow that are used in ECB publications",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JVC_PUB",
+    "EUROSTAT JOB VACANCY STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_JVS_PUB",
+   "code": "JVS_PUB",
+   "name": "Job Vacancy Statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JVS_PUB",
+    "JOB VACANCY STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_LCI_PUB",
+   "code": "LCI_PUB",
+   "name": "Labour Cost Indices - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "LCI_PUB",
+    "LABOUR COST INDICES - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_LFSI_PUB",
+   "code": "LFSI_PUB",
+   "name": "Labour Force Survey - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "LFSI_PUB",
+    "LABOUR FORCE SURVEY - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_MIR_PUB",
+   "code": "MIR_PUB",
+   "name": "MFI Interest Rate Statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MIR_PUB",
+    "MFI INTEREST RATE STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_MNA_PUB",
+   "code": "MNA_PUB",
+   "name": "National accounts, Main aggregates (Eurostat ESA2010 TP, table 1) - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MNA_PUB",
+    "NATIONAL ACCOUNTS, MAIN AGGREGATES (EUROSTAT ESA2010 TP, TABLE 1) - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_BSI",
+   "code": "MOBILE_BSI",
+   "name": "Euro area monetary aggregates",
+   "description": "Dataflow for the euro area monetary aggregates section of the ECB Statistical Tablet Application",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_BSI",
+    "EURO AREA MONETARY AGGREGATES"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_EXR",
+   "code": "MOBILE_EXR",
+   "name": "Exchange rates",
+   "description": "Dataflow for the exchange rates section of the ECB Statistical Tablet Application.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_EXR",
+    "EXCHANGE RATES"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_GST",
+   "code": "MOBILE_GST",
+   "name": "Government finance",
+   "description": "Dataflow for the Government finance section of the ECB Statistical Tablet Application.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_GST",
+    "GOVERNMENT FINANCE"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_ICP",
+   "code": "MOBILE_ICP",
+   "name": "Inflation",
+   "description": "Dataflow for the inflation section of the ECB Statistical Tablet Application.",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_ICP",
+    "INFLATION"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_KEY_1",
+   "code": "MOBILE_KEY_1",
+   "name": "Key euro area indicators (ICP)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_KEY_1",
+    "KEY EURO AREA INDICATORS (ICP)"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_KEY_2",
+   "code": "MOBILE_KEY_2",
+   "name": "Key euro area indicators (BSI)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_KEY_2",
+    "KEY EURO AREA INDICATORS (BSI)"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_KEY_3",
+   "code": "MOBILE_KEY_3",
+   "name": "Key euro area indicators (ESA)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_KEY_3",
+    "KEY EURO AREA INDICATORS (ESA)"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_KEY_4",
+   "code": "MOBILE_KEY_4",
+   "name": "Key euro area indicators (DD)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_KEY_4",
+    "KEY EURO AREA INDICATORS (DD)"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_KEY_5",
+   "code": "MOBILE_KEY_5",
+   "name": "Key euro area indicators (STS)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_KEY_5",
+    "KEY EURO AREA INDICATORS (STS)"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_KEY_6",
+   "code": "MOBILE_KEY_6",
+   "name": "Key euro area indicators (EXR)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_KEY_6",
+    "KEY EURO AREA INDICATORS (EXR)"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_KEY_7",
+   "code": "MOBILE_KEY_7",
+   "name": "Key euro area indicators (GST)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_KEY_7",
+    "KEY EURO AREA INDICATORS (GST)"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_KEY_8",
+   "code": "MOBILE_KEY_8",
+   "name": "Key euro area indicators (FM)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_KEY_8",
+    "KEY EURO AREA INDICATORS (FM)"
+   ]
+  },
+  {
+   "id": "ECB_MOBILE_MIR",
+   "code": "MOBILE_MIR",
+   "name": "Bank interest rates",
+   "description": "Dataflow for the bank interest rates section of the ECB Statistical Tablet Application",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MOBILE_MIR",
+    "BANK INTEREST RATES"
+   ]
+  },
+  {
+   "id": "ECB_PFBR_PUB",
+   "code": "PFBR_PUB",
+   "name": "Pension funds Regulation - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PFBR_PUB",
+    "PENSION FUNDS REGULATION - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_PFB_PUB",
+   "code": "PFB_PUB",
+   "name": "Pension Fund Assets and Liabilities - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "PFB_PUB",
+    "PENSION FUND ASSETS AND LIABILITIES - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_QSA_PUB",
+   "code": "QSA_PUB",
+   "name": "Quarterly Sector Accounts (MUFA and NFA Eurostat ESA2010 TP, table 801) - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "QSA_PUB",
+    "QUARTERLY SECTOR ACCOUNTS (MUFA AND NFA EUROSTAT ESA2010 TP, TABLE 801) - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_RA6_PUB",
+   "code": "RA6_PUB",
+   "name": "International Reserves of the Eurosystem (BPM6) - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RA6_PUB",
+    "INTERNATIONAL RESERVES OF THE EUROSYSTEM (BPM6) - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_RAS_PUB",
+   "code": "RAS_PUB",
+   "name": "International Reserves of the Eurosystem - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RAS_PUB",
+    "INTERNATIONAL RESERVES OF THE EUROSYSTEM - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_RESC_PUB",
+   "code": "RESC_PUB",
+   "name": "Commercial Property Prices - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RESC_PUB",
+    "COMMERCIAL PROPERTY PRICES - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_RESR_PUB",
+   "code": "RESR_PUB",
+   "name": "Real Estate Statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RESR_PUB",
+    "REAL ESTATE STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_RPP_PUB",
+   "code": "RPP_PUB",
+   "name": "Residential Property Price Index Statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RPP_PUB",
+    "RESIDENTIAL PROPERTY PRICE INDEX STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_SEC_PUB",
+   "code": "SEC_PUB",
+   "name": "Securities - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SEC_PUB",
+    "SECURITIES - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_STS_PUB",
+   "code": "STS_PUB",
+   "name": "Short-Term Statistics - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "STS_PUB",
+    "SHORT-TERM STATISTICS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_SUR_PUB",
+   "code": "SUR_PUB",
+   "name": "Opinion Surveys - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "SUR_PUB",
+    "OPINION SURVEYS - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_TRD_PUB",
+   "code": "TRD_PUB",
+   "name": "External Trade - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "TRD_PUB",
+    "EXTERNAL TRADE - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_YC_PUB",
+   "code": "YC_PUB",
+   "name": "Financial market data - yield curve - Published series",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "YC_PUB",
+    "FINANCIAL MARKET DATA - YIELD CURVE - PUBLISHED SERIES"
+   ]
+  },
+  {
+   "id": "ECB_E09",
+   "code": "E09",
+   "name": "Government Tax and Social Contributions Receipts Statistics (Eurostat ESA2010 TP, table 9)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "E09",
+    "GOVERNMENT TAX AND SOCIAL CONTRIBUTIONS RECEIPTS STATISTICS (EUROSTAT ESA2010 TP, TABLE 9)"
+   ]
+  },
+  {
+   "id": "ECB_E11",
+   "code": "E11",
+   "name": "Classification of the Functions of Government Statistics (Eurostat ESA2010 TP, table 11)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "E11",
+    "CLASSIFICATION OF THE FUNCTIONS OF GOVERNMENT STATISTICS (EUROSTAT ESA2010 TP, TABLE 11)"
+   ]
+  },
+  {
+   "id": "ECB_EDP",
+   "code": "EDP",
+   "name": "EDP tables",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "EDP",
+    "EDP TABLES"
+   ]
+  },
+  {
+   "id": "ECB_ENA",
+   "code": "ENA",
+   "name": "National accounts, Employment (Eurostat ESA2010 TP, table 0110, 0111)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ENA",
+    "NATIONAL ACCOUNTS, EMPLOYMENT (EUROSTAT ESA2010 TP, TABLE 0110, 0111)"
+   ]
+  },
+  {
+   "id": "ECB_GFS",
+   "code": "GFS",
+   "name": "Government Finance Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "GFS",
+    "GOVERNMENT FINANCE STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_IDCM",
+   "code": "IDCM",
+   "name": "National accounts, Main aggregates in the International Data Cooperation TF context",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IDCM",
+    "NATIONAL ACCOUNTS, MAIN AGGREGATES IN THE INTERNATIONAL DATA COOPERATION TF CONTEXT"
+   ]
+  },
+  {
+   "id": "ECB_IDCS",
+   "code": "IDCS",
+   "name": "National accounts, Sector Accounts in the International Data Cooperation TF context",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IDCS",
+    "NATIONAL ACCOUNTS, SECTOR ACCOUNTS IN THE INTERNATIONAL DATA COOPERATION TF CONTEXT"
+   ]
+  },
+  {
+   "id": "ECB_JVS",
+   "code": "JVS",
+   "name": "Job Vacancy Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JVS",
+    "JOB VACANCY STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_LCI",
+   "code": "LCI",
+   "name": "Labour Cost Indices",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "LCI",
+    "LABOUR COST INDICES"
+   ]
+  },
+  {
+   "id": "ECB_MNA",
+   "code": "MNA",
+   "name": "National accounts, Main aggregates (Eurostat ESA2010 TP, table 1)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "MNA",
+    "NATIONAL ACCOUNTS, MAIN AGGREGATES (EUROSTAT ESA2010 TP, TABLE 1)"
+   ]
+  },
+  {
+   "id": "ECB_QSA",
+   "code": "QSA",
+   "name": "Quarterly Sector Accounts (MUFA and NFA Eurostat ESA2010 TP, table 801)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "QSA",
+    "QUARTERLY SECTOR ACCOUNTS (MUFA AND NFA EUROSTAT ESA2010 TP, TABLE 801)"
+   ]
+  },
+  {
+   "id": "ECB_ICPF",
+   "code": "ICPF",
+   "name": "Insurance Corporations & Pension Funds Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "ICPF",
+    "INSURANCE CORPORATIONS & PENSION FUNDS STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_IEAF",
+   "code": "IEAF",
+   "name": "Quarterly non-financial accounts, QSA by country",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IEAF",
+    "QUARTERLY NON-FINANCIAL ACCOUNTS, QSA BY COUNTRY"
+   ]
+  },
+  {
+   "id": "ECB_IEAQ",
+   "code": "IEAQ",
+   "name": "Quarterly Euro Area Accounts",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IEAQ",
+    "QUARTERLY EURO AREA ACCOUNTS"
+   ]
+  },
+  {
+   "id": "ECB_IESS",
+   "code": "IESS",
+   "name": "Labour Force Survey Indicators - IESS definition",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "IESS",
+    "LABOUR FORCE SURVEY INDICATORS - IESS DEFINITION"
+   ]
+  },
+  {
+   "id": "ECB_JVC",
+   "code": "JVC",
+   "name": "Eurostat Job Vacancy Statistics",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "JVC",
+    "EUROSTAT JOB VACANCY STATISTICS"
+   ]
+  },
+  {
+   "id": "ECB_LFSI",
+   "code": "LFSI",
+   "name": "Labour Force Survey",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "LFSI",
+    "LABOUR FORCE SURVEY"
+   ]
+  },
+  {
+   "id": "ECB_BP6",
+   "code": "BP6",
+   "name": "Balance of Payments and International Investment Position (BPM6)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BP6",
+    "BALANCE OF PAYMENTS AND INTERNATIONAL INVESTMENT POSITION (BPM6)"
+   ]
+  },
+  {
+   "id": "ECB_BPS",
+   "code": "BPS",
+   "name": "Balance of Payments and International Investment Position",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "BPS",
+    "BALANCE OF PAYMENTS AND INTERNATIONAL INVESTMENT POSITION"
+   ]
+  },
+  {
+   "id": "ECB_RA6",
+   "code": "RA6",
+   "name": "International Reserves of the Eurosystem (BPM6)",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RA6",
+    "INTERNATIONAL RESERVES OF THE EUROSYSTEM (BPM6)"
+   ]
+  },
+  {
+   "id": "ECB_RAS",
+   "code": "RAS",
+   "name": "International Reserves of the Eurosystem",
+   "description": "",
+   "category": "Other",
+   "type": "sdmx_dataflow",
+   "source": "ECB Data Portal",
+   "source_url": "https://data.ecb.europa.eu/",
+   "aliases": [
+    "RAS",
+    "INTERNATIONAL RESERVES OF THE EUROSYSTEM"
+   ]
+  }
+ ]
+}

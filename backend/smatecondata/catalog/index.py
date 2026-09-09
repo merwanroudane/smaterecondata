@@ -46,6 +46,10 @@ PROVIDER_FILES: dict[str, str] = {
     "oecd": "oecd",
     "bis": "bis",
     "statscan": "statscan",
+    # Key-free expansion providers (scripts/fetch_open_catalog.py).
+    "ilostat": "ilostat",
+    "ecb": "ecb",
+    "unsd": "unsd",
 }
 
 # Provider landing pages, used to build a source reference when the metadata
@@ -58,6 +62,9 @@ SOURCE_URLS: dict[str, str] = {
     "imf": "https://data.imf.org/",
     "bis": "https://data.bis.org/",
     "statscan": "https://www150.statcan.gc.ca/",
+    "ilostat": "https://ilostat.ilo.org/data/",
+    "ecb": "https://data.ecb.europa.eu/",
+    "unsd": "https://unstats.un.org/sdgs/dataportal",
 }
 
 _CODE_LIKE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:\-]{2,}$")

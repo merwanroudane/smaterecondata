@@ -248,9 +248,9 @@ typing.
 
 ## Catalogue
 
-Search runs over the **bundled provider catalogue** — every series shipped in
-`backend/data/metadata`, indexed at start-up into a field-weighted inverted
-index. Ranking is hybrid, in the spec's own order: exact provider code first,
+Search runs over the **bundled provider catalogue** — 43,907 series from ten
+providers shipped in `backend/data/metadata`, indexed at start-up into a
+field-weighted inverted index. Ranking is hybrid, in the spec's own order: exact provider code first,
 then multilingual concept aliases, then BM25 with a title-coverage bonus.
 
 Because the catalogue is written in English, an Arabic or French query is
@@ -278,21 +278,39 @@ is really there.
 
 ```json
 {
-  "searchable_series_count": 41767,
-  "display_count": "41,767 indexed series",
+  "searchable_series_count": 43907,
+  "display_count": "43,907 indexed series",
   "milestone": "below_floor",
   "meets_legacy_floor": false,
   "next_milestone": { "name": "legacy_floor", "target": 331000,
-                      "remaining": 289233, "progress_pct": 12.62 }
+                      "remaining": 287093, "progress_pct": 13.26 }
 }
 ```
 
-The 331K figure describes a fully-synchronised production catalogue. To grow
-toward it, sync more of each provider's catalogue:
+The 331K figure describes a fully-synchronised production catalogue. Its
+database (`indicators.db`, ~827 MB) is gitignored upstream and has never been
+distributable — anyone cloning starts from the bundled metadata.
+
+### Growing the catalogue
+
+**No key required.** `fetch_open_catalog.py` pulls the open, no-registration
+sources — ILOSTAT, the ECB Data Portal and the UN SDG series:
 
 ```bash
-python scripts/fetch_all_indicators.py --provider FRED --update
+python scripts/fetch_open_catalog.py
 ```
+
+**With a free key.** FRED is the largest single source by an order of magnitude
+(800k+ series) and is skipped entirely without one:
+
+```bash
+export FRED_API_KEY=...   # free: fred.stlouisfed.org/docs/api/api_key.html
+python scripts/fetch_all_indicators.py
+```
+
+Note that `fetch_all_indicators.py` walks a hand-written list of 36 FRED
+categories capped at ~132k series, so even with a key it does not reach the
+full FRED catalogue.
 
 The counter, the badge and the milestone all move on their own once the index
 does. Nothing needs editing.
