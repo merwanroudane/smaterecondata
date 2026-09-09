@@ -769,7 +769,7 @@ def _make_provider(key: str) -> Any | None:
 def _instant_service() -> InstantDatasetService:
     """Instant-search service with lazily-created providers."""
     return InstantDatasetService(
-        ProviderGateway(factory=_make_provider, timeout=20.0)
+        ProviderGateway(factory=_make_provider)
     )
 
 

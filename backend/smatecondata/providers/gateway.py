@@ -33,10 +33,18 @@ from ..search.geography import COUNTRY_ALIASES, GeographyResolver, get_geography
 
 logger = logging.getLogger(__name__)
 
-# A provider that has not answered in 20s will not answer usefully, and
-# a request holding a connection open for 90s is a memory and worker cost
-# a 512 MB single-worker box cannot afford.
-DEFAULT_TIMEOUT = 20.0
+# This is the OUTER bound, and it must stay above the connectors' own budget.
+# WorldBankProvider gives its fallback ladder 30s (_FETCH_BUDGET_S) and its
+# batch request 25s; an outer 20s cut the connector off mid-ladder, so a slow
+# first attempt failed the whole request instead of falling through to the
+# per-country retry. On Render's free instance the same World Bank call that
+# takes 1.7s locally takes 3-14s, and it did cross 20s.
+#
+# It is still a bound, not an absence of one: a request holding a connection
+# open for 90s is a worker cost a 512 MB single-worker box cannot afford.
+# Timeout does not drive memory -- that came from the catalogue and from
+# eagerly constructing every connector, both fixed elsewhere.
+DEFAULT_TIMEOUT = 35.0
 
 # Canonical internal provider keys -> the connector attribute on QueryService.
 PROVIDER_ATTRS: dict[str, str] = {

@@ -123,7 +123,7 @@ async def main() -> int:
 
         gateway = ProviderGateway(factory=lambda key: Stub())
     else:
-        gateway = ProviderGateway(factory=_make_provider, timeout=20.0)
+        gateway = ProviderGateway(factory=_make_provider)
 
     service = InstantDatasetService(gateway)
     print(f"  providers before request          : {gateway.instantiated or 'none'}")

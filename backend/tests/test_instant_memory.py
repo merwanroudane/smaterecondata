@@ -298,6 +298,20 @@ def test_a_secret_never_reaches_the_response():
     assert "api_key=***" in payload
 
 
+def test_the_outer_timeout_leaves_the_connector_room_to_finish():
+    """The gateway bound must exceed the connector's own fallback budget.
+
+    WorldBankProvider gives its ladder 30s; an outer 20s cut it off mid-ladder,
+    so a slow first attempt failed the request instead of falling through to
+    the per-country retry -- which is what a deployed instance actually hit.
+    """
+    from backend.smatecondata.api.routes import _instant_service
+    from backend.smatecondata.providers.gateway import DEFAULT_TIMEOUT
+
+    assert DEFAULT_TIMEOUT > 30.0
+    assert _instant_service().gateway.timeout > 30.0
+
+
 def test_f_no_provider_exists_before_the_request():
     _, gateway = make_service()
     assert gateway.instantiated == []
