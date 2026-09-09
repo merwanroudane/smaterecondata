@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import re
 from dataclasses import dataclass, field
 from typing import Any, Sequence
 
@@ -42,6 +43,28 @@ from ..search.aliases import get_concept_store
 from ..search.query_parser import ParsedQuery, parse_query
 
 logger = logging.getLogger(__name__)
+
+# Query parameters that must never reach a response, a log line or a warning.
+_SECRET_PARAM = re.compile(
+    r"([?&])(api[_-]?key|apikey|key|token|access[_-]?token|secret|password|"
+    r"auth|subscription[_-]?key)=[^&\s\"']*",
+    re.IGNORECASE,
+)
+_MAX_REASON = 200
+
+
+def redact(message: str, limit: int = _MAX_REASON) -> str:
+    """Strip credentials out of a provider error before it is shown or logged.
+
+    Provider failures are usually worth showing the user -- "timed out" is
+    actionable where "no data" is not -- but the message often carries the URL
+    that failed, and some of those URLs carry an API key. FRED's does.
+    """
+    cleaned = _SECRET_PARAM.sub(r"\1\2=***", str(message)).strip()
+    cleaned = " ".join(cleaned.split())
+    if len(cleaned) > limit:
+        cleaned = cleaned[: limit - 1].rstrip() + "…"
+    return cleaned
 
 
 def rss_mb() -> float:
@@ -278,6 +301,8 @@ class InstantDatasetService:
             if (provider, series_id) not in attempts:
                 attempts.append((provider, series_id))
 
+        reasons: list[str] = []
+
         for provider, series_id in attempts:
             outcome = await self.gateway.fetch_series(
                 provider, series_id, list(geographies),
@@ -302,9 +327,15 @@ class InstantDatasetService:
             if outcome.result and outcome.result.message:
                 logger.info("instant fetch failed %s:%s — %s",
                             provider, series_id, outcome.result.message)
+                reasons.append(f"{provider}: {redact(outcome.result.message)}")
 
+        # Say why, not just that. "No official source returned data" sends the
+        # user looking for a better query when the real answer may be that the
+        # provider timed out or is not configured on this deployment -- which
+        # is exactly the case a log line nobody reads cannot help with.
+        detail = f" ({'; '.join(reasons)})" if reasons else ""
         warnings.append(
-            f"No official source returned data for '{resolved.concept}'."
+            f"No official source returned data for '{resolved.concept}'.{detail}"
         )
         return None
 

@@ -27,7 +27,11 @@ import pytest
 
 from backend.models import DataPoint, Metadata, NormalizedData
 from backend.smatecondata.catalog.store import get_catalog_store
-from backend.smatecondata.datasets.instant import InstantDatasetService, summarise
+from backend.smatecondata.datasets.instant import (
+    InstantDatasetService,
+    redact,
+    summarise,
+)
 from backend.smatecondata.providers.gateway import ProviderGateway
 
 pytestmark = pytest.mark.filterwarnings("ignore::DeprecationWarning")
@@ -244,6 +248,54 @@ def test_f_fallback_provider_is_built_only_after_the_primary_fails():
     assert gateway.instantiated[0] == "world_bank"
     # ...and no provider is constructed speculatively before it fails.
     assert len(gateway.instantiated) <= 2
+
+
+def test_f_a_failed_fetch_says_why():
+    """"No data" is not actionable; "the provider timed out" is."""
+    service, _ = make_service(world_bank={"fail": True}, imf={"fail": True})
+    result = run(service.build("Inflation in Algeria from 2000 to 2025"))
+
+    assert not result.has_data
+    excuse = " ".join(result.warnings)
+    assert "No official source returned data" in excuse
+    assert "world_bank" in excuse
+    assert "unavailable" in excuse
+
+
+@pytest.mark.parametrize("message,expected", [
+    ("GET https://api.stlouisfed.org/series?api_key=abc123def456&x=1 failed",
+     "GET https://api.stlouisfed.org/series?api_key=***&x=1 failed"),
+    ("https://x.test/d?API_KEY=SEKRIT", "https://x.test/d?API_KEY=***"),
+    ("https://x.test/d?token=abc&key=def", "https://x.test/d?token=***&key=***"),
+    ("connection refused", "connection refused"),
+])
+def test_provider_errors_are_redacted_before_they_are_shown(message, expected):
+    assert redact(message) == expected
+
+
+def test_redacted_reasons_stay_short():
+    assert len(redact("x" * 5000)) <= 200
+
+
+def test_a_secret_never_reaches_the_response():
+    class Leaky:
+        def __init__(self, key):
+            self.key = key
+
+        async def fetch_data(self, **params):
+            raise RuntimeError(
+                "502 from https://api.stlouisfed.org/fred/series?"
+                "api_key=0123456789abcdef0123456789abcdef"
+            )
+
+    RecordingProvider.instances = []
+    gateway = ProviderGateway(factory=Leaky, timeout=5.0)
+    result = run(InstantDatasetService(gateway).build(
+        "Inflation in Algeria from 2000 to 2025"))
+
+    payload = json.dumps(summarise(result, None))
+    assert "0123456789abcdef" not in payload
+    assert "api_key=***" in payload
 
 
 def test_f_no_provider_exists_before_the_request():
