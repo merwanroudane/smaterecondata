@@ -1,16 +1,21 @@
-"""Catalogue index and scale-statistics tests (spec 0.1A, 6.2, 26).
+"""Catalogue store and scale-statistics tests (spec 0.1A, 6.2, 26).
 
 Two things are pinned here. First, that trilingual discovery actually reaches
 the real provider catalogue rather than a curated concept list. Second — and
-more important — that catalogue counts are computed from the live index and
-that a milestone badge is never claimed before it is earned.
+more important — that catalogue counts are computed from the live catalogue
+and that a milestone badge is never claimed before it is earned.
+
+The subject is :class:`CatalogStore`, the SQLite/FTS5 catalogue that production
+queries. Its predecessor loaded all 43,907 series into Python and cost 393 MB,
+which is what exhausted the 512 MB deployment; the in-memory
+:mod:`~smatecondata.catalog.index` survives only as the offline builder input.
+Testing the store is therefore testing what actually runs.
 """
 
 from __future__ import annotations
 
 import pytest
 
-from backend.smatecondata.catalog.index import CatalogIndex, get_catalog_index
 from backend.smatecondata.catalog.stats import (
     EXPANSION_TARGET,
     LEGACY_FLOOR,
@@ -18,34 +23,38 @@ from backend.smatecondata.catalog.stats import (
     CatalogStats,
     CatalogStatsService,
 )
+from backend.smatecondata.catalog.store import CatalogStore, get_catalog_store
 
 
 @pytest.fixture(scope="module")
-def index() -> CatalogIndex:
-    return get_catalog_index()
+def store() -> CatalogStore:
+    catalogue = get_catalog_store()
+    if not catalogue.available:
+        pytest.skip("catalogue database missing; run scripts/build_catalog_db.py")
+    return catalogue
 
 
 @pytest.fixture(scope="module")
-def stats(index) -> CatalogStats:
-    return CatalogStatsService(index=index).compute()
+def stats(store) -> CatalogStats:
+    return CatalogStatsService(store=store).compute()
 
 
 # --------------------------------------------------------------------------
-# Index
+# Catalogue search
 # --------------------------------------------------------------------------
 
 
-def test_catalogue_loads_every_bundled_provider(index):
-    providers = index.providers()
+def test_catalogue_holds_every_bundled_provider(store):
+    providers = store.provider_counts()
     assert set(providers) >= {
         "world_bank", "fred", "eurostat", "oecd", "imf", "statscan", "bis",
     }
-    assert len(index) > 40_000, "the bundled catalogue should be tens of thousands"
+    assert store.count() > 40_000, "the bundled catalogue should be tens of thousands"
 
 
-def test_exact_provider_code_wins(index):
+def test_exact_provider_code_wins(store):
     """An advanced user typing a code must get that series first (spec 0B.8)."""
-    hits = index.search("NY.GDP.PCAP.CD", limit=5)
+    hits = store.search("NY.GDP.PCAP.CD", limit=5)
     assert hits
     assert hits[0].metadata.series_id == "NY.GDP.PCAP.CD"
     assert hits[0].metadata.provider == "world_bank"
@@ -54,20 +63,20 @@ def test_exact_provider_code_wins(index):
     assert hits[0].score > hits[1].score * 5
 
 
-def test_title_beats_a_passing_description_mention(index):
+def test_title_beats_a_passing_description_mention(store):
     """Regression: a long description mentioning a phrase outranked the series
-    actually titled with it."""
-    hits = index.search("inflation consumer prices", limit=5)
+    actually titled with it. The BM25 column weights are what enforce this."""
+    hits = store.search("inflation consumer prices", limit=5)
     titles = [h.metadata.title.lower() for h in hits]
     assert any(t.startswith("inflation, consumer prices") for t in titles)
 
 
-def test_canonical_series_are_findable_by_plain_english(index):
+def test_canonical_series_are_findable_by_plain_english(store):
     for query, expected in [
         ("inflation consumer prices", "FP.CPI.TOTL.ZG"),
         ("foreign direct investment net inflows", "BN.KLT.DINV.CD.DRS"),
     ]:
-        ids = [h.metadata.series_id for h in index.search(query, limit=10)]
+        ids = [h.metadata.series_id for h in store.search(query, limit=10)]
         assert expected in ids, f"{expected} missing for {query!r}: {ids[:5]}"
 
 
@@ -82,19 +91,30 @@ def test_canonical_series_are_findable_by_plain_english(index):
         ("dette publique", "debt"),
     ],
 )
-def test_arabic_and_french_reach_the_english_catalogue(index, query, needle):
+def test_arabic_and_french_reach_the_english_catalogue(store, query, needle):
     """The catalogue is written in English; AR/FR must still find it."""
-    hits = index.search(query, limit=5)
+    hits = store.search(query, limit=5)
     assert hits, f"no catalogue hits for {query!r}"
     titles = " ".join(h.metadata.title.lower() for h in hits)
     assert needle in titles, f"{needle!r} not in top hits for {query!r}"
 
 
-def test_trilingual_queries_score_comparably(index):
+def test_a_full_sentence_still_finds_the_indicator(store):
+    """Regression: the country and the years are noise to the catalogue.
+
+    Searching the whole sentence let "algeria" and "2000" pull agricultural
+    price indices ahead of inflation. Only the concept is sent to FTS.
+    """
+    hits = store.search("Inflation in Algeria from 2000 to 2025", limit=5)
+    assert hits
+    assert "FP.CPI.TOTL.ZG" in [h.metadata.series_id for h in hits]
+
+
+def test_trilingual_queries_score_comparably(store):
     """AR/FR must not be relegated to a bare concept-membership score."""
-    english = index.search("GDP per capita", limit=1)
-    french = index.search("PIB par habitant", limit=1)
-    arabic = index.search("الناتج المحلي الإجمالي للفرد", limit=1)
+    english = store.search("GDP per capita", limit=1)
+    french = store.search("PIB par habitant", limit=1)
+    arabic = store.search("الناتج المحلي الإجمالي للفرد", limit=1)
 
     assert english and french and arabic
     # Within the same order of magnitude, not 40 vs 280.
@@ -102,30 +122,51 @@ def test_trilingual_queries_score_comparably(index):
     assert arabic[0].score > english[0].score * 0.5
 
 
-def test_search_explains_why_something_matched(index):
-    hits = index.search("unemployment rate", limit=3)
+def test_search_explains_why_something_matched(store):
+    hits = store.search("unemployment rate", limit=3)
     assert all(hit.matched_on for hit in hits)
 
 
-def test_provider_filter(index):
-    hits = index.search("inflation", providers=["fred"], limit=10)
+def test_provider_filter(store):
+    hits = store.search("inflation", providers=["fred"], limit=10)
     assert hits
     assert {h.metadata.provider for h in hits} == {"fred"}
 
 
-def test_empty_query_returns_nothing(index):
-    assert index.search("   ") == []
+def test_search_never_returns_more_than_the_limit(store):
+    """The limit is the memory guarantee, not a display preference."""
+    for limit in (1, 5, 20):
+        assert len(store.search("price", limit=limit)) <= limit
 
 
-def test_unknown_series_lookup_returns_none(index):
-    assert index.get("world_bank", "NOT.A.REAL.CODE") is None
+def test_empty_query_returns_nothing(store):
+    assert store.search("   ") == []
 
 
-def test_known_series_lookup(index):
-    metadata = index.get("world_bank", "NY.GDP.PCAP.CD")
+def test_punctuation_only_query_does_not_raise(store):
+    """FTS5 treats a bare hyphen or quote as syntax; both must be quoted."""
+    for query in ("-", '"', "--", "* *", "AND"):
+        assert isinstance(store.search(query), list)
+
+
+def test_unknown_series_lookup_returns_none(store):
+    assert store.get("world_bank", "NOT.A.REAL.CODE") is None
+
+
+def test_known_series_lookup(store):
+    metadata = store.get("world_bank", "NY.GDP.PCAP.CD")
     assert metadata is not None
     assert metadata.title.startswith("GDP per capita")
     assert metadata.source_reference and metadata.source_reference.startswith("https://")
+
+
+def test_a_missing_database_degrades_instead_of_crashing(tmp_path):
+    """A deploy that forgot the build step must still serve the app."""
+    absent = CatalogStore(db_path=tmp_path / "no-such-catalogue.db")
+    assert absent.available is False
+    assert absent.search("inflation") == []
+    assert absent.get("world_bank", "NY.GDP.PCAP.CD") is None
+    assert absent.count() == 0
 
 
 # --------------------------------------------------------------------------
@@ -133,9 +174,9 @@ def test_known_series_lookup(index):
 # --------------------------------------------------------------------------
 
 
-def test_counts_come_from_the_index_not_a_constant(stats, index):
-    assert stats.searchable_series_count == len(index)
-    assert stats.provider_count == len(index.providers())
+def test_counts_come_from_the_catalogue_not_a_constant(stats, store):
+    assert stats.searchable_series_count == store.count()
+    assert stats.provider_count == len(store.provider_counts())
 
 
 def test_breakdowns_sum_to_the_total(stats):
@@ -206,7 +247,7 @@ def test_stats_payload_is_complete(stats):
 
 
 def test_bundled_catalogue_is_honestly_below_the_legacy_floor(stats):
-    """The repository ships ~42K series, not the 331K production floor.
+    """The repository ships ~44K series, not the 331K production floor.
 
     Reporting that honestly IS the requirement (spec 0.1A: "never fabricate
     the count"). If a future catalogue sync lifts the index past the floor,

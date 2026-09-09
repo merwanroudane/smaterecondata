@@ -65,6 +65,7 @@ git clone https://github.com/merwanroudane/smaterecondata.git
 cd smaterecondata
 python -m pip install -r backend/requirements.txt
 npm install
+python scripts/build_catalog_db.py     # index the bundled catalogue, ~9s
 ```
 
 Set the one required secret:
@@ -284,9 +285,21 @@ typing.
 ## Catalogue
 
 Search runs over the **bundled provider catalogue** — 43,907 series from ten
-providers shipped in `backend/data/metadata`, indexed at start-up into a
-field-weighted inverted index. Ranking is hybrid, in the spec's own order: exact provider code first,
-then multilingual concept aliases, then BM25 with a title-coverage bonus.
+providers shipped in `backend/data/metadata`, indexed into a SQLite **FTS5**
+database. Ranking is hybrid, in the spec's own order: exact provider code
+first, then multilingual concept aliases, then BM25 with per-column weights
+and a title-coverage bonus applied over a bounded candidate set.
+
+The database is generated, not committed. Build it once before serving:
+
+```bash
+python scripts/build_catalog_db.py     # 43,907 series, ~9s, 59 MB on disk
+```
+
+The catalogue lives on disk and a query reads a bounded number of rows, so
+searching costs kilobytes whether the catalogue holds 44 thousand series or a
+million. The previous in-memory index cost **393 MB resident** at 43,907
+series and grew linearly — see [Deploying](#deploying).
 
 Because the catalogue is written in English, an Arabic or French query is
 translated through its resolved concept before the lexical stage — so
@@ -348,7 +361,54 @@ categories capped at ~132k series, so even with a key it does not reach the
 full FRED catalogue.
 
 The counter, the badge and the milestone all move on their own once the index
-does. Nothing needs editing.
+does. Nothing needs editing. Re-run `scripts/build_catalog_db.py` after any
+fetch script to index what it downloaded.
+
+---
+
+## Deploying
+
+The backend runs in **512 MB** on a Render free instance with a single Uvicorn
+worker. Two things make that fit, and both are load-bearing:
+
+**1. Build the catalogue database during the build step.** `indicators.db` is
+generated and gitignored, so it must be produced where the code is deployed:
+
+```bash
+pip install -r backend/requirements.txt && python scripts/build_catalog_db.py
+```
+
+Without it the service still starts and instant search still answers from its
+curated mappings, but catalogue search returns nothing and the log says so
+once, with the command to fix it. Building peaks around 258 MB — fine in a
+build step, which is why it is not done at start-up.
+
+**2. Providers are constructed on demand.** `ProviderGateway` takes a factory
+and builds a connector the first time one is actually needed, so answering
+"Inflation in Algeria" instantiates World Bank and nothing else. Excel,
+profiling and the report writer are imported inside their handlers rather than
+at module scope, so a search never pays for `openpyxl`.
+
+Measure any change to the search path before deploying it:
+
+```bash
+python scripts/measure_instant_memory.py
+```
+
+It reports heap peak, RSS, which providers were constructed and whether any
+heavy library reached the hot path, then a verdict against the 512 MB limit.
+The reference query currently peaks at **36 MB**.
+
+| | Before | After |
+|---|---|---|
+| Catalogue search | 393 MB | 0.33 MB |
+| Catalogue statistics | 272 MB peak | 14 MB peak |
+| Full `instant-dataset` request | over 512 MB — killed | **36 MB peak** |
+
+The regression tests in `backend/tests/test_instant_memory.py` pin the
+decisions rather than the megabytes: one provider per clear query, a fallback
+built only after the primary fails, and a subprocess check that importing the
+search path pulls in no export or profiling library.
 
 ---
 

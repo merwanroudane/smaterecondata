@@ -19,7 +19,7 @@ import asyncio
 import logging
 import re
 from dataclasses import dataclass, field
-from typing import Any, Iterable, Sequence
+from typing import Any, Callable, Iterable, Sequence
 
 from ...models import NormalizedData
 from ..core.models import (
@@ -33,7 +33,10 @@ from ..search.geography import COUNTRY_ALIASES, GeographyResolver, get_geography
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_TIMEOUT = 45.0
+# A provider that has not answered in 20s will not answer usefully, and
+# a request holding a connection open for 90s is a memory and worker cost
+# a 512 MB single-worker box cannot afford.
+DEFAULT_TIMEOUT = 20.0
 
 # Canonical internal provider keys -> the connector attribute on QueryService.
 PROVIDER_ATTRS: dict[str, str] = {
@@ -211,11 +214,44 @@ class ProviderGateway:
     stub connector can be supplied directly.
     """
 
-    def __init__(self, connectors: dict[str, Any],
-                 *, timeout: float = DEFAULT_TIMEOUT):
-        self.connectors = connectors
+    def __init__(self, connectors: dict[str, Any] | None = None,
+                 *, timeout: float = DEFAULT_TIMEOUT,
+                 factory: "Callable[[str], Any | None] | None" = None):
+        """Providers may be supplied eagerly, or created on first use.
+
+        ``factory`` exists for the memory-constrained path: instantiating every
+        connector to answer one question is pure waste, and on a 512 MB box it
+        is waste that gets the process killed. With a factory, only the
+        provider actually asked for is ever constructed, and only once.
+        """
+        self.connectors: dict[str, Any] = dict(connectors or {})
         self.timeout = timeout
         self.resolver = get_geography_resolver()
+        self._factory = factory
+        self._instantiated: list[str] = list(self.connectors)
+
+    def connector_for(self, provider: str) -> Any | None:
+        """Return a connector, creating it on first use when a factory is set."""
+        existing = self.connectors.get(provider)
+        if existing is not None:
+            return existing
+        if self._factory is None:
+            return None
+        try:
+            created = self._factory(provider)
+        except Exception as exc:
+            logger.warning("could not create provider %s: %s", provider, exc)
+            return None
+        if created is not None:
+            self.connectors[provider] = created
+            self._instantiated.append(provider)
+            logger.info("provider instantiated on demand: %s", provider)
+        return created
+
+    @property
+    def instantiated(self) -> list[str]:
+        """Providers actually constructed — asserted by the memory tests."""
+        return list(self._instantiated)
 
     @classmethod
     def from_query_service(cls, query_service: Any, **kwargs) -> "ProviderGateway":
@@ -244,7 +280,7 @@ class ProviderGateway:
         Returns a :class:`FetchOutcome` describing partial success rather than
         raising, so a caller assembling many series can keep going.
         """
-        connector = self.connectors.get(provider)
+        connector = self.connector_for(provider)
         if connector is None:
             return FetchOutcome(result=ProviderResult(
                 provider=provider, status="failed",

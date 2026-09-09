@@ -23,14 +23,14 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
+# Heavy modules (openpyxl, pandas, pyarrow, profiling) are imported inside
+# the handlers that need them. Importing them here pulled openpyxl and
+# numpy into every worker at startup, on a 512 MB instance whose entire
+# job for most requests is a search that touches neither.
 from ..analytics import missingness as missingness_mod
-from ..catalog.index import get_catalog_index
 from ..catalog.stats import get_catalog_stats_service
-from ..analytics.profiling import (
-    ProfileMode,
-    get_profiling_service,
-    profiling_available,
-)
+from ..catalog.store import get_catalog_store
+from ..analytics.profiling import ProfileMode
 from ..analytics.descriptive import correlation_matrix, describe, iqr_flags, zscore_flags
 from ..core.models import (
     DatasetSpec,
@@ -43,17 +43,6 @@ from ..core.models import (
 from ..datasets.builder import Dataset, DatasetBuilder
 from ..datasets.instant import InstantDatasetService, summarise
 from ..datasets.validation import validate_dataset
-from ..exports.excel import export_workbook
-from ..exports.formats import (
-    ExportUnavailable,
-    export_csv,
-    export_feather,
-    export_json,
-    export_parquet,
-    export_research_bundle,
-    export_stata,
-)
-from ..exports.html_report import export_report
 from ..providers.gateway import ProviderGateway
 from ..provenance.recipe import DatasetRecipe, compare_versions, recipe_from_dataset
 from ..search.aliases import get_concept_store
@@ -484,6 +473,20 @@ def export(dataset_id: str, request: ExportRequest) -> Any:
     if fmt == "recipe_json":
         return recipe_from_dataset(dataset).to_dict()
 
+    # Imported here, not at module scope: openpyxl/pyarrow/pandas cost tens of
+    # MB and are only needed once the user actually asks for a file.
+    from ..exports.excel import export_workbook
+    from ..exports.formats import (
+        ExportUnavailable,
+        export_csv,
+        export_feather,
+        export_json,
+        export_parquet,
+        export_research_bundle,
+        export_stata,
+    )
+    from ..exports.html_report import export_report
+
     EXPORT_ROOT.mkdir(parents=True, exist_ok=True)
     suffix = "zip" if fmt == "bundle" else fmt
     path = EXPORT_ROOT / f"{dataset_id}_{dataset.name}.{suffix}"
@@ -521,6 +524,8 @@ def export(dataset_id: str, request: ExportRequest) -> Any:
 @router.get("/profiling/status", operation_id="get_profiling_status")
 def profiling_status() -> dict[str, Any]:
     """Whether automatic profiling is usable, and why not if it is not."""
+    from ..analytics.profiling import profiling_available
+
     available, reason = profiling_available()
     return {
         "available": available,
@@ -541,6 +546,8 @@ def profile_dataset(dataset_id: str,
     the response carries a status and the economic-data summary, so the user
     keeps everything they retrieved (spec 10A).
     """
+    from ..analytics.profiling import get_profiling_service
+
     dataset = STORE.get(dataset_id)
     result = get_profiling_service().profile_dataset(
         dataset, mode=mode, correlations=correlations)
@@ -551,6 +558,8 @@ def profile_dataset(dataset_id: str,
             operation_id="get_profile_summary")
 def profile_summary(dataset_id: str) -> dict[str, Any]:
     """Economic-data summary: panel balance, coverage, roles, units."""
+    from ..analytics.profiling import get_profiling_service
+
     dataset = STORE.get(dataset_id)
     return {
         "dataset_id": dataset_id,
@@ -565,6 +574,8 @@ def profile_html(dataset_id: str,
     dataset = STORE.get(dataset_id)
     EXPORT_ROOT.mkdir(parents=True, exist_ok=True)
     path = EXPORT_ROOT / f"{dataset_id}_{dataset.name}_profile.html"
+
+    from ..analytics.profiling import get_profiling_service
 
     result = get_profiling_service().profile_dataset(
         dataset, mode=mode, html_path=path)
@@ -581,6 +592,8 @@ def profile_json(dataset_id: str,
     dataset = STORE.get(dataset_id)
     EXPORT_ROOT.mkdir(parents=True, exist_ok=True)
     path = EXPORT_ROOT / f"{dataset_id}_{dataset.name}_profile.json"
+
+    from ..analytics.profiling import get_profiling_service
 
     result = get_profiling_service().profile_dataset(
         dataset, mode=mode, json_path=path)
@@ -615,8 +628,8 @@ def search_indicators(
     limit: int = Query(20, ge=1, le=200),
 ) -> dict[str, Any]:
     """Search the provider catalogue (metadata only, no observations)."""
-    index = get_catalog_index()
-    hits = index.search(
+    store = get_catalog_store()
+    hits = store.search(
         q,
         language=language,
         providers=[provider] if provider else None,
@@ -626,7 +639,7 @@ def search_indicators(
     return {
         "query": q,
         "count": len(hits),
-        "catalog_size": len(index),
+        "catalog_size": store.count(),
         "results": [
             {
                 "provider": hit.metadata.provider,
@@ -651,7 +664,7 @@ def search_indicators(
             operation_id="get_indicator_metadata")
 def indicator_metadata(provider: str, series_id: str) -> dict[str, Any]:
     """Official metadata for one provider series."""
-    metadata = get_catalog_index().get(provider, series_id)
+    metadata = get_catalog_store().get(provider, series_id)
     if metadata is None:
         raise HTTPException(404, f"Unknown series: {provider}:{series_id}")
     return metadata.model_dump(mode="json")
@@ -659,25 +672,26 @@ def indicator_metadata(provider: str, series_id: str) -> dict[str, Any]:
 
 @router.get("/catalog/topics", operation_id="list_topics")
 def list_topics() -> dict[str, Any]:
-    index = get_catalog_index()
+    store = get_catalog_store()
     return {
         "topics": [
             {"topic": topic, "series": count}
-            for topic, count in index.topics().items()
+            for topic, count in store.topic_counts().items()
         ],
-        "catalog_size": len(index),
+        "catalog_size": store.count(),
     }
 
 
 @router.get("/providers", operation_id="list_providers")
 def list_providers() -> dict[str, Any]:
-    index = get_catalog_index()
+    store = get_catalog_store()
+    counts = store.provider_counts()
     return {
         "providers": [
             {"provider": provider, "series": count}
-            for provider, count in index.providers().items()
+            for provider, count in counts.items()
         ],
-        "count": len(index.providers()),
+        "count": len(counts),
     }
 
 
@@ -717,33 +731,46 @@ class CartBuildRequest(BaseModel):
     name: str | None = Field(default=None, max_length=120)
 
 
-def _instant_service() -> InstantDatasetService:
-    """Build the service against whatever providers are configured.
+# Provider key -> "module:Class". Resolved one at a time, on demand.
+PROVIDER_IMPORTS: dict[str, str] = {
+    "world_bank": "backend.providers.worldbank:WorldBankProvider",
+    "imf": "backend.providers.imf:IMFProvider",
+    "eurostat": "backend.providers.eurostat:EurostatProvider",
+    "oecd": "backend.providers.oecd:OECDProvider",
+    "fred": "backend.providers.fred:FREDProvider",
+    "bis": "backend.providers.bis:BISProvider",
+    "statscan": "backend.providers.statscan:StatsCanProvider",
+}
 
-    Imported lazily: the provider connectors pull in heavy optional
-    dependencies, and the deterministic endpoints must not pay that cost.
+
+def _make_provider(key: str) -> Any | None:
+    """Import and instantiate exactly one connector.
+
+    Called by the gateway on first use of a provider. Instantiating all seven
+    to answer one question wasted the import cost of every connector's
+    dependency tree; on a 512 MB instance that waste is what got the process
+    killed. A fallback provider is only ever built if the primary actually
+    failed.
     """
-    connectors: dict[str, Any] = {}
+    target = PROVIDER_IMPORTS.get(key)
+    if not target:
+        return None
+    module_name, class_name = target.split(":")
     try:
-        from ...providers.worldbank import WorldBankProvider
+        module = __import__(module_name, fromlist=[class_name])
+        return getattr(module, class_name)()
+    except Exception as exc:  # connector deps are optional per deployment
+        logging.getLogger(__name__).warning(
+            "provider %s unavailable: %s", key, exc
+        )
+        return None
 
-        connectors["world_bank"] = WorldBankProvider()
-    except Exception as exc:  # pragma: no cover - environment dependent
-        logging.getLogger(__name__).warning("World Bank connector unavailable: %s", exc)
 
-    for key, factory in (
-        ("imf", "backend.providers.imf:IMFProvider"),
-        ("eurostat", "backend.providers.eurostat:EurostatProvider"),
-        ("oecd", "backend.providers.oecd:OECDProvider"),
-    ):
-        try:
-            module_name, class_name = factory.split(":")
-            module = __import__(module_name, fromlist=[class_name])
-            connectors[key] = getattr(module, class_name)()
-        except Exception:
-            continue
-
-    return InstantDatasetService(ProviderGateway(connectors, timeout=90))
+def _instant_service() -> InstantDatasetService:
+    """Instant-search service with lazily-created providers."""
+    return InstantDatasetService(
+        ProviderGateway(factory=_make_provider, timeout=20.0)
+    )
 
 
 @router.post("/instant-dataset", operation_id="create_economic_dataset")

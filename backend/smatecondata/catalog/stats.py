@@ -24,13 +24,14 @@ real number is the point -- see :meth:`CatalogStats.milestone`.
 
 from __future__ import annotations
 
-import json
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
-from .index import METADATA_DIR, PROVIDER_FILES, CatalogIndex, get_catalog_index
+from .index import METADATA_DIR, PROVIDER_FILES
+from .store import CatalogStore, get_catalog_store
 
 # Spec 0.1A thresholds.
 LEGACY_FLOOR = 331_000
@@ -143,16 +144,17 @@ class CatalogStats:
 class CatalogStatsService:
     """Computes :class:`CatalogStats` from the real index (spec 0.1A)."""
 
-    def __init__(self, index: CatalogIndex | None = None,
+    def __init__(self, store: CatalogStore | None = None,
                  metadata_dir: Path | None = None):
-        self._index = index
+        self._store = store
         self.metadata_dir = metadata_dir or METADATA_DIR
 
     @property
-    def index(self) -> CatalogIndex:
-        if self._index is None:
-            self._index = get_catalog_index()
-        return self._index
+    def store(self) -> CatalogStore:
+        """Counts come from SQLite aggregates, not from loading the catalogue."""
+        if self._store is None:
+            self._store = get_catalog_store()
+        return self._store
 
     def _sync_metadata(self) -> tuple[str | None, int, int, int]:
         """``(last sync, raw provider total, new in 30d, updated in 30d)``.
@@ -172,14 +174,15 @@ class CatalogStatsService:
             path = self.metadata_dir / f"{stem}.json"
             if not path.exists():
                 continue
-            try:
-                payload = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
+
+            header = self._read_header(path)
+            if header is None:
                 continue
 
-            raw_total += int(payload.get("total_indicators") or 0)
+            total = header.get("total_indicators") or 0
+            raw_total += int(total)
 
-            stamp = payload.get("last_updated")
+            stamp = header.get("last_updated")
             if not isinstance(stamp, str):
                 continue
             try:
@@ -191,10 +194,10 @@ class CatalogStatsService:
             if latest is None or when > latest:
                 latest = when
             if when >= cutoff:
-                # A provider file refreshed inside the window: its series count
-                # to the "updated" tally. Without per-series history this is
-                # the honest granularity available.
-                recent_updated += int(payload.get("total_indicators") or 0)
+                # A provider file refreshed inside the window contributes its
+                # series count to the "updated" tally. Without per-series
+                # history this is the honest granularity available.
+                recent_updated += int(total)
 
         return (
             latest.isoformat() if latest else None,
@@ -203,23 +206,49 @@ class CatalogStatsService:
             recent_updated,
         )
 
+    @staticmethod
+    def _read_header(path: Path, probe_bytes: int = 4096) -> dict[str, Any] | None:
+        """Read a provider file's header fields without parsing the whole file.
+
+        `json.loads` on the metadata directory peaked at 272 MB, because
+        worldbank.json alone is 62 MB and every byte was decoded to reach two
+        scalar fields that sit in the first few hundred bytes. The header is
+        read directly instead, so this costs kilobytes regardless of catalogue
+        size.
+        """
+        try:
+            with path.open("r", encoding="utf-8") as handle:
+                head = handle.read(probe_bytes)
+        except OSError:
+            return None
+
+        result: dict[str, Any] = {}
+        total = re.search(r'"total_indicators"\s*:\s*(\d+)', head)
+        if total:
+            result["total_indicators"] = int(total.group(1))
+        stamp = re.search(r'"last_updated"\s*:\s*"([^"]+)"', head)
+        if stamp:
+            result["last_updated"] = stamp.group(1)
+        return result or None
+
     def compute(self) -> CatalogStats:
-        index = self.index
-        providers = index.providers()
-        frequencies = index.frequencies()
-        topics = index.topics()
-        concepts = index.concept_coverage()
+        store = self.store
+        providers = store.provider_counts()
+        frequencies = store.frequency_counts()
+        topics = store.topic_counts()
 
         last_sync, raw_total, recent_new, recent_updated = self._sync_metadata()
 
+        from ..search.aliases import get_concept_store
         from ..search.geography import COUNTRY_ALIASES
 
-        # Deduplicated concept count: distinct economic concepts the catalogue
-        # covers, as opposed to provider-specific variants of them.
-        deduplicated = len([key for key, n in concepts.items() if n > 0])
+        # The concept catalogue is small and already in memory; counting it
+        # costs nothing, unlike scanning every series.
+        concepts = get_concept_store().concepts
+        deduplicated = len(concepts)
 
         return CatalogStats(
-            searchable_series_count=len(index),
+            searchable_series_count=store.count(),
             raw_provider_series_count=raw_total,
             deduplicated_concept_count=deduplicated,
             provider_count=len(providers),

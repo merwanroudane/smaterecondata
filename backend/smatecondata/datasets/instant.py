@@ -25,7 +25,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any, Sequence
 
-from ..catalog.index import get_catalog_index
+from ..catalog.store import get_catalog_store
 from ..core.models import (
     DatasetSpec,
     Frequency,
@@ -42,6 +42,29 @@ from ..search.aliases import get_concept_store
 from ..search.query_parser import ParsedQuery, parse_query
 
 logger = logging.getLogger(__name__)
+
+
+def rss_mb() -> float:
+    """Resident set size in MB, or 0.0 when unavailable.
+
+    Deliberately stdlib-only: adding psutil to diagnose a memory problem would
+    be self-defeating. /proc is read on Linux (which is what Render runs);
+    other platforms fall back to resource, then to 0.0.
+    """
+    try:
+        with open("/proc/self/statm", "r") as handle:
+            pages = int(handle.read().split()[1])
+        return pages * 4096 / 1048576
+    except (OSError, IndexError, ValueError):
+        pass
+    try:
+        import resource
+
+        peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        # Linux reports KB, macOS reports bytes.
+        return peak / 1024 if peak > 1_000_000 else peak / 1024
+    except Exception:
+        return 0.0
 
 # Ordered by how reliably each provider serves cross-country macro series
 # without a key. Used to break ties and to pick a fallback.
@@ -154,7 +177,7 @@ class InstantDatasetService:
         A title that merely shares words is never enough on its own -- the
         catalogue hit must also carry the concept tag.
         """
-        index = get_catalog_index()
+        store = get_catalog_store()
         concept = get_concept_store().get(concept_key)
         label = concept.label if concept else concept_key
 
@@ -162,7 +185,7 @@ class InstantDatasetService:
         for provider, series_id in RECOMMENDED.get(concept_key, []):
             if preferred_provider and provider != preferred_provider:
                 continue
-            metadata = index.get(provider, series_id)
+            metadata = store.get(provider, series_id)
             if metadata is not None:
                 return ResolvedSeries(
                     concept=concept_key,
@@ -180,7 +203,7 @@ class InstantDatasetService:
 
         # 2. Catalogue ranking, restricted to entries actually tagged with the
         #    concept where possible.
-        hits = index.search(
+        hits = store.search(
             label,
             language=language,
             providers=[preferred_provider] if preferred_provider else None,
@@ -218,9 +241,9 @@ class InstantDatasetService:
     @staticmethod
     def _alternatives(label: str, chosen: str, provider: str | None,
                       language: Language | None) -> list[dict[str, Any]]:
-        index = get_catalog_index()
+        store = get_catalog_store()
         out: list[dict[str, Any]] = []
-        for hit in index.search(label, language=language,
+        for hit in store.search(label, language=language,
                                 providers=[provider] if provider else None,
                                 limit=6):
             if hit.metadata.series_id == chosen:
@@ -298,7 +321,13 @@ class InstantDatasetService:
         name: str | None = None,
     ) -> InstantResult:
         """The whole pipeline, in one call."""
+        import time
+
+        t0 = time.perf_counter()
+        timings: dict[str, float] = {}
+
         parsed = parse_query(query, language=language)
+        timings["parse_ms"] = (time.perf_counter() - t0) * 1000
         spec = parsed.spec
 
         if output_shape is not None:
@@ -339,11 +368,15 @@ class InstantDatasetService:
             request.resolved_series_id = resolved.series_id
             result.resolution.append(resolved)
 
+        timings["resolve_ms"] = (time.perf_counter() - t0) * 1000 - timings["parse_ms"]
+
         if not result.resolution:
+            self._log(query, timings, t0, result)
             return result
 
         # 2. Retrieve all of them in parallel; a failure is a warning, not an
         #    abort, so a partial multi-indicator request still returns data.
+        fetch_started = time.perf_counter()
         fetched = await asyncio.gather(*[
             self._fetch_with_fallback(
                 resolved, spec.geographies, spec.start_year, spec.end_year,
@@ -351,6 +384,9 @@ class InstantDatasetService:
             )
             for resolved in result.resolution
         ])
+
+        timings["fetch_ms"] = (time.perf_counter() - fetch_started) * 1000
+        build_started = time.perf_counter()
 
         builder = DatasetBuilder(
             spec, name=name or self._dataset_name(parsed)
@@ -366,10 +402,12 @@ class InstantDatasetService:
             added += 1
 
         if not added:
+            self._log(query, timings, t0, result)
             return result
 
         dataset = builder.build()
         result.dataset = dataset
+        timings["build_ms"] = (time.perf_counter() - build_started) * 1000
 
         # 3. Honest reporting on the period actually returned.
         periods = sorted({o.period for o in dataset.observations if o.value is not None})
@@ -380,7 +418,24 @@ class InstantDatasetService:
                     f"{spec.end_year} is not yet available from this source; "
                     f"data runs to {last}."
                 )
+
+        self._log(query, timings, t0, result)
         return result
+
+    def _log(self, query: str, timings: dict[str, float], started: float,
+             result: "InstantResult") -> None:
+        """One structured line per request (spec 13). Never logs secrets."""
+        import time
+
+        parts = [f"{k}={v:.0f}" for k, v in timings.items()]
+        parts.append(f"total_ms={(time.perf_counter() - started) * 1000:.0f}")
+        parts.append(f"providers={'+'.join(self.gateway.instantiated) or 'none'}")
+        parts.append(f"series={len(result.resolution)}")
+        parts.append(f"rows={result.dataset.row_count if result.dataset else 0}")
+        memory = rss_mb()
+        if memory:
+            parts.append(f"rss_mb={memory:.0f}")
+        logger.info("instant_dataset %s", " ".join(parts))
 
     @staticmethod
     def _dataset_name(parsed: ParsedQuery) -> str:
@@ -431,14 +486,14 @@ class InstantDatasetService:
             result.warnings.append("Select at least one country or area.")
             return result
 
-        index = get_catalog_index()
+        store = get_catalog_store()
         for item in series:
             concept = str(item.get("concept") or "")
             provider = item.get("provider")
             series_id = item.get("series_id")
 
             if provider and series_id:
-                metadata = index.get(str(provider), str(series_id))
+                metadata = store.get(str(provider), str(series_id))
                 resolved = ResolvedSeries(
                     concept=concept or str(series_id),
                     provider=str(provider),
