@@ -65,6 +65,49 @@ def _get_breaker(provider_name: str) -> pybreaker.CircuitBreaker:
     return _provider_breakers[provider_name]
 
 
+def _record_outcome(breaker: pybreaker.CircuitBreaker,
+                    error: Optional[BaseException]) -> None:
+    """Feed one call's result to the breaker through its public ``call``."""
+    def _replay():
+        if error is not None:
+            raise error
+    try:
+        breaker.call(_replay)
+    except Exception:  # the replayed error, or the breaker tripping on it
+        pass
+
+
+async def call_through_breaker(breaker: pybreaker.CircuitBreaker, func):
+    """Run an async call under ``breaker``, recording success or failure.
+
+    pybreaker's own ``call_async`` is Tornado-only: it wraps the call in
+    ``gen.coroutine``, and pybreaker binds ``gen`` only if tornado imports.
+    Without tornado the name is simply undefined, so every provider request
+    dies with ``NameError: name 'gen' is not defined`` -- reported to the user
+    as "no data found", since that is what the caller turns a failed fetch
+    into.
+
+    That made it a deployment-dependent failure of the worst kind: it works on
+    any machine where something else happens to have pulled tornado in, and
+    fails on a clean install of this project's own requirements. Adding tornado
+    to fix it would mean shipping a web framework to borrow one decorator, so
+    the breaker is driven explicitly instead. Behaviour is unchanged: OPEN
+    still fails fast, five failures still trip it, and a success in HALF_OPEN
+    still closes it.
+    """
+    if breaker.current_state == pybreaker.STATE_OPEN:
+        raise pybreaker.CircuitBreakerError(
+            f"Circuit {breaker.name or 'breaker'} OPEN"
+        )
+    try:
+        result = await func()
+    except BaseException as exc:
+        _record_outcome(breaker, exc)
+        raise
+    _record_outcome(breaker, None)
+    return result
+
+
 class _TransientHTTPError(Exception):
     """Internal marker for HTTP errors that should trigger tenacity retry."""
     pass
@@ -242,7 +285,7 @@ class BaseProvider(ABC):
         # Circuit breaker: fail fast if provider has been failing
         breaker = _get_breaker(self.provider_name)
         try:
-            return await breaker.call_async(_do_get)
+            return await call_through_breaker(breaker, _do_get)
         except pybreaker.CircuitBreakerError:
             raise DataNotAvailableError(
                 f"{self.provider_name} circuit breaker OPEN — provider is down, skipping (resets in 60s)"
@@ -348,7 +391,7 @@ class BaseProvider(ABC):
 
         breaker = _get_breaker(self.provider_name)
         try:
-            return await breaker.call_async(_do_post)
+            return await call_through_breaker(breaker, _do_post)
         except pybreaker.CircuitBreakerError:
             raise DataNotAvailableError(
                 f"{self.provider_name} circuit breaker OPEN — provider is down, skipping (resets in 60s)"

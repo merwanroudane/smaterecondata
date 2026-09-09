@@ -488,6 +488,11 @@ def get_catalog_store() -> CatalogStore:
 
 _ARRAY_KEY = re.compile(r'"indicators"\s*:\s*\[')
 
+# Fields kept out of raw_metadata because they already have their own column or
+# are search scaffolding: storing them again would roughly double the database
+# for nothing.
+_BULKY_FIELDS = frozenset({"name", "description", "searchable_text", "keywords"})
+
 
 def iter_indicator_objects(text: str) -> Iterable[dict]:
     """Yield the objects of a provider file's ``indicators`` array, one at a time.
@@ -574,6 +579,16 @@ def iter_metadata_rows(metadata_dir: Path) -> Iterable[tuple]:
                     template.format(code=code) if "{code}" in template else template
                 )
 
+            # Keep the provider's own record, not just the fields this module
+            # happens to read. `indicators.db` is the shared indicator database
+            # -- backend/services/indicator_database.py reads the same table --
+            # and callers reach into raw_metadata for provider-specific fields.
+            # The IMF connector, for one, takes its DataMapper dataset anchor
+            # from `dataset`; writing only source_url silently downgraded every
+            # IMF verification link to the generic indicator page.
+            metadata = {k: v for k, v in raw.items() if k not in _BULKY_FIELDS}
+            metadata["source_url"] = source_url
+
             yield (
                 provider,
                 code,
@@ -584,7 +599,7 @@ def iter_metadata_rows(metadata_dir: Path) -> Iterable[tuple]:
                 str(raw.get("frequency") or ""),
                 " ".join(str(a) for a in aliases[:12]),
                 "",
-                json.dumps({"source_url": source_url}, ensure_ascii=False),
+                json.dumps(metadata, ensure_ascii=False),
             )
         del objects, text
 
