@@ -359,3 +359,54 @@
     width: 100vw;
   }
 }
+
+/* --- country autocomplete (a selector, not a filter) ------------------- */
+
+.cart__field--combo {
+  position: relative;
+}
+
+.cart__suggestions {
+  position: absolute;
+  top: 100%;
+  inset-inline: 0;
+  z-index: 5;
+  margin: 2px 0 0;
+  padding: 3px;
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.cart__suggestion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0.35rem 0.5rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 400;
+  text-align: start;
+  cursor: pointer;
+}
+
+.cart__suggestion--active {
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+}
+
+.cart__suggestion code {
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}

@@ -7,7 +7,7 @@
  * or deselect.
  */
 
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { CartProvider } from '../../contexts/CartContext'
@@ -19,11 +19,11 @@ const COUNTRIES = Array.from({ length: 60 }, (_, i) => ({
   iso3: `C${String(i).padStart(2, '0')}`,
   name: `Country ${i}`,
 })).concat([
-  { iso3: 'DZA', name: 'Algeria' },
-  { iso3: 'MAR', name: 'Morocco' },
-  { iso3: 'TUN', name: 'Tunisia' },
-  { iso3: 'LBY', name: 'Libya' },
-  { iso3: 'MRT', name: 'Mauritania' },
+  { iso3: 'DZA', name: 'Algeria', aliases: ['Algeria', 'Algerie', 'الجزائر'] },
+  { iso3: 'MAR', name: 'Morocco', aliases: ['Morocco', 'Maroc', 'المغرب'] },
+  { iso3: 'TUN', name: 'Tunisia', aliases: ['Tunisia', 'Tunisie', 'تونس'] },
+  { iso3: 'LBY', name: 'Libya', aliases: ['Libya', 'Libye', 'ليبيا'] },
+  { iso3: 'MRT', name: 'Mauritania', aliases: ['Mauritania', 'Mauritanie', 'موريتانيا'] },
 ])
 
 const REGIONS = [{ key: 'maghreb', members: ['DZA', 'MAR', 'TUN', 'LBY', 'MRT'] }]
@@ -191,6 +191,67 @@ describe('DataCart', () => {
       frequency: 'annual',
       shape: 'wide',
     })
+  })
+
+  // -- Test G: the country box selects, it does not merely filter ----------
+
+  it.each([
+    ['English', 'Tunisia'],
+    ['French', 'Tunisie'],
+    ['Arabic', 'تونس'],
+  ])('selects TUN when %s is typed and Enter pressed', async (_label, typed) => {
+    localStorage.setItem(
+      'smatecondata_cart',
+      JSON.stringify({
+        items: [{ concept: 'gdp', label: 'GDP', addedAt: 1 }],
+        settings: { geographies: [] },
+      }),
+    )
+    const user = userEvent.setup()
+    renderCart()
+
+    const box = await screen.findByPlaceholderText(/press Enter/i)
+    await user.type(box, typed)
+    await user.keyboard('{Enter}')
+
+    const stored = JSON.parse(localStorage.getItem('smatecondata_cart')!)
+    expect(stored.settings.geographies).toContain('TUN')
+    expect(screen.getByRole('button', { name: 'Build Dataset' })).toBeEnabled()
+  })
+
+  it('offers clickable suggestions', async () => {
+    localStorage.setItem(
+      'smatecondata_cart',
+      JSON.stringify({
+        items: [{ concept: 'gdp', label: 'GDP', addedAt: 1 }],
+        settings: { geographies: [] },
+      }),
+    )
+    const user = userEvent.setup()
+    renderCart()
+
+    await user.type(await screen.findByPlaceholderText(/press Enter/i), 'Moroc')
+    const listbox = await screen.findByRole('listbox')
+    await user.click(within(listbox).getByRole('button', { name: /Morocco/ }))
+
+    const stored = JSON.parse(localStorage.getItem('smatecondata_cart')!)
+    expect(stored.settings.geographies).toEqual(['MAR'])
+  })
+
+  it('clears the box after a selection so the next country can be typed', async () => {
+    localStorage.setItem(
+      'smatecondata_cart',
+      JSON.stringify({
+        items: [{ concept: 'gdp', label: 'GDP', addedAt: 1 }],
+        settings: { geographies: [] },
+      }),
+    )
+    const user = userEvent.setup()
+    renderCart()
+    const box = (await screen.findByPlaceholderText(/press Enter/i)) as HTMLInputElement
+    await user.type(box, 'Tunisia')
+    await user.keyboard('{Enter}')
+    expect(box.value).toBe('')
   })
 
   it('warns about a duplicate display label', async () => {

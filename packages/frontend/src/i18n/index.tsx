@@ -124,6 +124,7 @@ const EN = {
   'cart.period': 'Period for all series',
   'cart.shape': 'Output shape',
   'cart.bulk': 'Bulk actions',
+  'cart.countryPlaceholder': 'Type a country and press Enter',
   'cart.duplicateWarning': 'This concept is already in the cart.',
 
   'workspace.data': 'Data',
@@ -150,6 +151,11 @@ const EN = {
   'export.html': 'HTML report',
   'export.bundle': 'Research bundle (ZIP)',
   'export.recipe': 'Dataset recipe',
+
+  'instant.downloadExcel': 'Download Excel',
+  'instant.change': 'Change',
+  'instant.truncated': 'Showing the first {shown} rows. The export contains every row.',
+  'instant.searching': 'Retrieving data…',
 
   'common.loading': 'Loading…',
   'common.error': 'Something went wrong.',
@@ -249,6 +255,7 @@ const FR: Partial<Record<TranslationKey, string>> = {
   'cart.period': 'Période pour toutes les séries',
   'cart.shape': 'Format de sortie',
   'cart.bulk': 'Actions groupées',
+  'cart.countryPlaceholder': 'Saisissez un pays et appuyez sur Entrée',
   'cart.duplicateWarning': 'Ce concept est déjà dans le panier.',
 
   'workspace.data': 'Données',
@@ -272,6 +279,11 @@ const FR: Partial<Record<TranslationKey, string>> = {
   'export.html': 'Rapport HTML',
   'export.bundle': 'Dossier de recherche (ZIP)',
   'export.recipe': 'Recette du jeu de données',
+
+  'instant.downloadExcel': 'Télécharger Excel',
+  'instant.change': 'Changer',
+  'instant.truncated': "Affichage des {shown} premières lignes. L'export contient toutes les lignes.",
+  'instant.searching': 'Récupération des données…',
 
   'common.loading': 'Chargement…',
   'common.error': "Une erreur s'est produite.",
@@ -369,6 +381,7 @@ const AR: Partial<Record<TranslationKey, string>> = {
   'cart.period': 'الفترة لكل السلاسل',
   'cart.shape': 'شكل المخرجات',
   'cart.bulk': 'إجراءات جماعية',
+  'cart.countryPlaceholder': 'اكتب اسم بلد ثم اضغط Enter',
   'cart.duplicateWarning': 'هذا المفهوم موجود في السلة بالفعل.',
 
   'workspace.data': 'البيانات',
@@ -392,6 +405,11 @@ const AR: Partial<Record<TranslationKey, string>> = {
   'export.html': 'تقرير HTML',
   'export.bundle': 'حزمة بحثية (ZIP)',
   'export.recipe': 'وصفة مجموعة البيانات',
+
+  'instant.downloadExcel': 'تنزيل إكسل',
+  'instant.change': 'تغيير',
+  'instant.truncated': 'عرض أول {shown} صف. الملف المُصدَّر يحتوي كل الصفوف.',
+  'instant.searching': 'جارٍ استرجاع البيانات…',
 
   'common.loading': 'جارٍ التحميل…',
   'common.error': 'حدث خطأ ما.',

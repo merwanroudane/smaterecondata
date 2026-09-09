@@ -51,6 +51,8 @@ export interface Concept {
 export interface Country {
   iso3: string
   name: string
+  /** Names in every supported language, so matching is UI-language agnostic. */
+  aliases?: string[]
 }
 
 export interface Region {

@@ -205,6 +205,41 @@ pip install -U fg-data-profiling
 
 ---
 
+## Search means get data
+
+Type a request, press Search, get the dataset. No cart, no provider picker, no
+indicator code, and the country is never asked for twice.
+
+```bash
+curl -s localhost:3001/api/v1/instant-dataset   -H 'content-type: application/json'   -d '{"query":"التضخم في الجزائر من 2000 إلى 2025"}'
+```
+
+One call parses the request, resolves the official series, retrieves the
+observations, builds and validates the dataset, and returns rows plus
+provenance:
+
+```json
+{
+  "resolution": [{
+    "provider": "world_bank", "series_id": "FP.CPI.TOTL.ZG",
+    "official_title": "Inflation, consumer prices (annual %)",
+    "confidence": 0.97, "reason": "recommended series for this concept"
+  }],
+  "dataset": { "rows": 26, "columns": ["geography","iso3","period","inflation_pct"] },
+  "warnings": ["2025 is not yet available from this source; data runs to 2024."]
+}
+```
+
+`POST /api/v1/instant-dataset/from-selection` runs the **same engine** for the
+Data Cart, so the cart cannot drift into a second, differently-behaving
+pipeline.
+
+The Data Cart remains — as an optional way to collect exact series across
+several searches. It is never a toll gate between you and the data you just
+searched for.
+
+---
+
 ## Interface
 
 **Eight search modes over one discovery engine** (spec 0B). Quick Search is the

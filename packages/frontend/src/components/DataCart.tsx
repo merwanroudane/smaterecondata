@@ -53,6 +53,7 @@ export function DataCart({ open, onClose, onBuild }: DataCartProps) {
   } = useCart()
   const { countries, regions } = useCatalog()
   const [geoFilter, setGeoFilter] = useState('')
+  const [highlight, setHighlight] = useState(0)
 
   if (!open) return null
 
@@ -62,6 +63,57 @@ export function DataCart({ open, onClose, onBuild }: DataCartProps) {
         ? settings.geographies.filter((g) => g !== iso3)
         : [...settings.geographies, iso3],
     })
+  }
+
+  /**
+   * Suggestions for the country box.
+   *
+   * The box used to be a FILTER only: typing "Tunisia" narrowed the chips but
+   * never put TUN into settings.geographies, so Build stayed disabled and the
+   * user got a "not allowed" cursor with no explanation. It is now a real
+   * autocomplete — type, press Enter (or click), and the country is selected.
+   */
+  const suggestions = geoFilter.trim()
+    ? countries
+        .filter((c) => !settings.geographies.includes(c.iso3))
+        .filter((c) => {
+          const needle = geoFilter.trim().toLowerCase()
+          // Match every language the provider knows this country by, so the
+          // box works regardless of the interface language: Tunisia, Tunisie
+          // and تونس all select TUN.
+          return (
+            c.name.toLowerCase().includes(needle) ||
+            c.iso3.toLowerCase().startsWith(needle) ||
+            (c.aliases ?? []).some((alias) =>
+              alias.toLowerCase().includes(needle),
+            )
+          )
+        })
+        .slice(0, 8)
+    : []
+
+  const selectCountry = (iso3: string) => {
+    if (!settings.geographies.includes(iso3)) {
+      updateSettings({ geographies: [...settings.geographies, iso3] })
+    }
+    setGeoFilter('')
+    setHighlight(0)
+  }
+
+  const onGeoKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!suggestions.length) return
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      selectCountry(suggestions[Math.min(highlight, suggestions.length - 1)].iso3)
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setHighlight((i) => Math.min(i + 1, suggestions.length - 1))
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      setHighlight((i) => Math.max(i - 1, 0))
+    } else if (event.key === 'Escape') {
+      setGeoFilter('')
+    }
   }
 
   // The chip list is capped for length, but a SELECTED country must always be
@@ -158,14 +210,47 @@ export function DataCart({ open, onClose, onBuild }: DataCartProps) {
           <section className="cart__section">
             <h3>{t('cart.bulk')}</h3>
 
-            <label className="cart__field">
+            <label className="cart__field cart__field--combo">
               <span>{t('cart.countries')}</span>
               <input
                 value={geoFilter}
-                onChange={(event) => setGeoFilter(event.target.value)}
-                placeholder={t('guided.where')}
+                onChange={(event) => {
+                  setGeoFilter(event.target.value)
+                  setHighlight(0)
+                }}
+                onKeyDown={onGeoKeyDown}
+                placeholder={t('cart.countryPlaceholder')}
                 dir="auto"
+                role="combobox"
+                aria-expanded={suggestions.length > 0}
+                aria-autocomplete="list"
+                aria-controls="cart-geo-suggestions"
               />
+              {suggestions.length > 0 && (
+                <ul
+                  className="cart__suggestions"
+                  id="cart-geo-suggestions"
+                  role="listbox"
+                >
+                  {suggestions.map((country, index) => (
+                    <li key={country.iso3} role="option" aria-selected={index === highlight}>
+                      <button
+                        type="button"
+                        className={
+                          index === highlight
+                            ? 'cart__suggestion cart__suggestion--active'
+                            : 'cart__suggestion'
+                        }
+                        onMouseEnter={() => setHighlight(index)}
+                        onClick={() => selectCountry(country.iso3)}
+                      >
+                        <span dir="auto">{country.name}</span>
+                        <code>{country.iso3}</code>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </label>
 
             <div className="cart__regions">

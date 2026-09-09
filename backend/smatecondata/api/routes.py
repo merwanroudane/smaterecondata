@@ -11,6 +11,7 @@ data they were not given return an explicit error instead.
 
 from __future__ import annotations
 
+import logging
 import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -40,6 +41,7 @@ from ..core.models import (
     OutputShape,
 )
 from ..datasets.builder import Dataset, DatasetBuilder
+from ..datasets.instant import InstantDatasetService, summarise
 from ..datasets.validation import validate_dataset
 from ..exports.excel import export_workbook
 from ..exports.formats import (
@@ -52,6 +54,7 @@ from ..exports.formats import (
     export_stata,
 )
 from ..exports.html_report import export_report
+from ..providers.gateway import ProviderGateway
 from ..provenance.recipe import DatasetRecipe, compare_versions, recipe_from_dataset
 from ..search.aliases import get_concept_store
 from ..search.geography import COUNTRY_ALIASES, REGIONS, get_geography_resolver
@@ -192,10 +195,21 @@ def list_concepts(language: Language = Language.EN) -> dict[str, Any]:
 
 @router.get("/geographies", operation_id="list_geographies")
 def list_geographies(language: Language = Language.EN) -> dict[str, Any]:
+    """Countries and region presets.
+
+    Each country carries its aliases in ALL three languages, not just the
+    requested display language. The interface language is independent of the
+    search language (spec 0O), so a French UI must still resolve `تونس` — the
+    client cannot match trilingually if it only ever receives one name.
+    """
     resolver = get_geography_resolver()
     return {
         "countries": [
-            {"iso3": iso3, "name": resolver.display_name(iso3, language)}
+            {
+                "iso3": iso3,
+                "name": resolver.display_name(iso3, language),
+                "aliases": list(COUNTRY_ALIASES[iso3]),
+            }
             for iso3 in sorted(COUNTRY_ALIASES)
         ],
         "regions": [
@@ -665,3 +679,107 @@ def list_providers() -> dict[str, Any]:
         ],
         "count": len(index.providers()),
     }
+
+
+# --------------------------------------------------------------------------
+# Zero-friction instant dataset (Search means get data)
+# --------------------------------------------------------------------------
+
+
+class InstantRequest(BaseModel):
+    """Only `query` is required; everything else has a safe default."""
+
+    query: str = Field(min_length=1, max_length=2000)
+    output_shape: OutputShape | None = None
+    provider: str | None = None
+    frequency: Frequency | None = None
+    language: Language | None = None
+    preview_limit: int = Field(300, ge=1, le=5000)
+    name: str | None = Field(default=None, max_length=120)
+
+
+class CartSeriesItem(BaseModel):
+    concept: str | None = None
+    provider: str | None = None
+    series_id: str | None = None
+
+
+class CartBuildRequest(BaseModel):
+    """Structured build from the Data Cart — same engine as Quick Search."""
+
+    series: list[CartSeriesItem] = Field(min_length=1)
+    geographies: list[str] = Field(default_factory=list)
+    start_year: int | None = None
+    end_year: int | None = None
+    frequency: Frequency = Frequency.ANNUAL
+    output_shape: OutputShape = OutputShape.WIDE
+    preview_limit: int = Field(300, ge=1, le=5000)
+    name: str | None = Field(default=None, max_length=120)
+
+
+def _instant_service() -> InstantDatasetService:
+    """Build the service against whatever providers are configured.
+
+    Imported lazily: the provider connectors pull in heavy optional
+    dependencies, and the deterministic endpoints must not pay that cost.
+    """
+    connectors: dict[str, Any] = {}
+    try:
+        from ...providers.worldbank import WorldBankProvider
+
+        connectors["world_bank"] = WorldBankProvider()
+    except Exception as exc:  # pragma: no cover - environment dependent
+        logging.getLogger(__name__).warning("World Bank connector unavailable: %s", exc)
+
+    for key, factory in (
+        ("imf", "backend.providers.imf:IMFProvider"),
+        ("eurostat", "backend.providers.eurostat:EurostatProvider"),
+        ("oecd", "backend.providers.oecd:OECDProvider"),
+    ):
+        try:
+            module_name, class_name = factory.split(":")
+            module = __import__(module_name, fromlist=[class_name])
+            connectors[key] = getattr(module, class_name)()
+        except Exception:
+            continue
+
+    return InstantDatasetService(ProviderGateway(connectors, timeout=90))
+
+
+@router.post("/instant-dataset", operation_id="create_economic_dataset")
+async def instant_dataset(request: InstantRequest) -> dict[str, Any]:
+    """Natural-language request in, real dataset out.
+
+    This is the zero-friction path: parse, resolve, retrieve, build, validate
+    and store in one call, so Search produces data rather than an explanation.
+    """
+    service = _instant_service()
+    result = await service.build(
+        request.query,
+        output_shape=request.output_shape,
+        provider=request.provider,
+        frequency=request.frequency,
+        language=request.language,
+        name=request.name,
+    )
+
+    dataset_id = STORE.put(result.dataset) if result.dataset is not None else None
+    return summarise(result, dataset_id, preview_limit=request.preview_limit)
+
+
+@router.post("/instant-dataset/from-selection", operation_id="build_from_selection")
+async def instant_from_selection(request: CartBuildRequest) -> dict[str, Any]:
+    """Build from explicit Data Cart selections, through the same engine."""
+    service = _instant_service()
+    result = await service.build_from_selection(
+        series=[item.model_dump() for item in request.series],
+        geographies=request.geographies,
+        start_year=request.start_year,
+        end_year=request.end_year,
+        frequency=request.frequency,
+        output_shape=request.output_shape,
+        name=request.name,
+    )
+
+    dataset_id = STORE.put(result.dataset) if result.dataset is not None else None
+    return summarise(result, dataset_id, preview_limit=request.preview_limit)

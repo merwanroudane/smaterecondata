@@ -11,11 +11,15 @@
  * interface language: a French UI can still take an Arabic query.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useCart } from '../contexts/CartContext'
 import { useI18n } from '../i18n'
 import { DataCart } from './DataCart'
 import { HeroAnimation } from './HeroAnimation'
+import {
+  InstantDatasetResult,
+  type InstantResponse,
+} from './InstantDatasetResult'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import {
   AdvancedSearch,
@@ -33,25 +37,6 @@ import './HomePage.css'
 
 const API_BASE = import.meta.env.VITE_API_URL || '/api'
 
-interface Understanding {
-  language: string
-  countries: string[]
-  iso3: string[]
-  indicators: string[]
-  concept_keys: string[]
-  period: string
-  frequency: string
-  preferred_sources: string[]
-  output: string[]
-  needs_clarification: string[]
-}
-
-interface AmbiguousConcept {
-  concept: string
-  label: string
-  distinctions: string[]
-}
-
 interface CatalogStats {
   searchable_series_count: number
   provider_count: number
@@ -61,10 +46,6 @@ interface CatalogStats {
   last_catalog_sync: string | null
 }
 
-interface ParseResponse {
-  understanding: Understanding
-  ambiguous: AmbiguousConcept[]
-}
 
 const PLACEHOLDERS = [
   { lang: 'en', dir: 'ltr' as const, text: 'Inflation in Algeria from 2000 to 2025' },
@@ -96,19 +77,25 @@ const TOPICS = [
   { key: 'Monetary', hint: 'exchange rate' },
 ]
 
-const LANGUAGE_NAMES: Record<string, string> = {
-  ar: 'Arabic',
-  en: 'English',
-  fr: 'French',
+/** Extract start/end year from a period label such as `2000-2025`. */
+function parseYear(period: string, index: 0 | 1): number | null {
+  const years = period.match(/\d{4}/g)
+  const value = years?.[index]
+  return value ? Number(value) : null
 }
 
 export function HomePage() {
   const { t, formatNumber } = useI18n()
-  const { count: cartCount, add, has } = useCart()
+  const {
+    count: cartCount,
+    add,
+    items: cartItems,
+    updateSettings,
+  } = useCart()
 
   const [mode, setMode] = useState<SearchMode>('quick')
   const [query, setQuery] = useState('')
-  const [result, setResult] = useState<ParseResponse | null>(null)
+  const [result, setResult] = useState<InstantResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
@@ -145,6 +132,11 @@ export function HomePage() {
 
   const placeholder = PLACEHOLDERS[placeholderIndex]
 
+  /**
+   * Search means GET DATA. One call parses, resolves official series,
+   * retrieves observations, builds and validates the dataset — the user never
+   * passes through a cart to see the data they just asked for.
+   */
   const runSearch = useCallback(async (text: string) => {
     const trimmed = text.trim()
     if (!trimmed) return
@@ -152,7 +144,7 @@ export function HomePage() {
     setBusy(true)
     setError(null)
     try {
-      const response = await fetch(`${API_BASE}/v1/parse`, {
+      const response = await fetch(`${API_BASE}/v1/instant-dataset`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ query: trimmed }),
@@ -160,7 +152,7 @@ export function HomePage() {
       if (!response.ok) {
         throw new Error(`Search failed (${response.status})`)
       }
-      setResult((await response.json()) as ParseResponse)
+      setResult((await response.json()) as InstantResponse)
     } catch (cause) {
       // Never show a stack trace to a researcher (spec 0M).
       setError(
@@ -189,12 +181,6 @@ export function HomePage() {
     [runSearch],
   )
 
-  const understood = result?.understanding
-  const languageLabel = useMemo(
-    () =>
-      understood ? LANGUAGE_NAMES[understood.language] ?? understood.language : null,
-    [understood],
-  )
 
   return (
     <div className="home">
@@ -351,93 +337,29 @@ export function HomePage() {
           </section>
         )}
 
-        {understood && (
-          <section className="home__panel" aria-live="polite">
-            <header className="home__panel-head">
-              <h2>{t('understanding.title')}</h2>
-              <span className="home__badge home__badge--lang">
-                {t('understanding.queryLanguage', { lang: languageLabel ?? '' })}
-              </span>
-            </header>
-
-            <dl className="home__understanding">
-              <div>
-                <dt>{t('understanding.countries')}</dt>
-                <dd dir="auto">
-                  {understood.countries.length
-                    ? understood.countries.join(', ')
-                    : t('understanding.notSpecified')}
-                </dd>
-              </div>
-              <div>
-                <dt>{t('understanding.indicators')}</dt>
-                <dd dir="auto">
-                  {understood.indicators.length
-                    ? understood.indicators.join(', ')
-                    : t('understanding.notSpecified')}
-                </dd>
-              </div>
-              <div>
-                <dt>{t('understanding.period')}</dt>
-                <dd>{understood.period}</dd>
-              </div>
-              <div>
-                <dt>{t('understanding.frequency')}</dt>
-                <dd>{understood.frequency}</dd>
-              </div>
-              <div>
-                <dt>{t('understanding.sources')}</dt>
-                <dd>{understood.preferred_sources.join(', ')}</dd>
-              </div>
-              <div>
-                <dt>{t('understanding.output')}</dt>
-                <dd>{understood.output.join(', ')}</dd>
-              </div>
-            </dl>
-
-            {understood.concept_keys.length > 0 && (
-              <div className="home__resolved">
-                {understood.concept_keys.map((concept, index) => (
-                  <button
-                    key={concept}
-                    type="button"
-                    className="home__resolved-add"
-                    aria-pressed={has(concept)}
-                    onClick={() =>
-                      add({
-                        concept,
-                        label: understood.indicators[index] ?? concept,
-                        ambiguous: understood.needs_clarification.includes(concept),
-                      })
-                    }
-                  >
-                    {has(concept) ? t('cart.added') : `${t('cart.add')}: ${concept}`}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {result.ambiguous.length > 0 && (
-              <div className="home__ambiguity">
-                <h3>{t('ambiguity.title')}</h3>
-                <p className="home__ambiguity-note">{t('ambiguity.note')}</p>
-                <ul>
-                  {result.ambiguous.map((item) => (
-                    <li key={item.concept}>
-                      <strong>{item.label}</strong>
-                      <span className="home__distinctions">
-                        {item.distinctions.map((distinction) => (
-                          <span key={distinction} className="home__distinction">
-                            {distinction}
-                          </span>
-                        ))}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </section>
+        {result && (
+          <InstantDatasetResult
+            result={result}
+            onAddToCart={(payload) => {
+              // Secondary action: copy the resolved series AND the parsed
+              // countries/period/frequency, so nothing is retyped.
+              for (const series of payload.resolution) {
+                add({
+                  concept: series.concept,
+                  label: series.official_title,
+                  provider: series.provider,
+                  seriesId: series.series_id,
+                  unit: series.unit ?? undefined,
+                })
+              }
+              updateSettings({
+                geographies: payload.understanding.iso3,
+                startYear: parseYear(payload.understanding.period, 0),
+                endYear: parseYear(payload.understanding.period, 1),
+                frequency: payload.understanding.frequency,
+              })
+            }}
+          />
         )}
 
         <section className="home__topics">
@@ -461,18 +383,43 @@ export function HomePage() {
       <DataCart
         open={cartOpen}
         onClose={() => setCartOpen(false)}
-        onBuild={(payload) => {
-          // The cart defines the request; the dataset layer builds it.
-          const parts = [
-            payload.concepts.join(', '),
-            `for ${payload.geographies.join(', ')}`,
-            payload.startYear && payload.endYear
-              ? `from ${payload.startYear} to ${payload.endYear}`
-              : '',
-            `${payload.frequency} data`,
-          ].filter(Boolean)
+        onBuild={async (payload) => {
+          // Build for real through the same engine as Quick Search — never
+          // compose a sentence and send it back through the parser.
           setCartOpen(false)
-          useExample(parts.join(' '))
+          setBusy(true)
+          setError(null)
+          try {
+            const response = await fetch(
+              `${API_BASE}/v1/instant-dataset/from-selection`,
+              {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({
+                  series: cartItems.map((item) => ({
+                    concept: item.concept,
+                    provider: item.provider ?? null,
+                    series_id: item.seriesId ?? null,
+                  })),
+                  geographies: payload.geographies,
+                  start_year: payload.startYear,
+                  end_year: payload.endYear,
+                  frequency: payload.frequency,
+                  output_shape: payload.shape,
+                }),
+              },
+            )
+            if (!response.ok) throw new Error(`Build failed (${response.status})`)
+            setResult((await response.json()) as InstantResponse)
+          } catch (cause) {
+            setError(
+              cause instanceof Error && cause.message
+                ? cause.message
+                : 'Could not build the dataset.',
+            )
+          } finally {
+            setBusy(false)
+          }
         }}
       />
 
